@@ -1,9 +1,9 @@
 <template>
-  <div class="home">
-    <nav-bar></nav-bar>
-    <main>Home main</main>
-    <footer>Home footer</footer>
-  </div>
+    <div class="home">
+        <nav-bar></nav-bar>
+        <main></main>
+        <footer></footer>
+    </div>
 </template>
 
 <script>
@@ -11,9 +11,15 @@
 import Navbar from "../components/Navbar.vue";
 
 export default {
-  name: "Home",
-  components: {
-    "nav-bar": Navbar
-  }
+    name: "Home",
+    components: {
+        "nav-bar": Navbar,
+    },
 };
 </script>
+
+<style>
+.home {
+    position: relative;
+}
+</style>
