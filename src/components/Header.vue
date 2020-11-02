@@ -20,11 +20,6 @@ export default {
   position: absolute;
   top: 0;
   width: 100%;
-  /* background: linear-gradient(
-        180deg,
-        rgba(0, 0, 0, 0.9),
-        rgba(178, 178, 178, 0.4)
-    ); */
   z-index: 100;
 }
 </style>

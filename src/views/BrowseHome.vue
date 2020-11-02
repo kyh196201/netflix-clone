@@ -82,6 +82,7 @@ export default {
   left: 0;
   width: 100%;
   height: auto;
+  max-height: 80vh;
 }
 
 .bilboard__meta {
@@ -96,7 +97,8 @@ export default {
 .bilboard__meta__title {
   margin-bottom: 1rem;
   color: #fff;
-  font-size: 5rem;
+  font-size: 9vw;
+  font-weight: bold;
   letter-spacing: 1rem;
 }
 

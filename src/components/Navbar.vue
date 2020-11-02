@@ -6,20 +6,12 @@
       <router-link to="/browse" class="home__nav__logo"></router-link>
       <!-- 페이지 링크 -->
       <ul class="home__nav__links" v-if="isProfile">
-        <li class="active">
-          <router-link to="/browse">홈</router-link>
-        </li>
-        <li>
-          <router-link to="/browse/genre/83">TV 프로그램</router-link>
-        </li>
-        <li>
-          <router-link to="/browse/genre/84">영화</router-link>
-        </li>
-        <li>
-          <router-link to="/browse/latest">최신 콘텐츠</router-link>
-        </li>
-        <li>
-          <router-link to="/browse/my-list">내가 찜한 콘텐츠</router-link>
+        <li v-for="(link, index) in links" :key="index" ref="navLink">
+          <router-link
+            class="navLink"
+            :to="link.route"
+            :class="{ active : isActive(link.route) }"
+          >{{link.title}}</router-link>
         </li>
       </ul>
     </div>
@@ -75,16 +67,51 @@ import logoImage from "../assets/images/logo2.png";
 import avtarImage from "../assets/images/avatar.jpg";
 import { mapState } from "vuex";
 
+const links = [
+  {
+    title: "홈",
+    route: "/browse"
+  },
+  {
+    title: "TV 프로그램",
+    route: "/browse/genre/83"
+  },
+  {
+    title: "영화",
+    route: "/browse/genre/84"
+  },
+  {
+    title: "최신 콘텐츠",
+    route: "/browse/latest"
+  },
+  {
+    title: "내가 찜한 콘텐츠",
+    route: "/browse/my-list"
+  }
+];
+
 export default {
   name: "NavBar",
   data() {
     return {
       logoImage: logoImage,
-      avtarImage: avtarImage
+      avtarImage: avtarImage,
+      links: links
     };
   },
   computed: {
     ...mapState(["isProfile"])
+  },
+  mounted() {
+    this.bindClickEvent();
+  },
+  methods: {
+    bindClickEvent() {
+      console.log(this.$refs);
+    },
+    isActive(path) {
+      return path === this.$route.path;
+    }
   }
 };
 </script>
@@ -155,11 +182,11 @@ export default {
   text-decoration: none;
 }
 
-.home__nav__links > li:hover > a {
+.home__nav__links > li > a:hover {
   color: rgba(255, 255, 255, 0.5);
 }
 
-.home__nav__links > li.active > a {
+.home__nav__links > li > a.active {
   font-weight: bold;
   color: rgba(255, 255, 255, 1);
 }
