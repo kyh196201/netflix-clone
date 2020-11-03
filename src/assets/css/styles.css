@@ -71,6 +71,7 @@ button {
 
 .movie-container .swiper-slide {
     transition: 250ms all;
+    height: 150px;
 }
 
 .movie-container .swiper-slide:hover {
@@ -88,8 +89,9 @@ button {
 
 /* 이미지 비율 맞추는 부분! */
 .movie .movie__thumbnail {
-    position: relative;
     display: block;
+    position: relative;
+    height: 100%;
 }
 
 .movie .movie__thumbnail > img {
