@@ -82,7 +82,7 @@ export default {
   left: 0;
   width: 100%;
   height: auto;
-  max-height: 80vh;
+  max-height: 750px;
 }
 
 .bilboard__meta {
@@ -95,22 +95,23 @@ export default {
 }
 
 .bilboard__meta__title {
-  margin-bottom: 1rem;
+  margin-bottom: 24px;
   color: #fff;
-  font-size: 9vw;
+  font-size: 120px;
   font-weight: bold;
-  letter-spacing: 1rem;
+  letter-spacing: 20px;
 }
 
 .bilboard__meta__synopsis {
-  margin-bottom: 1rem;
-  font-size: 1.4vw;
+  max-width: 500px;
+  margin-bottom: 16px;
+  font-size: 18px;
   color: #fff;
   line-height: 1.5;
 }
 
 .bilboard__meta__control > button:first-child {
-  margin-right: 1rem;
+  margin-right: 16px;
 }
 
 .meta__btn > svg {

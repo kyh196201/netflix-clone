@@ -152,13 +152,14 @@ export default {
 
 .home__nav > .home__nav__left {
   display: flex;
+  justify-content: flex-start;
   align-items: center;
 }
 
 /* 헤더 로고 */
 .home__nav__logo {
   display: block;
-  width: 120px;
+  width: 140px;
   height: 35px;
   background-image: url("../assets/images/netflix-logo.svg");
   background-repeat: no-repeat;
@@ -174,9 +175,9 @@ export default {
 
 .home__nav__links > li > a {
   display: block;
-  padding: 0.5rem;
+  padding: 8px;
   font-weight: normal;
-  font-size: 0.75rem;
+  font-size: 12px;
   color: rgba(255, 255, 255, 0.7);
   transition: color 0.3s;
   text-decoration: none;
@@ -198,12 +199,12 @@ export default {
 }
 
 .home__nav__right > ul > li > div > a {
-  padding: 0.25rem 0.8rem;
+  padding: 4px 16px;
 }
 
 .nav__right__icons {
   color: #fff;
-  font-size: 1rem;
+  font-size: 16px;
 }
 
 /* 프로필 이미지 */
@@ -225,7 +226,7 @@ export default {
 
 .nav__profile__dropdown-btn {
   display: block;
-  margin-left: 0.75rem;
+  margin-left: 12px;
   color: #fff;
 }
 </style>
