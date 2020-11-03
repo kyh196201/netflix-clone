@@ -30,13 +30,20 @@
       </div>
     </div>
     <!-- 영화 리스트 영역 -->
-    <div style="position : relative; z-index : 10;">영화 리스트 영역 예시</div>
+    <section class="show-container">
+      <Show />
+    </section>
   </section>
 </template>
 
 <script>
+import Show from "@/components/Show.vue";
+
 export default {
-  name: "BrowseHome"
+  name: "BrowseHome",
+  components: {
+    Show
+  }
 };
 </script>
 
