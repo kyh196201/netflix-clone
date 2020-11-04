@@ -71,7 +71,7 @@
             <div class="swiper-button-next"></div>
             <div class="swiper-button-prev"></div>
             <!-- 스크롤 -->
-            <div class="swiper-scrollbar"></div>
+            <!-- <div class="swiper-scrollbar"></div> -->
         </div>
     </div>
 </template>
@@ -98,9 +98,9 @@ const swiperOption = {
         nextEl: ".swiper-button-next",
         prevEl: ".swiper-button-prev",
     },
-    scrollbar: {
-        el: ".swiper-scrollbar",
-    },
+    // scrollbar: {
+    //     el: ".swiper-scrollbar",
+    // },
     speed: SPEED,
 };
 

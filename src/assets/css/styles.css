@@ -108,6 +108,11 @@ button {
 /* swiper navigation */
 .movie-container .swiper-button-next:after,
 .movie-container .swiper-button-prev:after {
-    color: #fff;
+    color: rgba(255, 255, 255, 0.5);
     font-weight: bold;
+}
+
+.movie-container .swiper-button-next:hover:after,
+.movie-container .swiper-button-prev:hover:after {
+    color: rgba(255, 255, 255, 0.8);
 }
