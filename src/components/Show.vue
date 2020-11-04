@@ -3,13 +3,13 @@
         <!-- 타이틀 -->
         <h3 class="show__title">{{ title }}</h3>
         <!-- 스와이퍼 -->
-        <template v-if="movies && movies.length">
+        <template v-if="list && list.length">
             <div class="swiper-container movie-container" ref="movieSwiper">
                 <!-- 스와이퍼 래퍼 -->
                 <div class="swiper-wrapper movie-wrapper">
                     <div
                         class="swiper-slide movie-slide"
-                        v-for="movie in movies"
+                        v-for="movie in list"
                         :key="movie.id"
                     >
                         <div class="movie">
@@ -68,17 +68,13 @@ export default {
             movieSwiper: null,
             swiperOption: swiperOption,
             imgPath: IMG_PATH,
-            movies: [],
         };
-    },
-    created() {
-        this.movies = this.list;
     },
     mounted() {
         const target = this.$refs.movieSwiper;
         const options = this.swiperOption;
 
-        if (this.movies && this.movies.length) {
+        if (this.list && this.list.length) {
             this.movieSwiper = new Swiper(target, options);
         }
     },
