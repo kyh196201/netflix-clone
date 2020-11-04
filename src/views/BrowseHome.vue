@@ -32,19 +32,84 @@
             </div>
         </div>
         <!-- 영화 리스트 영역 -->
-        <section class="show-container">
-            <Show />
-        </section>
+        <Show :title="listTitle.topRated" :list="topRated" />
+        <Show :title="listTitle.upComing" :list="upComing" />
+        <Show :title="listTitle.playing" :list="playing" />
     </section>
 </template>
 
 <script>
 import Show from "@/components/Show.vue";
+import * as api from "../api";
+import { TITLE } from "../utils/constant.js";
 
 export default {
     name: "BrowseHome",
     components: {
         Show,
+    },
+    data() {
+        return {
+            topRated: [],
+            upComing: [],
+            playing: [],
+            listTitle: TITLE,
+        };
+    },
+    created() {
+        this.fetchData();
+    },
+    methods: {
+        // 멀티 요청
+        async fetchData() {
+            try {
+                const [topRated, upComing, playing] = await api.requestAll([
+                    this.fetchTopRating(),
+                    this.fetchUpComing(),
+                    this.fetchPlaying(),
+                ]);
+                this.topRated = topRated && topRated.results;
+                this.upComing = upComing && upComing.results;
+                this.playing = playing && playing.results;
+            } catch (err) {
+                console.error(err);
+            } finally {
+                console.log("finally");
+            }
+        },
+        // 높은 평점 데이터
+        async fetchTopRating() {
+            try {
+                const res = await api.movies.topRated();
+                return res;
+            } catch (err) {
+                console.error(err);
+            } finally {
+                console.log("finally");
+            }
+        },
+        // 개봉 예정 데이터
+        async fetchUpComing() {
+            try {
+                const res = await api.movies.upComing();
+                return res;
+            } catch (err) {
+                console.error(err);
+            } finally {
+                console.log("finally");
+            }
+        },
+        // 상영중 데이터
+        async fetchPlaying() {
+            try {
+                const res = await api.movies.playing();
+                return res;
+            } catch (err) {
+                console.error(err);
+            } finally {
+                console.log("finally");
+            }
+        },
     },
 };
 </script>

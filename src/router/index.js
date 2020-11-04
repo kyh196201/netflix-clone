@@ -17,7 +17,6 @@ const routes = [
     },
     {
         path: "/browse",
-        name: "Browse",
         component: Browse,
         children: [
             {
