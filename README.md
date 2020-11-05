@@ -37,9 +37,13 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 
 6. 소스 리팩토링!!
 
-7. Math.random()으로 movie id를 받아오고, BrowseHome 백그라운드 영화 데이터를 가져오자
+7. Math.random()으로 movie id값 가져오고, browse의 백그라운드 영화 데이터 가져오기
 
-=> state.backgroudMovie..?
+8. 상세정보 컴포넌트 => 모달
+
+9. 검색 기능
+
+10. ....
 
 ---
 
