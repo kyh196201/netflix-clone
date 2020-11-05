@@ -57,16 +57,16 @@ export default {
         };
     },
     created() {
-        this.fetchData();
+        this.fetchAll();
     },
     methods: {
         // 멀티 요청
-        async fetchData() {
+        async fetchAll() {
             try {
                 const [topRated, upComing, playing] = await api.requestAll([
-                    this.fetchTopRating(),
-                    this.fetchUpComing(),
-                    this.fetchPlaying(),
+                    this.fetchData("topRated"),
+                    this.fetchData("upComing"),
+                    this.fetchData("playing"),
                 ]);
                 this.topRated = topRated && topRated.results;
                 this.upComing = upComing && upComing.results;
@@ -79,32 +79,10 @@ export default {
                 console.log("finally");
             }
         },
-        // 높은 평점 데이터
-        async fetchTopRating() {
+        // api call
+        async fetchData(type) {
             try {
-                const res = await api.movies.topRated();
-                return res;
-            } catch (err) {
-                console.error(err);
-            } finally {
-                console.log("finally");
-            }
-        },
-        // 개봉 예정 데이터
-        async fetchUpComing() {
-            try {
-                const res = await api.movies.upComing();
-                return res;
-            } catch (err) {
-                console.error(err);
-            } finally {
-                console.log("finally");
-            }
-        },
-        // 상영중 데이터
-        async fetchPlaying() {
-            try {
-                const res = await api.movies.playing();
+                const res = await api.movies[type].call();
                 return res;
             } catch (err) {
                 console.error(err);
