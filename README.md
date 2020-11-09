@@ -106,3 +106,15 @@ vuex에 user모듈을 만들고, user 모듈안에 myList 프로퍼티를 만든
 vuex에 selectedMovie : 라는 프로퍼티를 만들자 이 프로퍼티에 modal에 띄울 데이터를 담는다.
 
 modal이 created될때 전달받은 영화 id를 통해 selectedMovie를 set하자.
+
+#### 11/10
+
+1. SearchInput 컴포넌트 생성
+
+2. SearchResult 작성중
+
+#### 11/11
+
+1. SearchResult 완성
+
+2. SearchInput 입력시, route의 쿼리가 같이 변하는 부분 생각해보기

@@ -1,7 +1,7 @@
 <template>
-    <section class="searchResult">
-        This is Search Result
-    </section>
+    <div class="searchResult">
+        Search Result
+    </div>
 </template>
 
 <script>
@@ -12,6 +12,6 @@ export default {
 
 <style>
 .searchResult {
-    padding: 30px;
+    width: 100%;
 }
 </style>

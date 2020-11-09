@@ -6,7 +6,7 @@ import BrowseHome from "../views/BrowseHome.vue";
 import Latest from "../views/Latest.vue";
 import MyList from "../views/MyList.vue";
 import Genre from "../views/Genre.vue";
-import SearchResult from "../views/SearchResult.vue";
+import Search from "../views/Search.vue";
 
 Vue.use(VueRouter);
 
@@ -18,8 +18,8 @@ const routes = [
     },
     {
         path: "/search",
-        name: "SearchResult",
-        component: SearchResult,
+        name: "Search",
+        component: Search,
     },
     {
         path: "/browse",

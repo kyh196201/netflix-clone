@@ -45,7 +45,8 @@ export default {
                 (_key === KEYS.backspace || _key === KEYS.delete) &&
                 this.isEmptyInput
             ) {
-                this.onClose();
+                this.inputTitle = "";
+                this.goBrowse();
             }
 
             if (_key === KEYS.enter && !this.isEmptyInput) {
@@ -62,10 +63,13 @@ export default {
             this.inputTitle = "";
 
             if (!this.isBrowse) {
-                this.$router.push({
-                    path: "/browse",
-                });
+                this.goBrowse();
             }
+        },
+        goBrowse() {
+            this.$router.push({
+                path: "/browse",
+            });
         },
     },
 };
