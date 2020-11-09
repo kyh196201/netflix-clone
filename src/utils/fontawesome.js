@@ -10,10 +10,19 @@ import {
     faCaretDown,
     faPlay,
     faInfoCircle,
+    faTimes,
 } from "@fortawesome/free-solid-svg-icons";
 import { faTrashAlt } from "@fortawesome/free-regular-svg-icons";
 
-library.add(faTrashAlt, faGift, faBell, faCaretDown, faPlay, faInfoCircle);
+library.add(
+    faTrashAlt,
+    faGift,
+    faBell,
+    faCaretDown,
+    faPlay,
+    faInfoCircle,
+    faTimes
+);
 library.add(faSearch);
 
 Vue.component("font-awesome-icon", FontAwesomeIcon);

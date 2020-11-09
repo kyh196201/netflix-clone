@@ -6,6 +6,7 @@ import BrowseHome from "../views/BrowseHome.vue";
 import Latest from "../views/Latest.vue";
 import MyList from "../views/MyList.vue";
 import Genre from "../views/Genre.vue";
+import SearchResult from "../views/SearchResult.vue";
 
 Vue.use(VueRouter);
 
@@ -14,6 +15,11 @@ const routes = [
         path: "/",
         name: "Home",
         component: Home,
+    },
+    {
+        path: "/search",
+        name: "SearchResult",
+        component: SearchResult,
     },
     {
         path: "/browse",

@@ -22,8 +22,16 @@
             <ul>
                 <!-- 검색 버튼 -->
                 <li>
-                    <div>
-                        <a href="#" class="nav__right__icons">
+                    <search-input
+                        v-if="isSearching"
+                        @close="isSearching = false"
+                    />
+                    <div v-else>
+                        <a
+                            href="#"
+                            class="nav__right__icons"
+                            @click.prevent="isSearching = true"
+                        >
                             <font-awesome-icon icon="search" />
                         </a>
                     </div>
@@ -70,6 +78,7 @@
 <script>
 import logoImage from "../assets/images/logo2.png";
 import avtarImage from "../assets/images/avatar.jpg";
+import SearchInput from "./SearchInput.vue";
 import { mapState } from "vuex";
 
 const links = [
@@ -97,11 +106,15 @@ const links = [
 
 export default {
     name: "NavBar",
+    components: {
+        "search-input": SearchInput,
+    },
     data() {
         return {
             logoImage: logoImage,
             avtarImage: avtarImage,
             links: links,
+            isSearching: false,
         };
     },
     computed: {
@@ -119,7 +132,7 @@ export default {
 .home__nav {
     display: flex;
     width: 100%;
-    padding: 0.5rem 2rem 0.5rem 0;
+    padding: 10px 40px 10px 10px;
     align-items: center;
     justify-content: space-between;
     background-color: transparent;
@@ -197,7 +210,7 @@ export default {
     align-items: center;
 }
 
-.home__nav__right > ul > li > div > a {
+.nav__right__icons {
     padding: 4px 16px;
 }
 

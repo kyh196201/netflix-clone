@@ -8,6 +8,8 @@
 
 body {
     background-color: #141414;
+    font-family: "Noto Sans KR", sans-serif;
+    letter-spacing: 0.5px;
 }
 
 #app {
@@ -15,6 +17,7 @@ body {
     width: 100%;
     min-width: 1280px;
     max-width: 1920px;
+    min-height: 100vh;
     margin: 0 auto;
 }
 
@@ -115,4 +118,13 @@ button {
 .movie-container .swiper-button-next:hover:after,
 .movie-container .swiper-button-prev:hover:after {
     color: rgba(255, 255, 255, 0.8);
+}
+
+/* form-control 2020.11.09 */
+.form-control {
+    height: 34px;
+    line-height: 34px;
+    background-origin: 1px solid gray;
+    border-radius: 5px;
+    outline: none;
 }

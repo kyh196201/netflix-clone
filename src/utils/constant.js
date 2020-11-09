@@ -12,3 +12,10 @@ export const IMG_PATH = "https://image.tmdb.org/t/p/w185";
 export const SLIDES_PER_VIEW = 5;
 export const SPACE_BETWEEN = 5;
 export const SPEED = 500;
+
+export const KEYS = {
+    backspace: 8,
+    enter: 13,
+    esc: 27,
+    delete: 46,
+};

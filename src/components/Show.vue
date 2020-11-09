@@ -81,8 +81,6 @@ export default {
         const target = this.$refs.movieSwiper;
         const options = this.swiperOption;
 
-        console.log(this.list);
-
         if (this.list && this.list.length) {
             this.movieSwiper = new Swiper(target, options);
         }

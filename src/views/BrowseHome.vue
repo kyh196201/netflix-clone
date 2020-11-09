@@ -71,8 +71,6 @@ export default {
                 this.topRated = topRated && topRated.results;
                 this.upComing = upComing && upComing.results;
                 this.playing = playing && playing.results;
-
-                console.log(this.topRated, this.upComing, this.playing);
             } catch (err) {
                 console.error(err);
             } finally {
