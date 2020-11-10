@@ -1,4 +1,8 @@
 import axios from "axios";
+import store from "../store/index.js";
+
+//FIXME 성인인지 체크 => 추후에 Profile의 나이 또는 키듸 여부 확인을 통해 변경 예정
+const isAdult = store.state.isAdult;
 
 const API_KEY = "5c641d77de2e4b7554d8ebbf14934986";
 const END_POINT = "https://api.themoviedb.org/3";
@@ -14,6 +18,7 @@ movieAxios.defaults.timeout = 2500;
 movieAxios.defaults.params = {};
 movieAxios.defaults.params["api_key"] = API_KEY;
 movieAxios.defaults.params["language"] = LANG;
+movieAxios.defaults.params["include_adult"] = isAdult;
 
 // validation
 // console.log(axios.defaults.validateStatus);
@@ -56,6 +61,17 @@ export const movies = {
     async upComing(page) {
         page = page ? page : 1;
         const url = `/movie/upcoming?page=${page}&region=KR`;
+        return await request.get(url);
+    },
+};
+
+export const search = {
+    // 멀티 검색
+    async multi({ query, page }) {},
+    // 영화 검색
+    async movie({ query, page }) {
+        page = page ? page : 1;
+        const url = `/search/movie?query=${query}&page=${page}`;
         return await request.get(url);
     },
 };

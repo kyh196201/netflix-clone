@@ -115,6 +115,12 @@ modal이 created될때 전달받은 영화 id를 통해 selectedMovie를 set하�
 
 #### 11/11
 
-1. SearchResult 완성
+1. SearchResult 완성 => 데이터 연동 성공
 
-2. SearchInput 입력시, route의 쿼리가 같이 변하는 부분 생각해보기
+2. SearchInput 입력시, route의 쿼리가 같이 변하는 부분 생각해보기 => X
+
+#### 11/12
+
+1. SearchResult => 렌더링 하기
+
+2. 무한 스크롤?!

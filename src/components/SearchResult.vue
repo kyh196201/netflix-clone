@@ -1,5 +1,10 @@
 <template>
     <div class="searchResult">
+        <template v-if="list">
+            <pre>
+                {{ list }}
+            </pre>
+        </template>
         <ul class="movie-list">
             <li class="movie-list__item">
                 <div class="movie">
@@ -116,8 +121,15 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
+
 export default {
     name: "SearchResult",
+    computed: {
+        ...mapState({
+            list: (state) => state.searchResult,
+        }),
+    },
 };
 </script>
 

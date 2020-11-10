@@ -33,6 +33,8 @@ export default {
         if (!this.keyword) {
             this.$router.push("/browse");
         }
+
+        this.SET_IS_SEARCHING(true);
     },
     methods: {
         ...mapMutations(["SET_IS_SEARCHING"]),
