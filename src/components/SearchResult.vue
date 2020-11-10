@@ -1,6 +1,117 @@
 <template>
     <div class="searchResult">
-        Search Result
+        <ul class="movie-list">
+            <li class="movie-list__item">
+                <div class="movie">
+                    <figure class="movie__thumbnail">
+                        <img
+                            src="https://image.tmdb.org/t/p/w185/cOwVs8eYA4G9ZQs7hIRSoiZr46Q.jpg"
+                            alt="thumbnail__img"
+                        />
+                    </figure>
+                </div>
+            </li>
+            <li class="movie-list__item">
+                <div class="movie">
+                    <figure class="movie__thumbnail">
+                        <img
+                            src="https://image.tmdb.org/t/p/w185/cOwVs8eYA4G9ZQs7hIRSoiZr46Q.jpg"
+                            alt="thumbnail__img"
+                        />
+                    </figure>
+                </div>
+            </li>
+            <li class="movie-list__item">
+                <div class="movie">
+                    <figure class="movie__thumbnail">
+                        <img
+                            src="https://image.tmdb.org/t/p/w185/cOwVs8eYA4G9ZQs7hIRSoiZr46Q.jpg"
+                            alt="thumbnail__img"
+                        />
+                    </figure>
+                </div>
+            </li>
+            <li class="movie-list__item">
+                <div class="movie">
+                    <figure class="movie__thumbnail">
+                        <img
+                            src="https://image.tmdb.org/t/p/w185/cOwVs8eYA4G9ZQs7hIRSoiZr46Q.jpg"
+                            alt="thumbnail__img"
+                        />
+                    </figure>
+                </div>
+            </li>
+            <li class="movie-list__item">
+                <div class="movie">
+                    <figure class="movie__thumbnail">
+                        <img
+                            src="https://image.tmdb.org/t/p/w185/cOwVs8eYA4G9ZQs7hIRSoiZr46Q.jpg"
+                            alt="thumbnail__img"
+                        />
+                    </figure>
+                </div>
+            </li>
+            <li class="movie-list__item">
+                <div class="movie">
+                    <figure class="movie__thumbnail">
+                        <img
+                            src="https://image.tmdb.org/t/p/w185/cOwVs8eYA4G9ZQs7hIRSoiZr46Q.jpg"
+                            alt="thumbnail__img"
+                        />
+                    </figure>
+                </div>
+            </li>
+            <li class="movie-list__item">
+                <div class="movie">
+                    <figure class="movie__thumbnail">
+                        <img
+                            src="https://image.tmdb.org/t/p/w185/cOwVs8eYA4G9ZQs7hIRSoiZr46Q.jpg"
+                            alt="thumbnail__img"
+                        />
+                    </figure>
+                </div>
+            </li>
+            <li class="movie-list__item">
+                <div class="movie">
+                    <figure class="movie__thumbnail">
+                        <img
+                            src="https://image.tmdb.org/t/p/w185/cOwVs8eYA4G9ZQs7hIRSoiZr46Q.jpg"
+                            alt="thumbnail__img"
+                        />
+                    </figure>
+                </div>
+            </li>
+            <li class="movie-list__item">
+                <div class="movie">
+                    <figure class="movie__thumbnail">
+                        <img
+                            src="https://image.tmdb.org/t/p/w185/cOwVs8eYA4G9ZQs7hIRSoiZr46Q.jpg"
+                            alt="thumbnail__img"
+                        />
+                    </figure>
+                </div>
+            </li>
+            <li class="movie-list__item">
+                <div class="movie">
+                    <figure class="movie__thumbnail">
+                        <img
+                            src="https://image.tmdb.org/t/p/w185/cOwVs8eYA4G9ZQs7hIRSoiZr46Q.jpg"
+                            alt="thumbnail__img"
+                        />
+                    </figure>
+                </div>
+            </li>
+            <li class="movie-list__item">
+                <div class="movie">
+                    <figure class="movie__thumbnail">
+                        <img
+                            src="https://image.tmdb.org/t/p/w185/cOwVs8eYA4G9ZQs7hIRSoiZr46Q.jpg"
+                            alt="thumbnail__img"
+                        />
+                    </figure>
+                </div>
+            </li>
+        </ul>
     </div>
 </template>
 
@@ -13,5 +124,23 @@ export default {
 <style>
 .searchResult {
     width: 100%;
+}
+
+.movie-list {
+    display: flex;
+    flex: 1 1;
+    flex-wrap: wrap;
+}
+
+.movie-list__item {
+    /* width: 20%; */
+    height: 150px;
+    /* margin: 0 10px 50px 10px; */
+    margin-bottom: 50px;
+    transition: 250ms all;
+}
+
+.movie-list__item:hover {
+    transform: scale(1.1);
 }
 </style>

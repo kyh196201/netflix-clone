@@ -30,7 +30,7 @@
                         <a
                             href="#"
                             class="nav__right__icons"
-                            @click.prevent="isSearching = true"
+                            @click.prevent="openSearch"
                         >
                             <font-awesome-icon icon="search" />
                         </a>
@@ -114,15 +114,20 @@ export default {
             logoImage: logoImage,
             avtarImage: avtarImage,
             links: links,
-            isSearching: false,
         };
     },
     computed: {
-        ...mapState(["isProfile"]),
+        ...mapState({
+            isProfile: (state) => state.isProfile,
+            isSearching: (state) => state.isSearching,
+        }),
     },
     methods: {
         isActive(path) {
             return path === this.$route.path;
+        },
+        openSearch() {
+            this.$store.commit("SET_IS_SEARCHING", true);
         },
     },
 };

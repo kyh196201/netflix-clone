@@ -91,13 +91,13 @@ button {
 }
 
 /* 이미지 비율 맞추는 부분! */
-.movie .movie__thumbnail {
+.movie__thumbnail {
     display: block;
     position: relative;
     height: 100%;
 }
 
-.movie .movie__thumbnail > img {
+.movie__thumbnail > img {
     position: absolute;
     left: 0;
     top: 0;
@@ -127,4 +127,46 @@ button {
     background-origin: 1px solid gray;
     border-radius: 5px;
     outline: none;
+}
+
+/* @media screen and (min-width: 576px) {
+    .movie-list__item {
+        width: 100%;
+    }
+}
+
+@media screen and (min-width: 768px) {
+    .movie-list__item {
+        width: 50%;
+    }
+}
+
+@media screen and (min-width: 992px) {
+    .movie-list__item {
+        width: 33.33333%;
+    }
+} */
+
+/* Media querys */
+
+@media screen and (max-width: 1599px) {
+    .movie-list__item {
+        width: calc(25% - 10px);
+        margin-right: 10px;
+    }
+
+    .movie-list__item:nth-child(4n) {
+        margin-right: 0px;
+    }
+}
+
+@media screen and (min-width: 1600px) {
+    .movie-list__item {
+        width: calc(20% - 10px);
+        margin-right: 10px;
+    }
+
+    .movie-list__item:nth-child(5n) {
+        margin-right: 0px;
+    }
 }

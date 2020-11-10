@@ -6,18 +6,26 @@
         <input
             type="text"
             class="form-control searchInput__input"
-            v-model="inputTitle"
+            placeholder="사람, 제목, 장르"
+            :value="inputTitle"
             @keyup="onSearch"
+            @blur="onBlur"
             ref="inputTitle"
         />
-        <a href="#" class="searchInput__closeBtn" @click.prevent="onClose">
-            <font-awesome-icon icon="times" />
+        <a
+            href="#"
+            class="searchInput__closeBtn"
+            @click.prevent="onClose"
+            v-if="!isEmptyInput"
+        >
+            <font-awesome-icon icon="times" class="closeBtn__svg" />
         </a>
     </div>
 </template>
 
 <script>
 import { KEYS } from "../utils/constant.js";
+import { mapMutations } from "vuex";
 
 export default {
     name: "SearchInput",
@@ -27,18 +35,35 @@ export default {
         };
     },
     computed: {
-        isBrowse() {
-            return this.$route.path === "/browse";
+        isSearch() {
+            return this.$route.path === "/search";
         },
         isEmptyInput() {
             return !this.inputTitle.trim().length || !this.inputTitle;
         },
     },
+    watch: {
+        $route: {
+            // FIXME
+            handler: function(value) {
+                if (!this.isEmptyInput && !this.isSearch) {
+                    this.SET_IS_SEARCHING(false);
+                    this.inputTitle = "";
+                }
+            },
+        },
+    },
     mounted() {
         this.$refs.inputTitle.focus();
+        setTimeout(() => {
+            this.setClickOutSide();
+        }, 250);
     },
     methods: {
+        ...mapMutations(["SET_IS_SEARCHING"]),
         onSearch(event) {
+            this.inputTitle = event.target.value;
+
             const _key = event.keyCode;
 
             if (
@@ -46,30 +71,51 @@ export default {
                 this.isEmptyInput
             ) {
                 this.inputTitle = "";
-                this.goBrowse();
+
+                this.goPrevious();
             }
 
             if (_key === KEYS.enter && !this.isEmptyInput) {
                 this.$router.push({
-                    path: "search",
+                    path: "/search",
                     query: {
                         q: encodeURIComponent(this.inputTitle.trim()),
                     },
                 });
             }
         },
-        onClose() {
-            this.$emit("close");
-            this.inputTitle = "";
-
-            if (!this.isBrowse) {
-                this.goBrowse();
+        onBlur() {
+            if (!this.isEmptyInput) {
+                return;
             }
+
+            this.SET_IS_SEARCHING(false);
+            // window.removeEventListener("click", this.onClickOutSide, false);
+            this.inputTitle = "";
         },
-        goBrowse() {
-            this.$router.push({
-                path: "/browse",
-            });
+        onClose() {
+            this.inputTitle = "";
+            this.goPrevious();
+        },
+        goPrevious() {
+            if (!this.isSearch) return;
+            this.$router.go(-1);
+        },
+        setClickOutSide() {
+            // window.addEventListener("click", this.onClickOutSide, false);
+        },
+        onClickOutSide(event) {
+            // FIXME ".searchInput__closeBtn"이게 this.$el에 포함되어 있지 않다고 나옴..
+            const $target = event.target;
+            const $el = document.querySelector(".searchInput");
+
+            const contained = $el.contains($target);
+
+            console.log($el.contains($target));
+
+            if (contained || !this.isEmptyInput) return;
+
+            this.onBlur();
         },
     },
 };
@@ -110,5 +156,9 @@ export default {
     font-size: 22px;
     top: 6px;
     right: 10px;
+}
+
+.closeBtn__svg {
+    pointer-events: none;
 }
 </style>

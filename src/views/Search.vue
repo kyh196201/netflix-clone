@@ -1,6 +1,5 @@
 <template>
     <section class="search">
-        This is Search & keyword => {{ keyword }}
         <search-history />
         <search-result />
     </section>
@@ -9,6 +8,7 @@
 <script>
 import SearchResult from "../components/SearchResult.vue";
 import SearchHistory from "../components/SearchHistory.vue";
+import { mapState, mapMutations } from "vuex";
 
 export default {
     name: "search",
@@ -21,9 +21,21 @@ export default {
             keyword: "",
         };
     },
+    computed: {
+        ...mapState({
+            isSearching: (state) => state.isSearching,
+        }),
+    },
     created() {
         const q = this.$route.query.q;
-        this.keyword = decodeURIComponent(q);
+        this.keyword = q ? decodeURIComponent(q) : null;
+
+        if (!this.keyword) {
+            this.$router.push("/browse");
+        }
+    },
+    methods: {
+        ...mapMutations(["SET_IS_SEARCHING"]),
     },
 };
 </script>
@@ -31,5 +43,6 @@ export default {
 <style>
 .search {
     padding: 150px 30px 30px;
+    min-height: 100vh;
 }
 </style>
