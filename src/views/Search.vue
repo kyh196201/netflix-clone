@@ -16,20 +16,13 @@ export default {
         "search-result": SearchResult,
         "search-history": SearchHistory,
     },
-    data() {
-        return {
-            keyword: "",
-        };
-    },
     computed: {
         ...mapState({
             isSearching: (state) => state.isSearching,
+            keyword: (state) => state.searchKeyword,
         }),
     },
     created() {
-        const q = this.$route.query.q;
-        this.keyword = q ? decodeURIComponent(q) : null;
-
         if (!this.keyword) {
             this.$router.push("/browse");
         }
@@ -44,7 +37,7 @@ export default {
 
 <style>
 .search {
-    padding: 150px 30px 30px;
+    padding: 130px 30px 30px;
     min-height: 100vh;
 }
 </style>

@@ -20,9 +20,7 @@
                 </li>
             </ul>
         </template>
-        <div v-else>
-            no data.
-        </div>
+        <no-result v-else :keyword="inputKeyword" />
     </div>
 </template>
 
@@ -30,18 +28,24 @@
 import { mapState } from "vuex";
 import { IMG_PATH } from "../utils/constant.js";
 import defaultImage from "../assets/images/default_image.png";
+import NoResult from "./NoResult.vue";
 
 export default {
     name: "SearchResult",
+    components: {
+        "no-result": NoResult,
+    },
     data() {
         return {
             imgPath: IMG_PATH,
             defaultImage: defaultImage,
+            inputKeyword: "",
         };
     },
     computed: {
         ...mapState({
             list: (state) => state.searchResult,
+            keyword: (state) => state.searchKeyword,
         }),
         page() {
             return this.list.page;
@@ -55,6 +59,10 @@ export default {
         isMoreData() {
             return this.totalPage > this.page;
         },
+    },
+    created() {
+        // FIXME this.keyword값은 searchInput의 input태그와 양방향 바인딩되어있으므로, input의 값에 따라 변하지 않도록 새로운 데이터를 추가
+        this.inputKeyword = this.keyword;
     },
     methods: {
         getPoster(poster) {

@@ -10,6 +10,7 @@ body {
     background-color: #141414;
     font-family: "Noto Sans KR", sans-serif;
     letter-spacing: 0.5px;
+    line-height: 1.2;
 }
 
 #app {

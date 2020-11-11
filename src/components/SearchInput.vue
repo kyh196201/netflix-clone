@@ -25,17 +25,27 @@
 
 <script>
 import { KEYS } from "../utils/constant.js";
-import { mapMutations, mapActions } from "vuex";
+import { mapMutations, mapActions, mapState } from "vuex";
 
 export default {
     name: "SearchInput",
     data() {
         return {
-            inputTitle: "",
             page: 1,
         };
     },
     computed: {
+        ...mapState({
+            keyword: (state) => state.searchKeyword,
+        }),
+        inputTitle: {
+            get() {
+                return this.keyword;
+            },
+            set(value) {
+                this.SET_SEARCH_KEYWORD(value);
+            },
+        },
         isSearch() {
             return this.$route.path === "/search";
         },
@@ -64,7 +74,7 @@ export default {
         // }, 250);
     },
     methods: {
-        ...mapMutations(["SET_IS_SEARCHING"]),
+        ...mapMutations(["SET_IS_SEARCHING", "SET_SEARCH_KEYWORD"]),
         ...mapActions(["SEARCH_MOVIE"]),
         async onKeyup(event) {
             this.inputTitle = event.target.value;
@@ -158,6 +168,7 @@ export default {
     top: 50%;
     left: 10px;
     transform: translateY(-50%);
+    line-height: 1;
 }
 
 .searchInput__searchBtn svg {
@@ -179,6 +190,7 @@ export default {
     font-size: 22px;
     top: 6px;
     right: 10px;
+    line-height: 1;
 }
 
 .closeBtn__svg {
