@@ -1,134 +1,68 @@
 <template>
     <div class="searchResult">
-        <template v-if="list">
-            <pre>
-                {{ list }}
-            </pre>
+        <template v-if="movieList && movieList.length">
+            <ul class="movie-list">
+                <li
+                    class="movie-list__item"
+                    v-for="movie in movieList"
+                    :key="movie.id"
+                    :data-movie-id="movie.id"
+                >
+                    <div class="movie">
+                        <figure class="movie__thumbnail">
+                            <img
+                                :src="getPoster(movie['poster_path'])"
+                                :alt="movie.title"
+                                @error="onError"
+                            />
+                        </figure>
+                    </div>
+                </li>
+            </ul>
         </template>
-        <ul class="movie-list">
-            <li class="movie-list__item">
-                <div class="movie">
-                    <figure class="movie__thumbnail">
-                        <img
-                            src="https://image.tmdb.org/t/p/w185/cOwVs8eYA4G9ZQs7hIRSoiZr46Q.jpg"
-                            alt="thumbnail__img"
-                        />
-                    </figure>
-                </div>
-            </li>
-            <li class="movie-list__item">
-                <div class="movie">
-                    <figure class="movie__thumbnail">
-                        <img
-                            src="https://image.tmdb.org/t/p/w185/cOwVs8eYA4G9ZQs7hIRSoiZr46Q.jpg"
-                            alt="thumbnail__img"
-                        />
-                    </figure>
-                </div>
-            </li>
-            <li class="movie-list__item">
-                <div class="movie">
-                    <figure class="movie__thumbnail">
-                        <img
-                            src="https://image.tmdb.org/t/p/w185/cOwVs8eYA4G9ZQs7hIRSoiZr46Q.jpg"
-                            alt="thumbnail__img"
-                        />
-                    </figure>
-                </div>
-            </li>
-            <li class="movie-list__item">
-                <div class="movie">
-                    <figure class="movie__thumbnail">
-                        <img
-                            src="https://image.tmdb.org/t/p/w185/cOwVs8eYA4G9ZQs7hIRSoiZr46Q.jpg"
-                            alt="thumbnail__img"
-                        />
-                    </figure>
-                </div>
-            </li>
-            <li class="movie-list__item">
-                <div class="movie">
-                    <figure class="movie__thumbnail">
-                        <img
-                            src="https://image.tmdb.org/t/p/w185/cOwVs8eYA4G9ZQs7hIRSoiZr46Q.jpg"
-                            alt="thumbnail__img"
-                        />
-                    </figure>
-                </div>
-            </li>
-            <li class="movie-list__item">
-                <div class="movie">
-                    <figure class="movie__thumbnail">
-                        <img
-                            src="https://image.tmdb.org/t/p/w185/cOwVs8eYA4G9ZQs7hIRSoiZr46Q.jpg"
-                            alt="thumbnail__img"
-                        />
-                    </figure>
-                </div>
-            </li>
-            <li class="movie-list__item">
-                <div class="movie">
-                    <figure class="movie__thumbnail">
-                        <img
-                            src="https://image.tmdb.org/t/p/w185/cOwVs8eYA4G9ZQs7hIRSoiZr46Q.jpg"
-                            alt="thumbnail__img"
-                        />
-                    </figure>
-                </div>
-            </li>
-            <li class="movie-list__item">
-                <div class="movie">
-                    <figure class="movie__thumbnail">
-                        <img
-                            src="https://image.tmdb.org/t/p/w185/cOwVs8eYA4G9ZQs7hIRSoiZr46Q.jpg"
-                            alt="thumbnail__img"
-                        />
-                    </figure>
-                </div>
-            </li>
-            <li class="movie-list__item">
-                <div class="movie">
-                    <figure class="movie__thumbnail">
-                        <img
-                            src="https://image.tmdb.org/t/p/w185/cOwVs8eYA4G9ZQs7hIRSoiZr46Q.jpg"
-                            alt="thumbnail__img"
-                        />
-                    </figure>
-                </div>
-            </li>
-            <li class="movie-list__item">
-                <div class="movie">
-                    <figure class="movie__thumbnail">
-                        <img
-                            src="https://image.tmdb.org/t/p/w185/cOwVs8eYA4G9ZQs7hIRSoiZr46Q.jpg"
-                            alt="thumbnail__img"
-                        />
-                    </figure>
-                </div>
-            </li>
-            <li class="movie-list__item">
-                <div class="movie">
-                    <figure class="movie__thumbnail">
-                        <img
-                            src="https://image.tmdb.org/t/p/w185/cOwVs8eYA4G9ZQs7hIRSoiZr46Q.jpg"
-                            alt="thumbnail__img"
-                        />
-                    </figure>
-                </div>
-            </li>
-        </ul>
+        <div v-else>
+            no data.
+        </div>
     </div>
 </template>
 
 <script>
 import { mapState } from "vuex";
+import { IMG_PATH } from "../utils/constant.js";
+import defaultImage from "../assets/images/default_image.png";
 
 export default {
     name: "SearchResult",
+    data() {
+        return {
+            imgPath: IMG_PATH,
+            defaultImage: defaultImage,
+        };
+    },
     computed: {
         ...mapState({
             list: (state) => state.searchResult,
         }),
+        page() {
+            return this.list.page;
+        },
+        totalPage() {
+            return this.list["total_pages"];
+        },
+        movieList() {
+            return this.list.results;
+        },
+        isMoreData() {
+            return this.totalPage > this.page;
+        },
+    },
+    methods: {
+        getPoster(poster) {
+            return this.imgPath + poster;
+        },
+        onError(event) {
+            event.target.src = this.defaultImage;
+        },
     },
 };
 </script>

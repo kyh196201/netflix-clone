@@ -87,6 +87,7 @@ export default {
                         page: this.page,
                     });
 
+                    // FIXME path는 유지한 채 쿼리스트링 만 변경하기
                     this.$router.push({
                         path: "/search",
                         query: {

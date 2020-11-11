@@ -121,6 +121,6 @@ modal이 created될때 전달받은 영화 id를 통해 selectedMovie를 set하�
 
 #### 11/12
 
-1. SearchResult => 렌더링 하기
+1. SearchResult => 렌더링 하기 [O]
 
 2. 무한 스크롤?!
