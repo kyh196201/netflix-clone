@@ -48,14 +48,16 @@ export default {
     watch: {
         $route: {
             handler(value) {
-                const _query = decodeURIComponent(value.query.q);
+                console.log(value);
 
-                if (!_query) {
+                let queryString = value.query.q;
+
+                if (!queryString) {
                     this.$router.push("/browse");
                 }
 
                 this.SET_IS_SEARCHING(true);
-                this.keyword = _query;
+                this.keyword = decodeURIComponent(queryString);
                 this.fetchData();
             },
             immediate: true,
