@@ -7,16 +7,17 @@
             type="text"
             class="form-control searchInput__input"
             placeholder="사람, 제목, 장르"
-            :value="inputTitle"
+            :value="keyword"
+            @input="keyword = $event.target.value"
             @keyup="onKeyup"
             @blur="onBlur"
-            ref="inputTitle"
+            ref="keyword"
         />
         <a
             href="#"
             class="searchInput__closeBtn"
             @click.prevent="onClose"
-            v-if="!isEmptyInput"
+            v-if="isKeyword"
         >
             <font-awesome-icon icon="times" class="closeBtn__svg" />
         </a>
@@ -30,125 +31,110 @@ import { mapMutations, mapActions, mapState } from "vuex";
 export default {
     name: "SearchInput",
     data() {
-        return {
-            page: 1,
-        };
+        return {};
     },
     computed: {
         ...mapState({
-            keyword: (state) => state.searchKeyword,
+            searchKeyword: (state) => state.searchKeyword,
         }),
-        inputTitle: {
+        isSearchPage() {
+            return this.$route.path === "/search";
+        },
+        isKeyword() {
+            return !!this.keyword.trim().length;
+        },
+        keyword: {
             get() {
-                return this.keyword;
+                return this.searchKeyword;
             },
             set(value) {
                 this.SET_SEARCH_KEYWORD(value);
             },
         },
-        isSearch() {
-            return this.$route.path === "/search";
-        },
-        isEmptyInput() {
-            return !this.inputTitle.trim().length || !this.inputTitle;
-        },
-    },
-    watch: {
-        $route: {
-            // FIXME
-            handler: function(value) {
-                if (!this.isEmptyInput && !this.isSearch) {
-                    this.SET_IS_SEARCHING(false);
-                    this.inputTitle = "";
-                }
-            },
-        },
-    },
-    created() {
-        this.setTitle();
     },
     mounted() {
-        this.$refs.inputTitle.focus();
-        // setTimeout(() => {
-        //     this.setClickOutSide();
-        // }, 250);
+        this.$refs.keyword.focus();
+        this.setClickOutSide();
     },
     methods: {
-        ...mapMutations(["SET_IS_SEARCHING", "SET_SEARCH_KEYWORD"]),
+        ...mapMutations([
+            "SET_IS_SEARCHING",
+            "SET_SEARCH_KEYWORD",
+            "SET_LAST_KEYWORD",
+        ]),
         ...mapActions(["SEARCH_MOVIE"]),
         async onKeyup(event) {
-            this.inputTitle = event.target.value;
             const _key = event.keyCode;
 
             if (
                 (_key === KEYS.backspace || _key === KEYS.delete) &&
-                this.isEmptyInput
+                !this.keyword.length
             ) {
-                this.inputTitle = "";
+                this.keyword = "";
                 this.goPrevious();
             }
 
-            if (_key === KEYS.enter && !this.isEmptyInput) {
-                try {
-                    const _query = this.inputTitle.trim();
+            if (_key === KEYS.enter) {
+                this.keyword = this.keyword.trim();
 
+                if (!this.keyword.length) return;
+
+                try {
+                    this.SET_LAST_KEYWORD(this.keyword);
                     await this.SEARCH_MOVIE({
-                        query: _query,
-                        page: this.page,
+                        query: this.keyword,
+                        page: 1,
                     });
 
-                    // FIXME path는 유지한 채 쿼리스트링 만 변경하기
-                    this.$router.push({
+                    const routerData = {
                         path: "/search",
                         query: {
-                            q: encodeURIComponent(_query),
+                            q: encodeURIComponent(this.keyword),
                         },
-                    });
+                    };
+
+                    // if path is "search"
+                    if (this.isSearchPage) {
+                        this.$router.replace(routerData);
+                    } else {
+                        // if path is not "search"
+                        this.$router.push(routerData);
+                    }
                 } catch (err) {
                     console.error(err);
                     alert("다시 검색해주세요!");
+                    this.$refs.keyword.focus();
                 }
             }
         },
         onBlur() {
-            if (!this.isEmptyInput) {
+            if (this.isKeyword) {
                 return;
             }
 
             this.SET_IS_SEARCHING(false);
+            this.keyword = "";
             // window.removeEventListener("click", this.onClickOutSide, false);
-            this.inputTitle = "";
         },
         onClose() {
-            this.inputTitle = "";
+            this.keyword = "";
             this.goPrevious();
         },
         goPrevious() {
-            if (!this.isSearch) return;
+            if (!this.isSearchPage) return;
             this.$router.go(-1);
         },
-        setTitle() {
-            const _query = this.$route.query.q;
-
-            if (_query && _query.trim().length) {
-                this.inputTitle = decodeURIComponent(_query.trim());
-            }
-        },
         setClickOutSide() {
-            // window.addEventListener("click", this.onClickOutSide, false);
+            window.addEventListener("click", this.onClickOutSide, false);
         },
         onClickOutSide(event) {
             // FIXME ".searchInput__closeBtn"이게 this.$el에 포함되어 있지 않다고 나옴..
             const $target = event.target;
-            const $el = document.querySelector(".searchInput");
 
-            const contained = $el.contains($target);
-
-            console.log($el.contains($target));
-
-            if (contained || !this.isEmptyInput) return;
-
-            this.onBlur();
+            if ($target.classList.contains("navLink")) {
+                this.keyword = "";
+                this.SET_IS_SEARCHING(false);
+            }
         },
     },
 };

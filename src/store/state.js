@@ -4,5 +4,7 @@ export default {
     isAdult: true,
     // 검색관련 state
     searchKeyword: "",
+    lastKeyword: "",
     searchResult: [],
+    searchHistory: [],
 };

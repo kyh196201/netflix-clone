@@ -2,7 +2,7 @@
     <section class="search">
         <search-history />
         <search-result v-if="movieList && movieList.length" :data="movieList" />
-        <no-result v-else :keyword="inputKeyword" />
+        <no-result v-else />
     </section>
 </template>
 
@@ -20,14 +20,10 @@ export default {
         "no-result": NoResult,
     },
     data() {
-        return {
-            inputKeyword: "",
-        };
+        return {};
     },
     computed: {
         ...mapState({
-            isSearching: (state) => state.isSearching,
-            keyword: (state) => state.searchKeyword,
             list: (state) => state.searchResult,
         }),
         page() {
@@ -42,14 +38,16 @@ export default {
         isMoreData() {
             return this.totalPage > this.page;
         },
+        isQuery() {
+            return !!this.$route.query.q;
+        },
     },
     created() {
-        if (!this.keyword) {
+        if (!this.isQuery) {
             this.$router.push("/browse");
         }
 
         this.SET_IS_SEARCHING(true);
-        this.inputKeyword = this.keyword;
     },
     methods: {
         ...mapMutations(["SET_IS_SEARCHING"]),
@@ -59,7 +57,7 @@ export default {
 
 <style>
 .search {
-    padding: 130px 30px 30px;
+    padding: 130px 30px 0;
     min-height: 100vh;
 }
 </style>

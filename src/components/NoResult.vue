@@ -2,7 +2,8 @@
     <div class="noResult-wrapper">
         <div class="noResult">
             <p class="noResult__result">
-                입력하신 검색어 "{{ keyword }}"(와)과 일치하는 결과가 없습니다.
+                입력하신 검색어 "{{ lastKeyword }}"(와)과 일치하는 결과가
+                없습니다.
             </p>
             <div class="noResult__recommend">
                 <h3 class="noResult__recommend__title">추천 검색어</h3>
@@ -24,9 +25,15 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
+
 export default {
     name: "NoResult",
-    props: ["keyword"],
+    computed: {
+        ...mapState({
+            lastKeyword: (state) => state.lastKeyword,
+        }),
+    },
 };
 </script>
 
