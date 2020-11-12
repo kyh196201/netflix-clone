@@ -7,5 +7,7 @@ export default {
             page,
         });
         commit("SET_SEARCH_RESULT", list);
+        commit("SET_LAST_KEYWORD", query);
+        // commit("SET_SEARCH_HISTORY", list);
     },
 };

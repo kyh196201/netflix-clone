@@ -19,3 +19,6 @@ export const KEYS = {
     esc: 27,
     delete: 46,
 };
+
+// history length
+export const MAX_HISTORY_SIZE = 10;

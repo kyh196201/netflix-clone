@@ -10,7 +10,7 @@
 import SearchResult from "../components/SearchResult.vue";
 import SearchHistory from "../components/SearchHistory.vue";
 import NoResult from "../components/NoResult.vue";
-import { mapState, mapMutations } from "vuex";
+import { mapState, mapMutations, mapActions } from "vuex";
 
 export default {
     name: "search",
@@ -20,7 +20,10 @@ export default {
         "no-result": NoResult,
     },
     data() {
-        return {};
+        return {
+            currentPage: 1,
+            keyword: "",
+        };
     },
     computed: {
         ...mapState({
@@ -42,15 +45,36 @@ export default {
             return !!this.$route.query.q;
         },
     },
-    created() {
-        if (!this.isQuery) {
-            this.$router.push("/browse");
-        }
+    watch: {
+        $route: {
+            handler(value) {
+                const _query = decodeURIComponent(value.query.q);
 
-        this.SET_IS_SEARCHING(true);
+                if (!_query) {
+                    this.$router.push("/browse");
+                }
+
+                this.SET_IS_SEARCHING(true);
+                this.keyword = _query;
+                this.fetchData();
+            },
+            immediate: true,
+        },
     },
     methods: {
         ...mapMutations(["SET_IS_SEARCHING"]),
+        ...mapActions(["SEARCH_MOVIE"]),
+        async fetchData() {
+            try {
+                await this.SEARCH_MOVIE({
+                    query: this.keyword,
+                    page: this.currentPage,
+                });
+            } catch (err) {
+                console.error(err);
+                alert("에러 발생!!");
+            }
+        },
     },
 };
 </script>

@@ -26,30 +26,21 @@
 
 <script>
 import { KEYS } from "../utils/constant.js";
-import { mapMutations, mapActions, mapState } from "vuex";
+import { mapMutations } from "vuex";
 
 export default {
     name: "SearchInput",
     data() {
-        return {};
+        return {
+            keyword: "",
+        };
     },
     computed: {
-        ...mapState({
-            searchKeyword: (state) => state.searchKeyword,
-        }),
         isSearchPage() {
             return this.$route.path === "/search";
         },
         isKeyword() {
             return !!this.keyword.trim().length;
-        },
-        keyword: {
-            get() {
-                return this.searchKeyword;
-            },
-            set(value) {
-                this.SET_SEARCH_KEYWORD(value);
-            },
         },
     },
     mounted() {
@@ -57,12 +48,7 @@ export default {
         this.setClickOutSide();
     },
     methods: {
-        ...mapMutations([
-            "SET_IS_SEARCHING",
-            "SET_SEARCH_KEYWORD",
-            "SET_LAST_KEYWORD",
-        ]),
-        ...mapActions(["SEARCH_MOVIE"]),
+        ...mapMutations(["SET_IS_SEARCHING", "SET_LAST_KEYWORD"]),
         async onKeyup(event) {
             const _key = event.keyCode;
 
@@ -80,11 +66,7 @@ export default {
                 if (!this.keyword.length) return;
 
                 try {
-                    this.SET_LAST_KEYWORD(this.keyword);
-                    await this.SEARCH_MOVIE({
-                        query: this.keyword,
-                        page: 1,
-                    });
+                    // this.SET_LAST_KEYWORD(this.keyword);
 
                     const routerData = {
                         path: "/search",
@@ -131,7 +113,10 @@ export default {
             // FIXME ".searchInput__closeBtn"이게 this.$el에 포함되어 있지 않다고 나옴..
             const $target = event.target;
 
-            if ($target.classList.contains("navLink")) {
+            if (
+                $target.classList.contains("navLink") ||
+                $target.classList.contains("home__nav__logo")
+            ) {
                 this.keyword = "";
                 this.SET_IS_SEARCHING(false);
             }
