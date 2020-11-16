@@ -54,11 +54,11 @@ export default {
 
                 if (!queryString) {
                     this.$router.push("/browse");
+                } else {
+                    this.SET_IS_SEARCHING(true);
+                    this.keyword = decodeURIComponent(queryString);
+                    this.fetchData();
                 }
-
-                this.SET_IS_SEARCHING(true);
-                this.keyword = decodeURIComponent(queryString);
-                this.fetchData();
             },
             immediate: true,
         },

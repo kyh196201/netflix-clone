@@ -181,13 +181,21 @@ modal이 created될때 전달받은 영화 id를 통해 selectedMovie를 set하�
 
 => search에서 새로고침 시 searchInput의 값으로 lastKeyword 값을 바인딩하자.
 
-#### 11/13
+#### 11/16
 
 1. 👀 Todo search?q="" 빈값으로 엔터입력해서 검사할 경우 try catch의 catch 부분을 탈 수 있다!! 내일 확인
 
 2. searchHistory 완성
 
+2.1 삭제 기능 [O]
+
+2.2 중복 체크 [O]
+
+2.3 maxLength 10개 [O]
+
 3. 무한 스크롤
+
+4. 상세 정보
 
 ---
 

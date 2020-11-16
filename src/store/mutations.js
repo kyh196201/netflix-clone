@@ -1,5 +1,3 @@
-import { MAX_HISTORY_SIZE } from "../utils/constant.js";
-
 export default {
     // 검색 창 display 변경
     SET_IS_SEARCHING(state, toggle) {
@@ -22,8 +20,7 @@ export default {
     },
 
     // 검색 히스토리 저장
-    SET_SEARCH_HISTORY(state, keyword) {
-        const newHistory = [keyword, ...state.searchHistory];
-        state.searchHistory = newHistory;
+    SET_SEARCH_HISTORY(state, history) {
+        state.searchHistory = history;
     },
 };

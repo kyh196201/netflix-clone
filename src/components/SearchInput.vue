@@ -104,7 +104,7 @@ export default {
         },
         goPrevious() {
             if (!this.isSearchPage) return;
-            this.$router.go(-1);
+            this.$router.push("/browse");
         },
         setClickOutSide() {
             window.addEventListener("click", this.onClickOutSide, false);
