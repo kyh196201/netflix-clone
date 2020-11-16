@@ -41,7 +41,7 @@ export default {
             return this.list.length;
         },
         isMoreData() {
-            return this.totalLength > this.currentPage * this.currentLength;
+            return this.totalLength > this.currentLength;
         },
     },
     watch: {
