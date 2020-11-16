@@ -54,6 +54,8 @@ export default {
                 } else {
                     this.SET_IS_SEARCHING(true);
                     this.keyword = decodeURIComponent(queryString);
+                    // 새로운 키워드로 검색시 항상 page값을 1로 설정해줘야한다.
+                    this.currentPage = 1;
                     this.fetchData();
                 }
             },
