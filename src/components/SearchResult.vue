@@ -1,6 +1,6 @@
 <template>
     <div class="searchResult">
-        <ul class="movie-list">
+        <ul class="movie-list" v-if="data && data.length">
             <li
                 class="movie-list__item"
                 v-for="movie in data"
@@ -18,16 +18,21 @@
                 </div>
             </li>
         </ul>
+        <no-result v-else />
     </div>
 </template>
 
 <script>
 import { IMG_PATH } from "../utils/constant.js";
 import defaultImage from "../assets/images/default_image.png";
+import NoResult from "./NoResult.vue";
 
 export default {
     name: "SearchResult",
     props: ["data"],
+    components: {
+        "no-result": NoResult,
+    },
     data() {
         return {
             imgPath: IMG_PATH,

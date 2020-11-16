@@ -19,6 +19,11 @@ export default {
         state.searchResult = list;
     },
 
+    // 검색 결과 length 데이터
+    SET_TOTAL_LENGTH(state, length) {
+        state.totalLength = length;
+    },
+
     // 검색 히스토리 저장
     SET_SEARCH_HISTORY(state, history) {
         state.searchHistory = history;

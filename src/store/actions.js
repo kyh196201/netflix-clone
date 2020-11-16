@@ -2,15 +2,25 @@ import * as api from "../api/";
 import { MAX_HISTORY_SIZE } from "../utils/constant.js";
 
 export default {
-    async SEARCH_MOVIE({ commit, dispatch }, { query, page }) {
-        const list = await api.search.movie({
+    async SEARCH_MOVIE({ commit, dispatch, state }, { query, page }) {
+        let newList;
+
+        const result = await api.search.movie({
             query,
             page,
         });
-        commit("SET_SEARCH_RESULT", list);
+
+        if (page === 1) {
+            newList = result.results;
+            commit("SET_TOTAL_LENGTH", result.total_results);
+        } else {
+            newList = [...state.searchResult, ...result.results];
+        }
+
+        commit("SET_SEARCH_RESULT", newList);
         commit("SET_LAST_KEYWORD", query);
 
-        if (list.total_results > 0) {
+        if (result.total_results > 0 && page === 1) {
             dispatch("ADD_SEARCH_HISTORY", { keyword: query });
         }
     },

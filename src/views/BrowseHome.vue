@@ -95,12 +95,12 @@ export default {
 <style>
 .bilboard-container {
     position: relative;
-    padding-bottom: 40%;
+    /* padding-bottom: 40%; */
     /* z-index: -1; */
 }
 
 .bilboard-wrapper {
-    position: absolute;
+    /* position: absolute; */
     width: 100%;
     height: 56.25vh;
     background-color: #000;
@@ -133,8 +133,7 @@ export default {
     bottom: 0;
     left: 0;
     width: 100%;
-    height: auto;
-    max-height: 90vh;
+    max-height: 100%;
 }
 
 .bilboard__meta {
