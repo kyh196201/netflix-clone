@@ -28,4 +28,9 @@ export default {
     SET_SEARCH_HISTORY(state, history) {
         state.searchHistory = history;
     },
+
+    // 영화 상세정보 저장
+    SET_MOVIE_DETAIL(state, data) {
+        state.movieDetail = data;
+    },
 };

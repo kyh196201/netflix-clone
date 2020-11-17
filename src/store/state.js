@@ -1,9 +1,10 @@
 export default {
     isProfile: true,
-    isSearching: false,
     isAdult: true,
+    isSearching: false,
     lastKeyword: "",
     totalLength: null,
     searchResult: [],
     searchHistory: [],
+    movieDetail: null,
 };

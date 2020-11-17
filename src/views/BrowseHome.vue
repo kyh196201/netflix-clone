@@ -35,6 +35,7 @@
         <Show :title="listTitle.topRated" :list="topRated" />
         <Show :title="listTitle.upComing" :list="upComing" />
         <Show :title="listTitle.playing" :list="playing" />
+        <router-view></router-view>
     </section>
 </template>
 

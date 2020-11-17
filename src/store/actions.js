@@ -57,4 +57,13 @@ export default {
 
         commit("SET_SEARCH_HISTORY", newHistory);
     },
+
+    async FETCH_MOVIE({ commit }, { id }) {
+        try {
+            const result = await api.movies.detail(id);
+            commit("SET_MOVIE_DETAIL", result);
+        } catch (err) {
+            return Promise.reject(err);
+        }
+    },
 };

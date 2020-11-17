@@ -7,6 +7,7 @@ import Latest from "../views/Latest.vue";
 import MyList from "../views/MyList.vue";
 import Genre from "../views/Genre.vue";
 import Search from "../views/Search.vue";
+import DetailView from "../views/DetailView.vue";
 
 Vue.use(VueRouter);
 
@@ -29,6 +30,13 @@ const routes = [
                 path: "",
                 name: "BrowseHome",
                 component: BrowseHome,
+                children: [
+                    {
+                        path: "detail/:mid",
+                        name: "Detail",
+                        component: DetailView,
+                    },
+                ],
             },
             {
                 path: "latest",

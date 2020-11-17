@@ -215,6 +215,8 @@ modal이 created될때 전달받은 영화 id를 통해 selectedMovie를 set하�
 
 4. searchHistory 로컬 스토리지와 연동
 
+5. 영화 포스터 세로 비율로 변경하기
+
 ---
 
 ### 기본 플로우

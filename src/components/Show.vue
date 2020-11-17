@@ -12,14 +12,19 @@
                         v-for="movie in list"
                         :key="movie.id"
                     >
-                        <div class="movie">
+                        <a
+                            href="#"
+                            class="movie"
+                            data-movie-id="movie.id"
+                            @click.prevent="showDetail(movie.id)"
+                        >
                             <figure class="movie__thumbnail">
                                 <img
                                     :src="getImageUrl(movie.poster_path)"
                                     alt="thumbnail__img"
                                 />
                             </figure>
-                        </div>
+                        </a>
                     </div>
                 </div>
                 <!-- 네비게이션 -->
@@ -88,6 +93,14 @@ export default {
     methods: {
         getImageUrl(url) {
             return this.imgPath + url;
+        },
+        showDetail(id) {
+            if (id === undefined || typeof id === "undefined") return;
+
+            const currentPath = this.$route.path;
+            const nextPath = currentPath + `/detail/${id}`;
+
+            this.$router.push(nextPath);
         },
     },
 };
