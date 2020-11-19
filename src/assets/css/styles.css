@@ -28,6 +28,8 @@ body {
     margin: 0 auto;
 }
 
+/* buttons */
+
 button {
     padding: 0;
     margin: 0;
@@ -39,6 +41,7 @@ button {
 .btn-default {
     background-color: rgba(255, 255, 255, 0.8);
     color: #000;
+    font-weight: bold;
     transition: background-color 0.3s ease;
 }
 
@@ -49,6 +52,7 @@ button {
 .btn-gray {
     background-color: rgba(109, 109, 110, 0.7);
     color: white;
+    font-weight: bold;
     transition: background-color 0.3s ease;
 }
 
@@ -58,9 +62,17 @@ button {
 
 .btn-l {
     font-size: 15px;
-    padding: 8px 20px;
+    padding: 10px 20px;
     border-radius: 6px;
 }
+
+.btn-xl {
+    font-size: 20px;
+    padding: 10px 25px;
+    border-radius: 8px;
+}
+
+/* buttons */
 
 /* 이따가 옮길 부분 */
 .show-container {
@@ -136,26 +148,40 @@ button {
     outline: none;
 }
 
-/* @media screen and (min-width: 576px) {
-    .movie-list__item {
-        width: 100%;
-    }
+/* modal scroll lock 2020.11.19 */
+.scroll-lock {
+    overflow: hidden;
 }
 
-@media screen and (min-width: 768px) {
-    .movie-list__item {
-        width: 50%;
-    }
+/* list, good, bad icons */
+.user-icon {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0.75rem 0.85rem;
+    border: 2px solid rgba(255, 255, 255, 0.7);
+    border-radius: 50%;
+    background-color: rgba(42, 42, 42, 0.6);
+    color: white;
+    font-size: 1rem;
 }
 
-@media screen and (min-width: 992px) {
-    .movie-list__item {
-        width: 33.33333%;
-    }
-} */
+.close-icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 40px;
+    height: 40px;
+    color: white;
+    background-color: #181818;
+    border-radius: 50%;
+}
+
+.user-icon:hover {
+    border-color: rgba(255, 255, 255, 1);
+}
 
 /* Media querys */
-
 @media screen and (max-width: 1599px) {
     .movie-list__item {
         width: calc(25% - 10px);
@@ -177,3 +203,21 @@ button {
         margin-right: 0px;
     }
 }
+
+/* @media screen and (min-width: 576px) {
+    .movie-list__item {
+        width: 100%;
+    }
+}
+
+@media screen and (min-width: 768px) {
+    .movie-list__item {
+        width: 50%;
+    }
+}
+
+@media screen and (min-width: 992px) {
+    .movie-list__item {
+        width: 33.33333%;
+    }
+} */

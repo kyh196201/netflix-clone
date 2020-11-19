@@ -11,8 +11,15 @@ import {
     faPlay,
     faInfoCircle,
     faTimes,
+    faPlus,
+    faThumbsUp,
+    faThumbsDown,
 } from "@fortawesome/free-solid-svg-icons";
-import { faTrashAlt } from "@fortawesome/free-regular-svg-icons";
+import {
+    faTrashAlt,
+    faThumbsUp as faThumbsUpSolid,
+    faThumbsDown as faThumbsDownSolid,
+} from "@fortawesome/free-regular-svg-icons";
 
 library.add(
     faTrashAlt,
@@ -21,7 +28,12 @@ library.add(
     faCaretDown,
     faPlay,
     faInfoCircle,
-    faTimes
+    faTimes,
+    faPlus,
+    faThumbsUp,
+    faThumbsDown,
+    faThumbsUpSolid,
+    faThumbsDownSolid
 );
 library.add(faSearch);
 
