@@ -23,6 +23,9 @@ export default {
   name: "MyModal",
   mounted() {
     document.querySelector("body").classList.add("scroll-lock");
+  },
+  destroyed() {
+    document.querySelector("body").classList.remove("scroll-lock");
   }
 };
 </script>
@@ -45,7 +48,6 @@ export default {
 .myModal-container {
   width: 100%;
   min-width: 500px;
-  min-height: 500px;
   background-color: white;
   border-radius: 1%;
   -webkit-box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);

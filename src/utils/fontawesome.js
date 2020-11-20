@@ -14,6 +14,7 @@ import {
     faPlus,
     faThumbsUp,
     faThumbsDown,
+    faCheck,
 } from "@fortawesome/free-solid-svg-icons";
 import {
     faTrashAlt,
@@ -33,7 +34,8 @@ library.add(
     faThumbsUp,
     faThumbsDown,
     faThumbsUpSolid,
-    faThumbsDownSolid
+    faThumbsDownSolid,
+    faCheck
 );
 library.add(faSearch);
 

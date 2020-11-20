@@ -60,7 +60,7 @@ export default {
 
     async FETCH_MOVIE({ commit }, { id }) {
         try {
-            const result = await api.movies.detail(id);
+            const result = await api.movies.getMovieDetail(id);
             commit("SET_MOVIE_DETAIL", result);
         } catch (err) {
             return Promise.reject(err);

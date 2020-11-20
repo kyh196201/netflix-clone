@@ -44,6 +44,25 @@ export const movies = {
         const url = `/movie/${id}`;
         return await request.get(url);
     },
+    async credits(id) {
+        const url = `/movie/${id}/credits`;
+        return await request.get(url);
+    },
+    async getMovieDetail(id) {
+        const [detail, credits] = await requestAll([
+            movies.detail(id),
+            movies.credits(id),
+        ]);
+
+        const cast = credits && credits.cast ? credits.cast : [];
+        const crew = credits && credits.crew ? credits.crew : [];
+
+        return {
+            detail: detail,
+            cast: cast,
+            crew: crew,
+        };
+    },
     async latest() {
         const url = `/movie/latest`;
         return await request.get(url);
