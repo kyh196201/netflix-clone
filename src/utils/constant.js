@@ -6,7 +6,19 @@ export const TITLE = {
 };
 
 // 포스터 이미지 Path
-export const IMG_PATH = "https://image.tmdb.org/t/p/w185";
+const IMG_PATH = "https://image.tmdb.org/t/p/";
+
+// 포스터 이미지 Size
+const IMG_SIZES = {
+    backdrop_sizes: ["w300", "w780", "w1280", "original"],
+    logo_sizes: ["w45", "w92", "w154", "w185", "w300", "w500", "original"],
+    poster_sizes: ["w92", "w154", "w185", "w342", "w500", "w780", "original"],
+    profile_sizes: ["w45", "w185", "h632", "original"],
+    still_sizes: ["w92", "w185", "w300", "original"],
+};
+
+export const POSTER_PATH = IMG_PATH + IMG_SIZES["poster_sizes"][2];
+export const BACKDROP_PATH = IMG_PATH + IMG_SIZES["backdrop_sizes"][2];
 
 // 스와이퍼 옵션
 export const SLIDES_PER_VIEW = 5;

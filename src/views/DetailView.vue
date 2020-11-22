@@ -1,91 +1,125 @@
 <template>
   <MyModal class="detailView">
-    <div class="detailView__header" slot="header">
-      <!-- 이미지 영역 -->
-      <div class="detailView__bg-wrapper">
-        <figure class="detailView__bg">
-          <img :src="bgSample" alt />
-        </figure>
-      </div>
-      <!-- 플레이어 영역 -->
-      <div class="detailView__player">
-        <div class="detailView__player__title">
-          <figure>
-            <img :src="titleSample" alt="player title" />
+    <template v-if="movieDetail">
+      <div class="detailView__header" slot="header">
+        <!-- 이미지 영역 -->
+        <div class="detailView__bg-wrapper">
+          <figure class="detailView__bg">
+            <img :src="poster" @error="onErrorPoster" ref="poster" />
           </figure>
         </div>
-        <div class="detailView__player__control">
-          <button class="control__btn btn-l btn-default">
-            <font-awesome-icon icon="play" />
-            <span>재생</span>
-          </button>
-          <!-- buttons -->
-          <a href="#" class="control__btn user-icon">
-            <font-awesome-icon icon="plus" />
-            <font-awesome-icon icon="check" />
-          </a>
-          <a href="#" class="control__btn user-icon">
-            <font-awesome-icon :icon="['far', 'thumbs-up']" />
-            <font-awesome-icon :icon="['fas', 'thumbs-up']" />
-          </a>
-          <a href="#" class="control__btn user-icon">
-            <font-awesome-icon :icon="['far', 'thumbs-down']" />
-            <font-awesome-icon :icon="['fas', 'thumbs-down']" />
-          </a>
-        </div>
-      </div>
-      <!-- 모달 닫기 버튼 -->
-      <a href="#" class="detailView__closeBtn close-icon">
-        <font-awesome-icon icon="times" />
-      </a>
-      <div class="detailView__header__blurLayer blur-layer"></div>
-    </div>
-    <!-- 영화 상세 -->
-    <div class="detailView__content" slot="body">
-      <!-- overview -->
-      <div class="detailView__overview-wrapper">
-        <div class="detailView__overview">
-          <div class="detailView__overview__top">
-            <span class="detailView__overview__releaseDate">2014</span>
-            <span class="detailView__overview__title">미생</span>
-            <span class="detailView__overview__age">15 &plus;</span>
+        <!-- 플레이어 영역 -->
+        <div class="detailView__player">
+          <div class="detailView__player__title">
+            <figure>
+              <img :src="titleSample" alt="player title" />
+            </figure>
           </div>
-          <p
-            class="detailView__overview__synopsis"
-          >프로 바둑기사 입단에 실패하고 여기저기 알바만 뛰던 장그래. 드디어 한 회사에 계약직으로 취업한다. 냉랭한 기업문화에서 따뜻한 사람들을 만나며 그는 차차 자신의 터를 구축해 나간다. 누구나 한때 사회 초년생이었기에 더욱 공감되고 안쓰러운 성장 이야기.</p>
+          <div class="detailView__player__control">
+            <button class="control__btn btn-l btn-default">
+              <font-awesome-icon icon="play" />
+              <span>재생</span>
+            </button>
+            <!-- buttons -->
+            <a href="#" class="control__btn user-icon">
+              <font-awesome-icon icon="plus" />
+              <font-awesome-icon icon="check" />
+            </a>
+            <a href="#" class="control__btn user-icon">
+              <font-awesome-icon :icon="['far', 'thumbs-up']" />
+              <font-awesome-icon :icon="['fas', 'thumbs-up']" />
+            </a>
+            <a href="#" class="control__btn user-icon">
+              <font-awesome-icon :icon="['far', 'thumbs-down']" />
+              <font-awesome-icon :icon="['fas', 'thumbs-down']" />
+            </a>
+          </div>
+        </div>
+        <!-- 모달 닫기 버튼 -->
+        <a href="#" class="detailView__closeBtn close-icon">
+          <font-awesome-icon icon="times" />
+        </a>
+        <div class="detailView__header__blurLayer blur-layer"></div>
+      </div>
+      <!-- 영화 상세 -->
+      <div class="detailView__content" slot="body">
+        <!-- overview -->
+        <div class="detailView__overview-wrapper">
+          <div class="detailView__overview">
+            <div class="detailView__overview__top">
+              <span class="detailView__overview__releaseDate">{{relaseDate}}</span>
+              <span class="detailView__overview__title">{{detail.title}}</span>
+              <span class="detailView__overview__runningTime">{{runtime}}</span>
+              <span class="detailView__overview__adult" v-if="isAdult">19 &plus;</span>
+            </div>
+            <p class="detailView__overview__synopsis">{{detail.overview}}</p>
+          </div>
+        </div>
+        <!-- info -->
+        <div class="detailView__info-wrapper">
+          <ul class="detailView__info">
+            <li>
+              <span class="detailView__info__tagLabel tag-label">감독:</span>
+              <template v-if="directors && directors.length">
+                <a
+                  href="#"
+                  class="detailView__info__tag tag-item"
+                  v-for="director in directors"
+                  :key="director.id"
+                  :data-director-id="director.id"
+                >{{ director.name }}</a>
+              </template>
+            </li>
+            <li>
+              <span class="detailView__info__tag-label tag-label">출연:</span>
+              <template v-if="actors && actors.length">
+                <a
+                  href="#"
+                  class="detailView__info__tag tag-item"
+                  v-for="actor in actors"
+                  :key="actor.id"
+                  :data-actor-id="actor.id"
+                >{{ actor.name }},</a>
+              </template>
+              <a
+                href="#"
+                class="detailView__info__more tag-more"
+                v-if="actors && actors.length"
+              >더 보기</a>
+            </li>
+            <li>
+              <span class="detailView__info__tagLabel tag-label">장르:</span>
+              <template v-if="genres && genres.length">
+                <a
+                  href="#"
+                  class="detailView__info__tag tag-item"
+                  v-for="(genre, index) in genres"
+                  :key="genre.id"
+                  :data-genre-id="genre.id"
+                >{{ index === genres.length - 1 ? `${genre.name}` : `${genre.name},` }}</a>
+              </template>
+            </li>
+            <li class="detailView__info__voteAverage">
+              <span class="detailView__info__tagLabel tag-label">평점:</span>
+              <span class="detailView__info__tag tag-item">{{ detail["vote_average"] }}</span>
+            </li>
+          </ul>
         </div>
       </div>
-      <!-- info -->
-      <div class="detailView__info-wrapper">
-        <ul class="detailView__info">
-          <li>
-            <span class="detailView__info__tag-label tag-label">출연:</span>
-            <a href="#" class="detailView__info__tag tag-item">임시완,</a>
-            <a href="#" class="detailView__info__tag tag-item">이성민,</a>
-            <a href="#" class="detailView__info__tag tag-item">강소라,</a>
-            <a href="#" class="detailView__info__more tag-more">더 보기</a>
-          </li>
-          <li>
-            <span class="detailView__info__tagLabel tag-label">장르:</span>
-            <a href="#" class="detailView__info__tag tag-item">웹툰 원작 한국 드라마,</a>
-            <a href="#" class="detailView__info__tag tag-item">한국 드라마,</a>
-            <a href="#" class="detailView__info__tag tag-item">TV 드라마,</a>
-            <a href="#" class="detailView__info__more tag-more">더 보기</a>
-          </li>
-        </ul>
+      <div class="detailView__footer" slot="footer">
+        <button @click.prevent="$router.go(-1)">close</button>
       </div>
-    </div>
-    <div class="detailView__footer" slot="footer">
-      <button @click.prevent="$router.go(-1)">close</button>
-    </div>
+    </template>
   </MyModal>
 </template>
 
 <script>
 import MyModal from "../components/MyModal.vue";
 import { mapActions, mapState } from "vuex";
-import bgSample from "@/assets/images/detailview-bg-sample.png";
+import SAMPLE_BG from "@/assets/images/detailview-bg-sample.png";
+import DEFAILT_BG from "@/assets/images/default_image.png";
 import titleSample from "@/assets/images/detailview-player-title.png";
+import { BACKDROP_PATH } from "../utils/constant.js";
 
 export default {
   name: "Detail",
@@ -95,14 +129,50 @@ export default {
   data() {
     return {
       movieId: "",
-      bgSample: bgSample,
-      titleSample: titleSample
+      bgSample: SAMPLE_BG,
+      defaultBg: DEFAILT_BG,
+      titleSample: titleSample,
+      actor_length: 4,
+      backDropPath: BACKDROP_PATH
     };
   },
   computed: {
     ...mapState({
-      detail: state => state.movieDetail
-    })
+      movieDetail: state => state.movieDetail
+    }),
+    cast() {
+      return this.movieDetail.cast;
+    },
+    crew() {
+      return this.movieDetail.crew;
+    },
+    detail() {
+      return this.movieDetail.detail;
+    },
+    relaseDate() {
+      return this.detail["release_date"].substring(0, 4);
+    },
+    runtime() {
+      const _time = this.detail.runtime;
+      const _hour = Math.floor(_time / 60);
+      const _min = _time % 60;
+      return `${_hour}시 ${_min}분`;
+    },
+    isAdult() {
+      return this.detail.adult;
+    },
+    directors() {
+      return this.crew.filter(c => c.job === "Director");
+    },
+    actors() {
+      return this.cast.slice(0, this.actor_length);
+    },
+    genres() {
+      return this.detail.genres;
+    },
+    poster() {
+      return this.backDropPath + this.detail["backdrop_path"];
+    }
   },
   created() {
     this.movieId = this.$route.params.mid;
@@ -114,6 +184,11 @@ export default {
       await this.FETCH_MOVIE({
         id: this.movieId
       });
+    },
+    onErrorPoster() {
+      const $poster = this.$refs.poster;
+
+      $poster.setAttribute("src", this.defaultBg);
     }
   }
 };
@@ -124,6 +199,13 @@ export default {
   min-width: 650px;
   max-width: 900px;
   margin: 0 auto;
+
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 
 .detailView .myModal__body {
@@ -138,6 +220,7 @@ export default {
 .detailView__bg {
   overflow: hidden;
   width: 100%;
+  min-height: 300px;
   background: -webkit-gradient(
     linear,
     left bottom,
@@ -150,6 +233,7 @@ export default {
 .detailView__bg img {
   display: block;
   width: 100%;
+  max-height: 500px;
   object-fit: fill;
   border-top-right-radius: 5px;
   border-top-left-radius: 5px;
@@ -236,8 +320,9 @@ pre {
   letter-spacing: 0.1rem;
 }
 
-.detailView__overview__age {
-  border: 1px solid rgba(255, 255, 2550, 0.7);
+.detailView__overview__adult {
+  border: 1px solid #ef1023;
+  color: #ef1023;
   padding: 0.1rem 0.2rem;
 }
 
@@ -275,6 +360,10 @@ pre {
 .detailView .tag-item:hover,
 .detailView .tag-more:hover {
   text-decoration: underline;
+}
+
+.detailView__info__voteAverage .tag-item {
+  color: #e5d014;
 }
 
 .detailView .tag-more {

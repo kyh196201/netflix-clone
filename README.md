@@ -228,9 +228,11 @@ modal이 created될때 전달받은 영화 id를 통해 selectedMovie를 set하�
 
 3. searchHistory 로컬 스토리지와 연동
 
-### 11/19
+### 11/19 ~ 11/21
 
-1. detailView 마크업 완성
+1. detailView 마크업 완성 [O]
+
+=> 아쉬운점 css적으로 좀더 비슷하게 만들어보기
 
 -   필요한 데이터 체크
 
@@ -255,6 +257,15 @@ modal이 created될때 전달받은 영화 id를 통해 selectedMovie를 set하�
 5. 좋아하는 영화, 싫어하는 영화 전역상태 관리
 
 6. 영화 검색 기록 로컬스토리지 연동
+
+7. 영화 장르, 영화 배우 클릭 시 데이터 불러오기
+   => dataset에 어떤 데이터를 심을지
+   => 어떤 api를 이용할지
+   : https://developers.themoviedb.org/3/people
+
+8. 백드롭 이미지 사이즈 결정 ? : https://developers.themoviedb.org/3/getting-started/images
+   : https://www.themoviedb.org/talk/5abcef779251411e97025408
+   : https://www.themoviedb.org/talk/53c11d4ec3a3684cf4006400
 
 ---
 
