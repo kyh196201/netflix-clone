@@ -7,10 +7,20 @@ import actions from "./actions.js";
 
 Vue.use(Vuex);
 
-export default new Vuex.Store({
+const store = new Vuex.Store({
     state: state,
     getters: getters,
     mutations: mutations,
     actions: actions,
     modules: {},
 });
+
+export default store;
+
+const myList = JSON.parse(localStorage.getItem("myList")) || [];
+const favoriteList = JSON.parse(localStorage.getItem("favoriteList")) || [];
+const hateList = JSON.parse(localStorage.getItem("hateList")) || [];
+
+store.commit("SET_MY_LIST", myList);
+store.commit("SET_FAVORITE_LIST", favoriteList);
+store.commit("SET_HATE_LIST", hateList);

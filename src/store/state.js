@@ -7,4 +7,7 @@ export default {
     searchResult: [],
     searchHistory: [],
     movieDetail: null,
+    myList: [],
+    favoriteList: [],
+    hateList: [],
 };

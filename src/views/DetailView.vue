@@ -7,39 +7,77 @@
           <figure class="detailView__bg">
             <img :src="poster" @error="onErrorPoster" ref="poster" />
           </figure>
-        </div>
-        <!-- 플레이어 영역 -->
-        <div class="detailView__player">
-          <div class="detailView__player__title">
-            <figure>
+          <!-- 플레이어 영역 -->
+          <div class="detailView__player--wrapper">
+            <div class="detailView__player">
+              <div class="detailView__player__title">
+                <p>{{ detail && detail.title }}</p>
+                <!-- <figure>
               <img :src="titleSample" alt="player title" />
-            </figure>
-          </div>
-          <div class="detailView__player__control">
-            <button class="control__btn btn-l btn-default">
-              <font-awesome-icon icon="play" />
-              <span>재생</span>
-            </button>
-            <!-- buttons -->
-            <a href="#" class="control__btn user-icon">
-              <font-awesome-icon icon="plus" />
-              <font-awesome-icon icon="check" />
-            </a>
-            <a href="#" class="control__btn user-icon">
-              <font-awesome-icon :icon="['far', 'thumbs-up']" />
-              <font-awesome-icon :icon="['fas', 'thumbs-up']" />
-            </a>
-            <a href="#" class="control__btn user-icon">
-              <font-awesome-icon :icon="['far', 'thumbs-down']" />
-              <font-awesome-icon :icon="['fas', 'thumbs-down']" />
-            </a>
+                </figure>-->
+              </div>
+              <div class="detailView__player__control">
+                <button class="control__btn btn-l btn-default">
+                  <font-awesome-icon icon="play" />
+                  <span>재생</span>
+                </button>
+                <!-- buttons -->
+                <a
+                  href="#"
+                  class="control__btn user-icon"
+                  v-if="isMyList"
+                  @click.prevent="SET_MY_LIST(detail)"
+                >
+                  <font-awesome-icon icon="check" />
+                </a>
+                <a
+                  href="#"
+                  class="control__btn user-icon"
+                  v-else
+                  @click.prevent="SET_MY_LIST(detail)"
+                >
+                  <font-awesome-icon icon="plus" />
+                </a>
+                <a
+                  href="#"
+                  class="control__btn user-icon"
+                  v-if="isFavorite"
+                  @click.prevent="SET_FAVORITE_LIST(detail)"
+                >
+                  <font-awesome-icon :icon="['fas', 'thumbs-up']" />
+                </a>
+                <a
+                  href="#"
+                  class="control__btn user-icon"
+                  v-else
+                  @click.prevent="SET_FAVORITE_LIST(detail)"
+                >
+                  <font-awesome-icon :icon="['far', 'thumbs-up']" />
+                </a>
+                <a
+                  href="#"
+                  class="control__btn user-icon"
+                  v-if="isHate"
+                  @click.prevent="SET_HATE_LIST(detail)"
+                >
+                  <font-awesome-icon :icon="['fas', 'thumbs-down']" />
+                </a>
+                <a
+                  href="#"
+                  class="control__btn user-icon"
+                  v-else
+                  @click.prevent="SET_HATE_LIST(detail)"
+                >
+                  <font-awesome-icon :icon="['far', 'thumbs-down']" />
+                </a>
+              </div>
+            </div>
           </div>
         </div>
         <!-- 모달 닫기 버튼 -->
         <a href="#" class="detailView__closeBtn close-icon">
           <font-awesome-icon icon="times" />
         </a>
-        <div class="detailView__header__blurLayer blur-layer"></div>
       </div>
       <!-- 영화 상세 -->
       <div class="detailView__content" slot="body">
@@ -115,7 +153,7 @@
 
 <script>
 import MyModal from "../components/MyModal.vue";
-import { mapActions, mapState } from "vuex";
+import { mapActions, mapState, mapGetters } from "vuex";
 import SAMPLE_BG from "@/assets/images/detailview-bg-sample.png";
 import DEFAILT_BG from "@/assets/images/default_image.png";
 import titleSample from "@/assets/images/detailview-player-title.png";
@@ -140,6 +178,7 @@ export default {
     ...mapState({
       movieDetail: state => state.movieDetail
     }),
+    ...mapGetters(["isHateItem", "isFavoriteItem", "isInMyList"]),
     cast() {
       return this.movieDetail.cast;
     },
@@ -172,14 +211,28 @@ export default {
     },
     poster() {
       return this.backDropPath + this.detail["backdrop_path"];
+    },
+    isHate() {
+      return this.isHateItem(this.detail.id);
+    },
+    isFavorite() {
+      return this.isFavoriteItem(this.detail.id);
+    },
+    isMyList() {
+      return this.isInMyList(this.detail.id);
     }
   },
-  created() {
+  async created() {
     this.movieId = this.$route.params.mid;
     this.fetchData();
   },
   methods: {
-    ...mapActions(["FETCH_MOVIE"]),
+    ...mapActions([
+      "FETCH_MOVIE",
+      "SET_FAVORITE_LIST",
+      "SET_HATE_LIST",
+      "SET_MY_LIST"
+    ]),
     async fetchData() {
       await this.FETCH_MOVIE({
         id: this.movieId
@@ -217,6 +270,10 @@ export default {
   position: relative;
 }
 
+.detailView__bg-wrapper {
+  position: relative;
+}
+
 .detailView__bg {
   overflow: hidden;
   width: 100%;
@@ -239,18 +296,45 @@ export default {
   border-top-left-radius: 5px;
 }
 
+.detailView__player--wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: -webkit-gradient(
+    linear,
+    left bottom,
+    left top,
+    from(#181818),
+    color-stop(50%, transparent)
+  );
+  background: -webkit-linear-gradient(bottom, #181818, transparent 50%);
+  background: -moz- oldlinear-gradient(bottom, #181818, transparent 50%);
+  background: -o-linear-gradient(bottom, #181818, transparent 50%);
+  background: linear-gradient(to top, #181818, transparent 50%);
+}
+
 .detailView__player {
   position: absolute;
   top: 50%;
   left: 1.5rem;
-  width: 55%;
-  transform: translateY(-30%);
+  width: 60%;
+  transform: translateY(-10%);
 }
 
 .detailView__player__title {
   width: 100%;
   margin-bottom: 1.5rem;
-  white-space: nowrap;
+  /* white-space: nowrap; */
+}
+
+.detailView__player__title p {
+  font-family: "Nanum Pen Script", cursive;
+  font-weight: bold;
+  font-size: 4rem;
+  color: white;
+  letter-spacing: 1rem;
 }
 
 .detailView__player__title figure {
@@ -373,5 +457,11 @@ pre {
 
 .detailView__footer {
   display: none;
+}
+
+@media screen and (max-width: 900px) {
+  .detailView__player__title p {
+    font-size: 3rem;
+  }
 }
 </style>
