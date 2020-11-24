@@ -1,153 +1,154 @@
 <template>
   <MyModal class="detailView">
-    <template v-if="movieDetail">
-      <div class="detailView__header" slot="header">
-        <!-- 이미지 영역 -->
-        <div class="detailView__bg-wrapper">
-          <figure class="detailView__bg">
-            <img :src="poster" @error="onErrorPoster" ref="poster" />
-          </figure>
-          <!-- 플레이어 영역 -->
-          <div class="detailView__player--wrapper">
-            <div class="detailView__player">
-              <div class="detailView__player__title">
-                <p>{{ detail && detail.title }}</p>
-                <!-- <figure>
-              <img :src="titleSample" alt="player title" />
-                </figure>-->
-              </div>
-              <div class="detailView__player__control">
-                <button class="control__btn btn-l btn-default">
-                  <font-awesome-icon icon="play" />
-                  <span>재생</span>
-                </button>
-                <!-- buttons -->
-                <a
-                  href="#"
-                  class="control__btn user-icon"
-                  v-if="isMyList"
-                  @click.prevent="SET_MY_LIST(detail)"
-                >
-                  <font-awesome-icon icon="check" />
-                </a>
-                <a
-                  href="#"
-                  class="control__btn user-icon"
-                  v-else
-                  @click.prevent="SET_MY_LIST(detail)"
-                >
-                  <font-awesome-icon icon="plus" />
-                </a>
-                <a
-                  href="#"
-                  class="control__btn user-icon"
-                  v-if="isFavorite"
-                  @click.prevent="SET_FAVORITE_LIST(detail)"
-                >
-                  <font-awesome-icon :icon="['fas', 'thumbs-up']" />
-                </a>
-                <a
-                  href="#"
-                  class="control__btn user-icon"
-                  v-else
-                  @click.prevent="SET_FAVORITE_LIST(detail)"
-                >
-                  <font-awesome-icon :icon="['far', 'thumbs-up']" />
-                </a>
-                <a
-                  href="#"
-                  class="control__btn user-icon"
-                  v-if="isHate"
-                  @click.prevent="SET_HATE_LIST(detail)"
-                >
-                  <font-awesome-icon :icon="['fas', 'thumbs-down']" />
-                </a>
-                <a
-                  href="#"
-                  class="control__btn user-icon"
-                  v-else
-                  @click.prevent="SET_HATE_LIST(detail)"
-                >
-                  <font-awesome-icon :icon="['far', 'thumbs-down']" />
-                </a>
-              </div>
+    <!-- 영화 이미지 영역 -->
+    <div class="detailView__header" slot="header">
+      <!-- 이미지 영역 -->
+      <div class="detailView__bg-wrapper">
+        <div class="loadingBg" v-if="loading"></div>
+        <figure class="detailView__bg" v-else>
+          <img :src="poster" @error="onErrorPoster" ref="poster" />
+        </figure>
+        <!-- 플레이어 영역 -->
+        <div class="detailView__player--wrapper">
+          <div class="detailView__player">
+            <!-- 영화 제목 -->
+            <div class="detailView__player__title" v-if="!loading">
+              <p>{{ detail && detail.title }}</p>
             </div>
-          </div>
-        </div>
-        <!-- 모달 닫기 버튼 -->
-        <a href="#" class="detailView__closeBtn close-icon" @click.prevent="onClose">
-          <font-awesome-icon icon="times" />
-        </a>
-      </div>
-      <!-- 영화 상세 -->
-      <div class="detailView__content" slot="body">
-        <!-- overview -->
-        <div class="detailView__overview-wrapper">
-          <div class="detailView__overview">
-            <div class="detailView__overview__top">
-              <span class="detailView__overview__releaseDate">{{relaseDate}}</span>
-              <span class="detailView__overview__title">{{detail.title}}</span>
-              <span class="detailView__overview__runningTime">{{runtime}}</span>
-              <span class="detailView__overview__adult" v-if="isAdult">19 &plus;</span>
-            </div>
-            <p class="detailView__overview__synopsis">{{detail.overview}}</p>
-          </div>
-        </div>
-        <!-- info -->
-        <div class="detailView__info-wrapper">
-          <ul class="detailView__info">
-            <li>
-              <span class="detailView__info__tagLabel tag-label">감독:</span>
-              <template v-if="directors && directors.length">
-                <a
-                  href="#"
-                  class="detailView__info__tag tag-item"
-                  v-for="director in directors"
-                  :key="director.id"
-                  :data-director-id="director.id"
-                >{{ director.name }}</a>
-              </template>
-            </li>
-            <li>
-              <span class="detailView__info__tag-label tag-label">출연:</span>
-              <template v-if="actors && actors.length">
-                <a
-                  href="#"
-                  class="detailView__info__tag tag-item"
-                  v-for="actor in actors"
-                  :key="actor.id"
-                  :data-actor-id="actor.id"
-                >{{ actor.name }},</a>
-              </template>
+            <div class="detailView__player__control">
+              <button class="control__btn btn-l btn-default">
+                <font-awesome-icon icon="play" />
+                <span>재생</span>
+              </button>
+              <!-- buttons -->
               <a
                 href="#"
-                class="detailView__info__more tag-more"
-                v-if="actors && actors.length"
-              >더 보기</a>
-            </li>
-            <li>
-              <span class="detailView__info__tagLabel tag-label">장르:</span>
-              <template v-if="genres && genres.length">
-                <a
-                  href="#"
-                  class="detailView__info__tag tag-item"
-                  v-for="(genre, index) in genres"
-                  :key="genre.id"
-                  :data-genre-id="genre.id"
-                >{{ index === genres.length - 1 ? `${genre.name}` : `${genre.name},` }}</a>
-              </template>
-            </li>
-            <li class="detailView__info__voteAverage">
-              <span class="detailView__info__tagLabel tag-label">평점:</span>
-              <span class="detailView__info__tag tag-item">{{ detail["vote_average"] }}</span>
-            </li>
-          </ul>
+                class="control__btn user-icon"
+                v-if="isMyList"
+                @click.prevent="SET_MY_LIST(detail)"
+              >
+                <font-awesome-icon icon="check" />
+              </a>
+              <a
+                href="#"
+                class="control__btn user-icon"
+                v-else
+                @click.prevent="SET_MY_LIST(detail)"
+              >
+                <font-awesome-icon icon="plus" />
+              </a>
+              <a
+                href="#"
+                class="control__btn user-icon"
+                v-if="isFavorite"
+                @click.prevent="SET_FAVORITE_LIST(detail)"
+              >
+                <font-awesome-icon :icon="['fas', 'thumbs-up']" />
+              </a>
+              <a
+                href="#"
+                class="control__btn user-icon"
+                v-else
+                @click.prevent="SET_FAVORITE_LIST(detail)"
+              >
+                <font-awesome-icon :icon="['far', 'thumbs-up']" />
+              </a>
+              <a
+                href="#"
+                class="control__btn user-icon"
+                v-if="isHate"
+                @click.prevent="SET_HATE_LIST(detail)"
+              >
+                <font-awesome-icon :icon="['fas', 'thumbs-down']" />
+              </a>
+              <a
+                href="#"
+                class="control__btn user-icon"
+                v-else
+                @click.prevent="SET_HATE_LIST(detail)"
+              >
+                <font-awesome-icon :icon="['far', 'thumbs-down']" />
+              </a>
+            </div>
+          </div>
         </div>
       </div>
-      <div class="detailView__footer" slot="footer">
-        <button @click.prevent="$router.go(-1)">close</button>
+      <!-- 모달 닫기 버튼 -->
+      <a href="#" class="detailView__closeBtn close-icon" @click.prevent="onClose">
+        <font-awesome-icon icon="times" />
+      </a>
+    </div>
+    <!-- 영화 상세 -->
+    <div class="detailView__content" slot="body">
+      <!-- overview -->
+      <div class="detailView__overview-wrapper">
+        <div class="loading__overview" v-if="loading">
+          <div class="loading__overview__top"></div>
+          <div class="loading__overview__synopsis"></div>
+        </div>
+        <div class="detailView__overview" v-else>
+          <div class="detailView__overview__top">
+            <span class="detailView__overview__releaseDate">{{relaseDate}}</span>
+            <span class="detailView__overview__title">{{detail.title}}</span>
+            <span class="detailView__overview__runningTime">{{runtime}}</span>
+            <span class="detailView__overview__adult" v-if="isAdult">19 &plus;</span>
+          </div>
+          <p class="detailView__overview__synopsis">{{detail.overview}}</p>
+        </div>
       </div>
-    </template>
+      <!-- info -->
+      <div class="detailView__info-wrapper">
+        <ul class="detailView__info">
+          <li>
+            <span class="detailView__info__tagLabel tag-label">감독:</span>
+            <template v-if="directors && directors.length && !loading">
+              <a
+                href="#"
+                class="detailView__info__tag tag-item"
+                v-for="director in directors"
+                :key="director.id"
+                :data-director-id="director.id"
+              >{{ director.name }}</a>
+            </template>
+          </li>
+          <li>
+            <span class="detailView__info__tag-label tag-label">출연:</span>
+            <template v-if="actors && actors.length && !loading">
+              <a
+                href="#"
+                class="detailView__info__tag tag-item"
+                v-for="actor in actors"
+                :key="actor.id"
+                :data-actor-id="actor.id"
+              >{{ actor.name }},</a>
+            </template>
+            <a href="#" class="detailView__info__more tag-more" v-if="actors && actors.length">더 보기</a>
+          </li>
+          <li>
+            <span class="detailView__info__tagLabel tag-label">장르:</span>
+            <template v-if="genres && genres.length && !loading">
+              <a
+                href="#"
+                class="detailView__info__tag tag-item"
+                v-for="(genre, index) in genres"
+                :key="genre.id"
+                :data-genre-id="genre.id"
+              >{{ index === genres.length - 1 ? `${genre.name}` : `${genre.name},` }}</a>
+            </template>
+          </li>
+          <li class="detailView__info__voteAverage">
+            <span class="detailView__info__tagLabel tag-label">평점:</span>
+            <span
+              class="detailView__info__tag tag-item"
+              v-if="!loading"
+            >{{ detail["vote_average"] }}</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="detailView__footer" slot="footer">
+      <button @click.prevent="$router.go(-1)">close</button>
+    </div>
   </MyModal>
 </template>
 
@@ -161,11 +162,13 @@ import { BACKDROP_PATH } from "../utils/constant.js";
 
 export default {
   name: "Detail",
+  props: ["mid"],
   components: {
     MyModal
   },
   data() {
     return {
+      loading: false,
       movieId: "",
       bgSample: SAMPLE_BG,
       defaultBg: DEFAILT_BG,
@@ -236,9 +239,13 @@ export default {
       "SET_MY_LIST"
     ]),
     async fetchData() {
+      this.loading = true;
       await this.FETCH_MOVIE({
         id: this.movieId
       });
+      setTimeout(() => {
+        this.loading = false;
+      }, 1000);
     },
     onErrorPoster() {
       const $poster = this.$refs.poster;
@@ -273,10 +280,12 @@ export default {
 
 .detailView__header {
   position: relative;
+  width: 100%;
 }
 
 .detailView__bg-wrapper {
   position: relative;
+  width: 100%;
 }
 
 .detailView__bg {
@@ -295,7 +304,6 @@ export default {
 .detailView__bg img {
   display: block;
   width: 100%;
-  max-height: 500px;
   object-fit: fill;
   border-top-right-radius: 5px;
   border-top-left-radius: 5px;
@@ -464,9 +472,38 @@ pre {
   display: none;
 }
 
-@media screen and (max-width: 900px) {
+/* Loading component */
+.detailView .loadingBg {
+  width: 100%;
+  height: 500px;
+  background-color: rgba(0, 0, 0, 0.9);
+}
+
+.detailView .loading__overview__top {
+  height: 2rem;
+  width: 80%;
+  margin-bottom: 0.5rem;
+  background-color: rgba(0, 0, 0, 0.5);
+  border-radius: 5px;
+}
+
+.detailView .loading__overview__synopsis {
+  width: 80%;
+  height: 4rem;
+  background-color: rgba(0, 0, 0, 0.5);
+  border-radius: 5px;
+}
+
+.detailView__info .loading__block {
+  width: 5rem;
+  height: 1rem;
+  background-color: rgba(0, 0, 0, 0.5);
+  border-radius: 5px;
+}
+
+@media screen and (max-width: 968px) {
   .detailView__player__title p {
-    font-size: 3rem;
+    font-size: 2.5rem;
   }
 }
 </style>

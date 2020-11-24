@@ -1,30 +1,17 @@
 <template>
-  <div class="show">
-    <!-- 타이틀 -->
-    <h3 class="show__title">{{ title }}</h3>
+  <div class="movieSlider">
     <!-- 스와이퍼 -->
     <template v-if="list && list.length">
       <div class="swiper-container movie-container" ref="movieSwiper">
         <!-- 스와이퍼 래퍼 -->
         <div class="swiper-wrapper movie-wrapper">
           <div class="swiper-slide movie-slide" v-for="movie in list" :key="movie.id">
-            <a
-              href="#"
-              class="movie"
-              data-movie-id="movie.id"
-              @click.prevent="showDetail(movie.id)"
-            >
-              <figure class="movie__thumbnail">
-                <img :src="getImageUrl(movie.poster_path)" alt="thumbnail__img" />
-              </figure>
-            </a>
+            <MovieItem :data="movie" />
           </div>
         </div>
         <!-- 네비게이션 -->
         <div class="swiper-button-next"></div>
         <div class="swiper-button-prev"></div>
-        <!-- 스크롤 -->
-        <!-- <div class="swiper-scrollbar"></div> -->
       </div>
     </template>
     <div v-else>DataBase Error</div>
@@ -32,14 +19,9 @@
 </template>
 
 <script>
-import thumbnail from "../assets/images/avengers.jpg";
 import Swiper from "swiper";
-import {
-  SLIDES_PER_VIEW,
-  SPACE_BETWEEN,
-  SPEED,
-  POSTER_PATH
-} from "../utils/constant.js";
+import { SLIDES_PER_VIEW, SPACE_BETWEEN, SPEED } from "../utils/constant.js";
+import MovieItem from "./MovieItem.vue";
 
 const swiperOption = {
   slidesPerView: SLIDES_PER_VIEW,
@@ -58,14 +40,15 @@ const swiperOption = {
 };
 
 export default {
-  name: "Show",
+  name: "MovieSlider",
   props: ["title", "list"],
+  components: {
+    MovieItem
+  },
   data() {
     return {
-      thumbnail: thumbnail,
       movieSwiper: null,
-      swiperOption: swiperOption,
-      posterPath: POSTER_PATH
+      swiperOption: swiperOption
     };
   },
   mounted() {
@@ -82,33 +65,21 @@ export default {
     if (this.list && this.list.length) {
       this.movieSwiper = new Swiper(target, options);
     }
-  },
-  methods: {
-    getImageUrl(url) {
-      return this.posterPath + url;
-    },
-    showDetail(id) {
-      if (id === undefined || typeof id === "undefined") return;
-
-      const currentPath = this.$route.path;
-      const nextPath = currentPath + `/detail/${id}`;
-
-      this.$router.push(nextPath);
-    }
   }
 };
 </script>
 
 <style>
-.show {
-  position: relative;
-  width: 100%;
-  margin-top: 20px;
+.movieSlider-wrapper {
+  padding: 0 30px;
 }
 
-.show .show__title {
-  margin-bottom: 12px;
-  padding: 0 30px;
+.movieSlider {
+  position: relative;
+  width: 100%;
+}
+
+.movieSlider-title {
   font-weight: 600;
   font-size: 18px;
   color: #fff;

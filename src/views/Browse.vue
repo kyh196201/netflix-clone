@@ -1,7 +1,7 @@
 <template>
-    <section class="browse">
-        <router-view></router-view>
-    </section>
+  <section class="browse">
+    <router-view></router-view>
+  </section>
 </template>
 
 <script>
@@ -10,6 +10,6 @@ export default {};
 
 <style>
 .browse {
-    background-color: #141414;
+  background-color: #141414;
 }
 </style>

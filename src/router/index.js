@@ -36,6 +36,7 @@ const routes = [
                         path: "detail/:mid",
                         name: "Detail",
                         component: DetailView,
+                        props: true,
                     },
                 ],
             },

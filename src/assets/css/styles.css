@@ -83,7 +83,7 @@ button {
 .swiper-container.movie-container {
     width: 100%;
     height: auto;
-    padding: 0 30px;
+    /* padding: 0 30px; */
 }
 
 /* Swiper Scale 적용위해서 필수! */
@@ -154,7 +154,8 @@ button {
 }
 
 /* list, good, bad icons */
-.user-icon {
+.user-icon,
+.controller__btn {
     display: inline-flex;
     justify-content: center;
     align-items: center;
@@ -177,8 +178,18 @@ button {
     border-radius: 50%;
 }
 
-.user-icon:hover {
+.user-icon:hover,
+.controller__btn:hover {
     border-color: rgba(255, 255, 255, 1);
+}
+
+.controller__btn.play {
+    background-color: white;
+    color: black;
+}
+
+.controller__btn.play:hover {
+    opacity: 0.8;
 }
 
 /* Media querys */

@@ -32,9 +32,18 @@
       </div>
     </div>
     <!-- 영화 리스트 영역 -->
-    <Show :title="listTitle.topRated" :list="topRated" />
-    <Show :title="listTitle.upComing" :list="upComing" />
-    <Show :title="listTitle.playing" :list="playing" />
+    <div class="movieSlider-wrapper">
+      <h3 class="movieSlider-title">{{ listTitle.topRated }}</h3>
+      <MovieSlider :title="listTitle.topRated" :list="topRated" />
+    </div>
+    <div class="movieSlider-wrapper">
+      <h3 class="movieSlider-title">{{ listTitle.upComing }}</h3>
+      <MovieSlider :title="listTitle.upComing" :list="upComing" />
+    </div>
+    <div class="movieSlider-wrapper">
+      <h3 class="movieSlider-title">{{ listTitle.playing }}</h3>
+      <MovieSlider :title="listTitle.playing" :list="playing" />
+    </div>
     <router-view></router-view>
     <MyModal v-if="ismymodal" />
   </section>
@@ -42,14 +51,14 @@
 
 <script>
 import MyModal from "../components/MyModal.vue";
-import Show from "@/components/Show.vue";
+import MovieSlider from "@/components/MovieSlider.vue";
 import * as api from "../api";
 import { TITLE } from "../utils/constant.js";
 
 export default {
   name: "BrowseHome",
   components: {
-    Show,
+    MovieSlider,
     MyModal
   },
   data() {
@@ -98,6 +107,10 @@ export default {
 </script>
 
 <style>
+.browseHome {
+  margin-top: -80px;
+}
+
 .bilboard-container {
   position: relative;
   /* padding-bottom: 40%; */

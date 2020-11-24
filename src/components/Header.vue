@@ -1,27 +1,32 @@
 <template>
-    <header class="home__header">
-        <nav-bar />
-    </header>
+  <header class="home__header">
+    <div class="nav-wrapper">
+      <nav-bar />
+    </div>
+  </header>
 </template>
 
 <script>
 import NavBar from "./Navbar.vue";
 
 export default {
-    name: "Header",
-    components: {
-        "nav-bar": NavBar,
-    },
+  name: "Header",
+  components: {
+    "nav-bar": NavBar
+  }
 };
 </script>
 
 <style>
 .home__header {
-    position: absolute;
-    top: 0;
-    right: 0;
-    left: 0;
-    width: 100%;
-    z-index: 100;
+  position: relative;
+  width: 100%;
+  height: 60px;
+  z-index: 10;
+}
+
+.nav-wrapper {
+  width: 100%;
+  height: 100%;
 }
 </style>
