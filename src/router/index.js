@@ -8,6 +8,7 @@ import MyList from "../views/MyList.vue";
 import Genre from "../views/Genre.vue";
 import Search from "../views/Search.vue";
 import DetailView from "../views/DetailView.vue";
+import NotFound from "../views/NotFound.vue";
 
 Vue.use(VueRouter);
 
@@ -54,6 +55,11 @@ const routes = [
                 component: Genre,
             },
         ],
+    },
+    {
+        path: "*",
+        name: NotFound,
+        component: NotFound,
     },
 ];
 

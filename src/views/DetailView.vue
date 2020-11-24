@@ -75,7 +75,7 @@
           </div>
         </div>
         <!-- 모달 닫기 버튼 -->
-        <a href="#" class="detailView__closeBtn close-icon">
+        <a href="#" class="detailView__closeBtn close-icon" @click.prevent="onClose">
           <font-awesome-icon icon="times" />
         </a>
       </div>
@@ -171,7 +171,8 @@ export default {
       defaultBg: DEFAILT_BG,
       titleSample: titleSample,
       actor_length: 4,
-      backDropPath: BACKDROP_PATH
+      backDropPath: BACKDROP_PATH,
+      returnPath: "/browse"
     };
   },
   computed: {
@@ -222,7 +223,8 @@ export default {
       return this.isInMyList(this.detail.id);
     }
   },
-  async created() {
+  created() {
+    this.returnPath = this.$route.matched[0].path || "/browse";
     this.movieId = this.$route.params.mid;
     this.fetchData();
   },
@@ -242,6 +244,9 @@ export default {
       const $poster = this.$refs.poster;
 
       $poster.setAttribute("src", this.defaultBg);
+    },
+    onClose() {
+      this.$router.push(this.returnPath);
     }
   }
 };

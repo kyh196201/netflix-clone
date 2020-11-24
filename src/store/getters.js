@@ -1,7 +1,6 @@
 export default {
     isHateItem(state) {
         return (id) => {
-            console.log(state.hateList.some((item) => item === id));
             return state.hateList.some((item) => item === id);
         };
     },
