@@ -305,7 +305,7 @@ modal이 created될때 전달받은 영화 id를 통해 selectedMovie를 set하�
 1. MovieCard 완성
 2. 마이 리스트 렌더링
 3. header 스티키하게 만들기
-4. MovieSlider 영역 로딩 컴포넌트 만들기
+4. MovieSlider 영역 로딩 컴포넌트 만들기 [O]
 5. 스와이퍼 - 레이지로딩
 6. 장르별 데이터 불러오기
 7. 메인 페이지 보여지는 영화 영역
@@ -317,6 +317,16 @@ modal이 created될때 전달받은 영화 id를 통해 selectedMovie를 set하�
 2. MovieCard 마크업 [O]
 
 3. 마이리스트 [X]
+
+---
+
+11/26
+
+1. 마이리스트 데이터 바인딩 및 마크업 완성
+
+2. 마이리스트 데이터 id를 담은 배열 => 객체 담은 배열로 변경
+
+3. 소스 복습 및 정리
 
 ---
 

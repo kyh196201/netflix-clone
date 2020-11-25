@@ -107,6 +107,10 @@ export default {
   float: left;
 }
 
+.movieCard__controller__btnWrapper li:not(:last-child) {
+  margin-right: 5px;
+}
+
 /* .movieCard__controller__btnWrapper li:last-child {
   margin-left: auto;
 } */

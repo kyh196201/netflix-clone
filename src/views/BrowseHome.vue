@@ -1,57 +1,61 @@
 <template>
   <section class="browseHome">
-    <!-- 백그라운드 이미지 영역 -->
-    <div class="bilboard-container">
-      <div class="bilboard-wrapper">
-        <!-- 이미지 wrapper -->
-        <div class="bilboard__image-wrapper">
-          <figure class="bilboard__image">
-            <img
-              src="https://occ-0-1007-988.1.nflxso.net/dnm/api/v6/6AYY37jfdO6hpXcMjf9Yu5cnmO0/AAAABe5hOqOEh_QweztEJo7uV8DcG_eHpUZh-RdgPDSwUNFt0rNH_DU8N4YEGdVTnQF9pby0QeidQBmiF49vw4bTpPv7E7CC.webp?r=a83"
-              alt="hero-image"
-            />
-          </figure>
-        </div>
-        <!-- 이미지 설명 영역 -->
-        <div class="bilboard__meta">
-          <div class="bilboard__meta__title">마약왕</div>
-          <p class="bilboard__meta__synopsis">
-            누군가는 노다지라고 했다. 누군가는 저승길이라고 했다.
-            그저 밥벌이하겠다고 뛰어든 어둠의 세계. 그 암흑 속에서
-            한 남자가 탐욕에 취해 흥청거리고 비틀거린다.
-          </p>
-          <div class="bilboard__meta__control">
-            <button class="meta__btn btn-l btn-default">
-              <font-awesome-icon icon="play" />재생
-            </button>
-            <button class="meta__btn btn-l btn-gray">
-              <font-awesome-icon icon="info-circle" />상세 정보
-            </button>
+    <LoadingGrid v-if="isLoading" />
+    <div class="browseHome__content">
+      <!-- 백그라운드 이미지 영역 -->
+      <div class="bilboard-container">
+        <div class="bilboard-wrapper">
+          <!-- 이미지 wrapper -->
+          <div class="bilboard__image-wrapper">
+            <figure class="bilboard__image">
+              <img
+                src="https://occ-0-1007-988.1.nflxso.net/dnm/api/v6/6AYY37jfdO6hpXcMjf9Yu5cnmO0/AAAABe5hOqOEh_QweztEJo7uV8DcG_eHpUZh-RdgPDSwUNFt0rNH_DU8N4YEGdVTnQF9pby0QeidQBmiF49vw4bTpPv7E7CC.webp?r=a83"
+                alt="hero-image"
+              />
+            </figure>
+          </div>
+          <!-- 이미지 설명 영역 -->
+          <div class="bilboard__meta">
+            <div class="bilboard__meta__title">마약왕</div>
+            <p class="bilboard__meta__synopsis">
+              누군가는 노다지라고 했다. 누군가는 저승길이라고 했다.
+              그저 밥벌이하겠다고 뛰어든 어둠의 세계. 그 암흑 속에서
+              한 남자가 탐욕에 취해 흥청거리고 비틀거린다.
+            </p>
+            <div class="bilboard__meta__control">
+              <button class="meta__btn btn-l btn-default">
+                <font-awesome-icon icon="play" />재생
+              </button>
+              <button class="meta__btn btn-l btn-gray">
+                <font-awesome-icon icon="info-circle" />상세 정보
+              </button>
+            </div>
           </div>
         </div>
       </div>
+      <!-- 영화 리스트 영역 -->
+      <div class="movieSlider-wrapper">
+        <h3 class="movieSlider-title">{{ listTitle.topRated }}</h3>
+        <MovieSlider :title="listTitle.topRated" :list="topRated" />
+      </div>
+      <div class="movieSlider-wrapper">
+        <h3 class="movieSlider-title">{{ listTitle.upComing }}</h3>
+        <MovieSlider :title="listTitle.upComing" :list="upComing" />
+      </div>
+      <div class="movieSlider-wrapper">
+        <h3 class="movieSlider-title">{{ listTitle.playing }}</h3>
+        <MovieSlider :title="listTitle.playing" :list="playing" />
+      </div>
+      <router-view></router-view>
+      <MyModal v-if="ismymodal" />
     </div>
-    <!-- 영화 리스트 영역 -->
-    <div class="movieSlider-wrapper">
-      <h3 class="movieSlider-title">{{ listTitle.topRated }}</h3>
-      <MovieSlider :title="listTitle.topRated" :list="topRated" />
-    </div>
-    <div class="movieSlider-wrapper">
-      <h3 class="movieSlider-title">{{ listTitle.upComing }}</h3>
-      <MovieSlider :title="listTitle.upComing" :list="upComing" />
-    </div>
-    <div class="movieSlider-wrapper">
-      <h3 class="movieSlider-title">{{ listTitle.playing }}</h3>
-      <MovieSlider :title="listTitle.playing" :list="playing" />
-    </div>
-    <router-view></router-view>
-    <MyModal v-if="ismymodal" />
   </section>
 </template>
 
 <script>
-import MyModal from "../components/MyModal.vue";
+import MyModal from "@/components/MyModal.vue";
 import MovieSlider from "@/components/MovieSlider.vue";
+import LoadingGrid from "@/components/LoadingGrid.vue";
 import * as api from "../api";
 import { TITLE } from "../utils/constant.js";
 
@@ -59,7 +63,8 @@ export default {
   name: "BrowseHome",
   components: {
     MovieSlider,
-    MyModal
+    MyModal,
+    LoadingGrid
   },
   data() {
     return {
@@ -67,7 +72,8 @@ export default {
       upComing: [],
       playing: [],
       listTitle: TITLE,
-      ismymodal: false
+      ismymodal: false,
+      isLoading: false
     };
   },
   created() {
@@ -77,6 +83,7 @@ export default {
     // 멀티 요청
     async fetchAll() {
       try {
+        this.isLoading = true;
         const [topRated, upComing, playing] = await api.requestAll([
           this.fetchData("topRated"),
           this.fetchData("upComing"),
@@ -89,6 +96,9 @@ export default {
         console.error(err);
       } finally {
         console.log("finally");
+        setTimeout(() => {
+          this.isLoading = false;
+        }, 1000);
       }
     },
     // api call
@@ -107,7 +117,7 @@ export default {
 </script>
 
 <style>
-.browseHome {
+.browseHome__content {
   margin-top: -80px;
 }
 
