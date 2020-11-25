@@ -298,6 +298,26 @@ modal이 created될때 전달받은 영화 id를 통해 selectedMovie를 set하�
 => 내가 찜한 콘텐츠를 추가할때 데이터 객체 전체를 myList 데이터에 push
 => myList.vue에서는 myList를 통해서 데이터를 렌더링
 
+11/25
+
+-   Todo
+
+1. MovieCard 완성
+2. 마이 리스트 렌더링
+3. header 스티키하게 만들기
+4. MovieSlider 영역 로딩 컴포넌트 만들기
+5. 스와이퍼 - 레이지로딩
+6. 장르별 데이터 불러오기
+7. 메인 페이지 보여지는 영화 영역
+
+---
+
+1. 로딩 스켈레톤 만들기 [O]
+
+2. MovieCard 마크업 [O]
+
+3. 마이리스트 [X]
+
 ---
 
 ### 기본 플로우

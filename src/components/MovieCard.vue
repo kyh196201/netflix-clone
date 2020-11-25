@@ -1,38 +1,42 @@
 <template>
   <div class="movieCard">
-    <div class="movieCard__image-wrapper">
-      <figure class="movieCard__image">
-        <img :src="poster" alt />
-      </figure>
-    </div>
-    <div class="movieCard__info">
-      <div class="movieCard__controller">
-        <div class="controller__left">
-          <a href="#" class="controller__btn play">
+    <figure class="movieCard__thumnail">
+      <img :src="poster" alt="thumnail" />
+    </figure>
+    <div class="movieCard__controller">
+      <p class="movieCard__title">어벤져스</p>
+      <ul class="movieCard__controller__btnWrapper">
+        <li>
+          <button class="controller__btn">
             <font-awesome-icon icon="play" />
-          </a>
-          <a href="#" class="controller__btn">
+          </button>
+        </li>
+        <li>
+          <button class="controller__btn">
             <font-awesome-icon icon="check" />
-          </a>
-          <a href="#" class="controller__btn">
+          </button>
+        </li>
+        <li>
+          <button class="controller__btn">
             <font-awesome-icon :icon="['fas', 'thumbs-up']" />
-          </a>
-          <a href="#" class="controller__btn">
+          </button>
+        </li>
+        <li>
+          <button class="controller__btn">
             <font-awesome-icon :icon="['far', 'thumbs-up']" />
-          </a>
-          <a href="#" class="controller__btn">
+          </button>
+        </li>
+        <li>
+          <button class="controller__btn">
             <font-awesome-icon :icon="['fas', 'thumbs-down']" />
-          </a>
-          <a href="#" class="controller__btn">
+          </button>
+        </li>
+        <li>
+          <button class="controller__btn">
             <font-awesome-icon :icon="['far', 'thumbs-down']" />
-          </a>
-        </div>
-        <div class="controller__right">
-          <a href="#" class="controller__btn">
-            <font-awesome-icon icon="plus" />
-          </a>
-        </div>
-      </div>
+          </button>
+        </li>
+      </ul>
     </div>
   </div>
 </template>
@@ -52,49 +56,58 @@ export default {
 
 <style>
 .movieCard {
-  width: 100%;
-  max-width: 250px;
-  box-shadow: rgba(0, 0, 0, 0.75);
+  width: 250px;
+  box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.2);
 }
 
-.movieCard__image-wrapper {
+.movieCard__thumnail {
   position: relative;
-  width: 100%;
-  max-height: 150px;
-}
-
-.movieCard__image {
   overflow: hidden;
-  position: relative;
   width: 100%;
-  height: 0;
-  padding-top: 60%;
+  padding-bottom: 56.25%;
 }
 
-.movieCard__image img {
+.movieCard__thumnail > img {
   position: absolute;
-  left: 0;
   top: 0;
-  bottom: 0;
+  left: 0;
   right: 0;
   width: 100%;
   border-top-left-radius: 5px;
   border-top-right-radius: 5px;
 }
 
-.movieCard__info {
-  padding: 2rem 1rem;
-  background-color: #181818;
+.movieCard__controller {
+  padding: 0.5rem 1rem 1rem;
+  background-color: #1f1e1e;
   border-bottom-left-radius: 5px;
   border-bottom-right-radius: 5px;
 }
 
-.movieCard__controller {
-  display: flex;
-  justify-content: space-between;
+.movieCard .controller__btn {
+  padding: 0.55rem 0.65rem;
+  font-size: 0.75rem;
 }
 
-.controller__left .controller__btn:not(:last-child) {
-  margin-right: 0.3rem;
+.movieCard__title {
+  margin-bottom: 0.5rem;
+  font-family: "Nanum Pen Script", cursive;
+  font-size: 2rem;
+  color: white;
 }
+
+.movieCard__controller__btnWrapper:after {
+  display: block;
+  clear: both;
+  content: "";
+}
+
+.movieCard__controller__btnWrapper li {
+  display: block;
+  float: left;
+}
+
+/* .movieCard__controller__btnWrapper li:last-child {
+  margin-left: auto;
+} */
 </style>

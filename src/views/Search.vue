@@ -1,16 +1,18 @@
 <template>
   <section class="search">
-    <loading-page v-if="loadingPage">LoadingPage...</loading-page>
-    <search-history />
-    <search-result :data="list" />
-    <div v-if="loadingData">LoadingData...</div>
+    <loading-grid v-if="loading">Loadinggrid...</loading-grid>
+    <div class="search__content">
+      <search-history />
+      <search-result :data="list" />
+      <div v-if="loadingData">LoadingData...</div>
+    </div>
   </section>
 </template>
 
 <script>
 import SearchResult from "../components/SearchResult.vue";
 import SearchHistory from "../components/SearchHistory.vue";
-import LoadingPage from "../components/LoadingPage.vue";
+import LoadingGrid from "../components/LoadingGrid.vue";
 import { mapState, mapMutations, mapActions } from "vuex";
 
 export default {
@@ -18,13 +20,13 @@ export default {
   components: {
     "search-result": SearchResult,
     "search-history": SearchHistory,
-    "loading-page": LoadingPage
+    "loading-grid": LoadingGrid
   },
   data() {
     return {
       currentPage: 1,
       keyword: "",
-      loadingPage: false,
+      loading: false,
       loadingData: false,
       isScrolled: false
     };
@@ -73,7 +75,7 @@ export default {
     ...mapActions(["SEARCH_MOVIE"]),
     async fetchData() {
       try {
-        this.loadingPage = true;
+        this.loading = true;
         await this.SEARCH_MOVIE({
           query: this.keyword,
           page: this.currentPage
@@ -82,10 +84,9 @@ export default {
         console.error(err);
         alert("에러 발생!!");
       } finally {
-        // setTimeout(() => {
-        //     this.loadingPage = true;
-        // }, 1000);
-        this.loadingPage = false;
+        setTimeout(() => {
+          this.loading = false;
+        }, 1000);
       }
     },
     isBottom() {
@@ -120,7 +121,11 @@ export default {
 
 <style>
 .search {
-  padding: 130px 30px 0;
+  padding: 0 30px;
   min-height: 100vh;
+}
+
+.search__content {
+  padding-top: 130px;
 }
 </style>

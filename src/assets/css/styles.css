@@ -192,6 +192,31 @@ button {
     opacity: 0.8;
 }
 
+/* shine effect */
+.shine {
+    /* shine effect */
+    background-image: linear-gradient(
+        90deg,
+        rgba(255, 255, 255, 0),
+        rgba(255, 255, 255, 0.25),
+        rgba(255, 255, 255, 0)
+    );
+
+    background-size: 40px 100%;
+    background-repeat: no-repeat;
+    animation: shine 1s linear infinite;
+}
+
+.fadeInBg {
+    animation: fadeInBg 1s ease-in 0s forwards;
+}
+
+/* Skeletons */
+/* Movie Skeleton */
+.skeleton-grid {
+    display: flex;
+}
+
 /* Media querys */
 @media screen and (max-width: 1599px) {
     .movie-list__item {
@@ -215,20 +240,32 @@ button {
     }
 }
 
-/* @media screen and (min-width: 576px) {
-    .movie-list__item {
-        width: 100%;
+/* Animations */
+/* Skeleton Shine effect */
+@keyframes shine {
+    to {
+        background-position: right -40px top 0;
     }
 }
 
-@media screen and (min-width: 768px) {
-    .movie-list__item {
-        width: 50%;
+@keyframes fadeInBg {
+    0% {
+        opacity: 0;
+    }
+
+    30% {
+        opacity: 0.3;
+    }
+
+    50% {
+        opacity: 0.5;
+    }
+
+    70% {
+        opacity: 0.7;
+    }
+
+    100% {
+        opacity: 1;
     }
 }
-
-@media screen and (min-width: 992px) {
-    .movie-list__item {
-        width: 33.33333%;
-    }
-} */
