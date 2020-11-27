@@ -40,7 +40,7 @@ export default {
     },
 
     // 좋아하는 영화 리스트 추가
-    PUSH_TO_FAVORITE_LIST(state, { id }) {
+    PUSH_TO_FAVORITE_LIST(state, id) {
         state.favoriteList.push(id);
         localStorage.setItem(
             "favoriteList",
@@ -49,7 +49,7 @@ export default {
     },
 
     // 좋아하는 영화 리스트 제거
-    REMOVE_FROM_FAVORITE_LIST(state, { id }) {
+    REMOVE_FROM_FAVORITE_LIST(state, id) {
         const index = state.favoriteList.findIndex((item) => item === id);
 
         if (index > -1) {
@@ -70,13 +70,13 @@ export default {
     },
 
     // 싫어하는 영화 리스트 추가
-    PUSH_TO_HATE_LIST(state, { id }) {
+    PUSH_TO_HATE_LIST(state, id) {
         state.hateList.push(id);
         localStorage.setItem("hateList", JSON.stringify(state.hateList));
     },
 
     // 싫어하는 영화 리스트 제거
-    REMOVE_FROM_HATE_LIST(state, { id }) {
+    REMOVE_FROM_HATE_LIST(state, id) {
         const index = state.hateList.findIndex((item) => item === id);
 
         if (index > -1) {
@@ -94,14 +94,14 @@ export default {
     },
 
     // 내 목록 리스트 추가
-    PUSH_TO_MY_LIST(state, { id }) {
-        state.myList.push(id);
+    PUSH_TO_MY_LIST(state, movie) {
+        state.myList.push(movie);
         localStorage.setItem("myList", JSON.stringify(state.myList));
     },
 
     // 내 목록 리스트 제거
-    REMOVE_FROM_MY_LIST(state, { id }) {
-        const index = state.myList.findIndex((item) => item === id);
+    REMOVE_FROM_MY_LIST(state, id) {
+        const index = state.myList.findIndex((item) => item.id === id);
 
         if (index > -1) {
             state.myList = [

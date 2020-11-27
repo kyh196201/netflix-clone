@@ -68,7 +68,7 @@ export default {
     },
 
     // 좋아요 리스트
-    SET_FAVORITE_LIST({ state, commit, getters }, { id }) {
+    SET_FAVORITE_LIST({ state, commit, getters }, id) {
         // 좋아요 혹은 싫어요 리스트에 존재하는지 확인
         const isFavorite = getters.isFavoriteItem(id);
         const isHate = getters.isHateItem(id);
@@ -76,49 +76,51 @@ export default {
         if (isFavorite) {
             // 좋아요 리스트에 있는 경우
             console.log("좋아요 리스트에 있는 경우");
-            commit("REMOVE_FROM_FAVORITE_LIST", { id });
+            commit("REMOVE_FROM_FAVORITE_LIST", id);
         } else if (!isFavorite && isHate) {
             // 싫어요 리스트에 있는 경우
             console.log("싫어요 리스트에 있는 경우");
-            commit("REMOVE_FROM_HATE_LIST", { id });
-            commit("PUSH_TO_FAVORITE_LIST", { id });
+            commit("REMOVE_FROM_HATE_LIST", id);
+            commit("PUSH_TO_FAVORITE_LIST", id);
         } else if (!isFavorite && !isHate) {
             // 좋아요 싫어요 리스트에 둘다 없는 경우
             console.log("좋아요/싫어요 리스트에 둘다 없는 경우");
-            commit("PUSH_TO_FAVORITE_LIST", { id });
+            commit("PUSH_TO_FAVORITE_LIST", id);
         }
     },
 
     // 싫어요 리스트
-    SET_HATE_LIST({ state, commit, getters }, { id }) {
+    SET_HATE_LIST({ state, commit, getters }, id) {
         // 좋아요 혹은 싫어요 리스트에 존재하는지 확인
         const isFavorite = getters.isFavoriteItem(id);
         const isHate = getters.isHateItem(id);
 
         if (isHate) {
             // 싫어요 리스트에 있는 경우
-            commit("REMOVE_FROM_HATE_LIST", { id });
+            commit("REMOVE_FROM_HATE_LIST", id);
         } else if (isFavorite && !isHate) {
             // 좋아요 리스트에 있는 경우
-            commit("REMOVE_FROM_FAVORITE_LIST", { id });
-            commit("PUSH_TO_HATE_LIST", { id });
+            commit("REMOVE_FROM_FAVORITE_LIST", id);
+            commit("PUSH_TO_HATE_LIST", id);
         } else if (!isFavorite && !isHate) {
             // 좋아요 싫어요 리스트에 둘다 없는 경우
-            commit("PUSH_TO_HATE_LIST", { id });
+            commit("PUSH_TO_HATE_LIST", id);
         }
     },
 
     // 싫어요 리스트
-    SET_MY_LIST({ state, commit, getters }, { id }) {
+    SET_MY_LIST({ state, commit, getters }, payload) {
+        const { id } = payload;
+
         // 마이 리스트에 존재하는지 확인
         const isMine = getters.isInMyList(id);
 
         if (isMine) {
             // 마이 리스트에 있는 경우
-            commit("REMOVE_FROM_MY_LIST", { id });
+            commit("REMOVE_FROM_MY_LIST", id);
         } else {
             // 마이 리스트에 없는 경우
-            commit("PUSH_TO_MY_LIST", { id });
+            commit("PUSH_TO_MY_LIST", payload);
         }
     },
 };

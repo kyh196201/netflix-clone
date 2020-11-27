@@ -11,7 +11,7 @@ export default {
     },
     isInMyList(state) {
         return (id) => {
-            return state.myList.some((item) => item === id);
+            return state.myList.some((item) => item.id === id);
         };
     },
 };

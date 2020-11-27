@@ -1,107 +1,130 @@
 <template>
   <MyModal class="detailView">
-    <!-- 영화 이미지 영역 -->
-    <div class="detailView__header" slot="header">
-      <!-- 이미지 영역 -->
-      <div class="detailView__bg-wrapper">
-        <div class="loadingBg" v-if="loading"></div>
-        <figure class="detailView__bg" v-else>
-          <img :src="poster" @error="onErrorPoster" ref="poster" />
-        </figure>
-        <!-- 플레이어 영역 -->
-        <div class="detailView__player--wrapper">
-          <div class="detailView__player">
-            <!-- 영화 제목 -->
-            <div class="detailView__player__title" v-if="!loading">
-              <p>{{ detail && detail.title }}</p>
+    <template v-if="isLoading">
+      <div class="detailView__header" slot="header">
+        <div class="detailView__bg-wrapper">
+          <div class="detailView__bg skeleton"></div>
+        </div>
+      </div>
+      <div class="detailView__content" slot="body">
+        <div class="detailView__overview-wrapper">
+          <div class="detailView__overview">
+            <div class="detailView__overview__top">
+              <span class></span>
+              <span class></span>
+              <span class></span>
+              <span class></span>
             </div>
-            <div class="detailView__player__control">
-              <button class="control__btn btn-l btn-default">
-                <font-awesome-icon icon="play" />
-                <span>재생</span>
-              </button>
-              <!-- buttons -->
-              <a
-                href="#"
-                class="control__btn user-icon"
-                v-if="isMyList"
-                @click.prevent="SET_MY_LIST(detail)"
-              >
-                <font-awesome-icon icon="check" />
-              </a>
-              <a
-                href="#"
-                class="control__btn user-icon"
-                v-else
-                @click.prevent="SET_MY_LIST(detail)"
-              >
-                <font-awesome-icon icon="plus" />
-              </a>
-              <a
-                href="#"
-                class="control__btn user-icon"
-                v-if="isFavorite"
-                @click.prevent="SET_FAVORITE_LIST(detail)"
-              >
-                <font-awesome-icon :icon="['fas', 'thumbs-up']" />
-              </a>
-              <a
-                href="#"
-                class="control__btn user-icon"
-                v-else
-                @click.prevent="SET_FAVORITE_LIST(detail)"
-              >
-                <font-awesome-icon :icon="['far', 'thumbs-up']" />
-              </a>
-              <a
-                href="#"
-                class="control__btn user-icon"
-                v-if="isHate"
-                @click.prevent="SET_HATE_LIST(detail)"
-              >
-                <font-awesome-icon :icon="['fas', 'thumbs-down']" />
-              </a>
-              <a
-                href="#"
-                class="control__btn user-icon"
-                v-else
-                @click.prevent="SET_HATE_LIST(detail)"
-              >
-                <font-awesome-icon :icon="['far', 'thumbs-down']" />
-              </a>
+            <p class="detailView__overview__synopsis synopsis skeleton"></p>
+          </div>
+        </div>
+        <div class="detailView__info-wrapper">
+          <ul class="detailView__info">
+            <li></li>
+            <li></li>
+            <li></li>
+          </ul>
+        </div>
+      </div>
+      <div class="detailView__footer" slot="footer"></div>
+    </template>
+    <template v-else-if="!isLoading && movieDetail">
+      <div class="detailView__header" slot="header">
+        <!-- 이미지 영역 -->
+        <div class="detailView__bg-wrapper">
+          <!-- <div class="loadingBg" v-if="loading"></div> -->
+          <figure class="detailView__bg">
+            <img :src="poster" @error="onErrorPoster" ref="poster" />
+          </figure>
+          <!-- 플레이어 영역 -->
+          <div class="detailView__player--wrapper">
+            <div class="detailView__player">
+              <!-- 영화 제목 -->
+              <div class="detailView__player__title">
+                <p>{{ detail.title }}</p>
+              </div>
+              <div class="detailView__player__control">
+                <button class="control__btn btn-l btn-default">
+                  <font-awesome-icon icon="play" />
+                  <span>재생</span>
+                </button>
+                <!-- buttons -->
+                <a
+                  href="#"
+                  class="control__btn controller__btn"
+                  v-if="isMyList"
+                  @click.prevent="SET_MY_LIST(detail)"
+                >
+                  <font-awesome-icon icon="check" />
+                </a>
+                <a
+                  href="#"
+                  class="control__btn controller__btn"
+                  v-else
+                  @click.prevent="SET_MY_LIST(detail)"
+                >
+                  <font-awesome-icon icon="plus" />
+                </a>
+                <a
+                  href="#"
+                  class="control__btn controller__btn"
+                  v-if="isFavorite"
+                  @click.prevent="SET_FAVORITE_LIST(detail.id)"
+                >
+                  <font-awesome-icon :icon="['fas', 'thumbs-up']" />
+                </a>
+                <a
+                  href="#"
+                  class="control__btn controller__btn"
+                  v-else
+                  @click.prevent="SET_FAVORITE_LIST(detail.id)"
+                >
+                  <font-awesome-icon :icon="['far', 'thumbs-up']" />
+                </a>
+                <a
+                  href="#"
+                  class="control__btn controller__btn"
+                  v-if="isHate"
+                  @click.prevent="SET_HATE_LIST(detail.id)"
+                >
+                  <font-awesome-icon :icon="['fas', 'thumbs-down']" />
+                </a>
+                <a
+                  href="#"
+                  class="control__btn controller__btn"
+                  v-else
+                  @click.prevent="SET_HATE_LIST(detail.id)"
+                >
+                  <font-awesome-icon :icon="['far', 'thumbs-down']" />
+                </a>
+              </div>
             </div>
           </div>
         </div>
+        <!-- 모달 닫기 버튼 -->
+        <a href="#" class="detailView__closeBtn close-icon" @click.prevent="onClose">
+          <font-awesome-icon icon="times" />
+        </a>
       </div>
-      <!-- 모달 닫기 버튼 -->
-      <a href="#" class="detailView__closeBtn close-icon" @click.prevent="onClose">
-        <font-awesome-icon icon="times" />
-      </a>
-    </div>
-    <!-- 영화 상세 -->
-    <div class="detailView__content" slot="body">
-      <!-- overview -->
-      <div class="detailView__overview-wrapper">
-        <div class="loading__overview" v-if="loading">
-          <div class="loading__overview__top"></div>
-          <div class="loading__overview__synopsis"></div>
-        </div>
-        <div class="detailView__overview" v-else>
-          <div class="detailView__overview__top">
-            <span class="detailView__overview__releaseDate">{{relaseDate}}</span>
-            <span class="detailView__overview__title">{{detail.title}}</span>
-            <span class="detailView__overview__runningTime">{{runtime}}</span>
-            <span class="detailView__overview__adult" v-if="isAdult">19 &plus;</span>
+      <!-- 영화 상세 -->
+      <div class="detailView__content" slot="body">
+        <!-- overview -->
+        <div class="detailView__overview-wrapper">
+          <div class="detailView__overview">
+            <div class="detailView__overview__top">
+              <span class="detailView__overview__releaseDate">{{relaseDate}}</span>
+              <span class="detailView__overview__title">{{detail.title}}</span>
+              <span class="detailView__overview__runningTime">{{runtime}}</span>
+              <span class="detailView__overview__adult" v-if="isAdult">19 &plus;</span>
+            </div>
+            <p class="detailView__overview__synopsis">{{detail.overview}}</p>
           </div>
-          <p class="detailView__overview__synopsis">{{detail.overview}}</p>
         </div>
-      </div>
-      <!-- info -->
-      <div class="detailView__info-wrapper">
-        <ul class="detailView__info">
-          <li>
-            <span class="detailView__info__tagLabel tag-label">감독:</span>
-            <template v-if="directors && directors.length && !loading">
+        <!-- info -->
+        <div class="detailView__info-wrapper">
+          <ul class="detailView__info">
+            <li>
+              <span class="detailView__info__tagLabel tag-label">감독:</span>
               <a
                 href="#"
                 class="detailView__info__tag tag-item"
@@ -109,11 +132,9 @@
                 :key="director.id"
                 :data-director-id="director.id"
               >{{ director.name }}</a>
-            </template>
-          </li>
-          <li>
-            <span class="detailView__info__tag-label tag-label">출연:</span>
-            <template v-if="actors && actors.length && !loading">
+            </li>
+            <li>
+              <span class="detailView__info__tag-label tag-label">출연:</span>
               <a
                 href="#"
                 class="detailView__info__tag tag-item"
@@ -121,12 +142,14 @@
                 :key="actor.id"
                 :data-actor-id="actor.id"
               >{{ actor.name }},</a>
-            </template>
-            <a href="#" class="detailView__info__more tag-more" v-if="actors && actors.length">더 보기</a>
-          </li>
-          <li>
-            <span class="detailView__info__tagLabel tag-label">장르:</span>
-            <template v-if="genres && genres.length && !loading">
+              <a
+                href="#"
+                class="detailView__info__more tag-more"
+                v-if="actors && actors.length"
+              >더 보기</a>
+            </li>
+            <li>
+              <span class="detailView__info__tagLabel tag-label">장르:</span>
               <a
                 href="#"
                 class="detailView__info__tag tag-item"
@@ -134,28 +157,24 @@
                 :key="genre.id"
                 :data-genre-id="genre.id"
               >{{ index === genres.length - 1 ? `${genre.name}` : `${genre.name},` }}</a>
-            </template>
-          </li>
-          <li class="detailView__info__voteAverage">
-            <span class="detailView__info__tagLabel tag-label">평점:</span>
-            <span
-              class="detailView__info__tag tag-item"
-              v-if="!loading"
-            >{{ detail["vote_average"] }}</span>
-          </li>
-        </ul>
+            </li>
+            <li class="detailView__info__voteAverage">
+              <span class="detailView__info__tagLabel tag-label">평점:</span>
+              <span class="detailView__info__tag tag-item">{{ detail["vote_average"] }}</span>
+            </li>
+          </ul>
+        </div>
       </div>
-    </div>
-    <div class="detailView__footer" slot="footer">
-      <button @click.prevent="$router.go(-1)">close</button>
-    </div>
+      <div class="detailView__footer" slot="footer">
+        <button @click.prevent="$router.go(-1)">close</button>
+      </div>
+    </template>
   </MyModal>
 </template>
 
 <script>
 import MyModal from "../components/MyModal.vue";
 import { mapActions, mapState, mapGetters } from "vuex";
-import SAMPLE_BG from "@/assets/images/detailview-bg-sample.png";
 import DEFAILT_BG from "@/assets/images/default_image.png";
 import titleSample from "@/assets/images/detailview-player-title.png";
 import { BACKDROP_PATH } from "../utils/constant.js";
@@ -168,9 +187,8 @@ export default {
   },
   data() {
     return {
-      loading: false,
+      isLoading: false,
       movieId: "",
-      bgSample: SAMPLE_BG,
       defaultBg: DEFAILT_BG,
       titleSample: titleSample,
       actor_length: 4,
@@ -239,12 +257,12 @@ export default {
       "SET_MY_LIST"
     ]),
     async fetchData() {
-      this.loading = true;
+      this.isLoading = true;
       await this.FETCH_MOVIE({
         id: this.movieId
       });
       setTimeout(() => {
-        this.loading = false;
+        this.isLoading = false;
       }, 1000);
     },
     onErrorPoster() {
@@ -292,13 +310,18 @@ export default {
   overflow: hidden;
   width: 100%;
   min-height: 300px;
-  background: -webkit-gradient(
+  /* background: -webkit-gradient(
     linear,
     left bottom,
     left top,
     from(#181818),
     color-stop(50%, transparent)
-  );
+  ); */
+}
+
+.detailView__bg.skeleton {
+  background: linear-gradient(to top, #181818, transparent 50%);
+  background-color: #000;
 }
 
 .detailView__bg img {

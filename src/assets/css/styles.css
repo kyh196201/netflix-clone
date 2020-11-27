@@ -1,9 +1,14 @@
 @import "./reset.css";
+@import "./animations.css";
 
 *,
 *::after,
 *::before {
     box-sizing: border-box;
+}
+
+html {
+    /* font-size: 62.5%; */
 }
 
 html,
@@ -154,17 +159,28 @@ button {
 }
 
 /* list, good, bad icons */
-.user-icon,
 .controller__btn {
     display: inline-flex;
     justify-content: center;
     align-items: center;
-    padding: 0.75rem 0.85rem;
+    /* padding: 0.75rem 0.85rem; */
+    width: 2.5rem;
+    height: 2.5rem;
     border: 2px solid rgba(255, 255, 255, 0.7);
     border-radius: 50%;
     background-color: rgba(42, 42, 42, 0.6);
     color: white;
     font-size: 1rem;
+    outline: none;
+}
+
+.controller__btn:hover {
+    border-color: rgba(255, 255, 255, 1);
+}
+
+.controller__btn.play {
+    background-color: white;
+    color: black;
 }
 
 .close-icon {
@@ -178,37 +194,8 @@ button {
     border-radius: 50%;
 }
 
-.user-icon:hover,
-.controller__btn:hover {
-    border-color: rgba(255, 255, 255, 1);
-}
-
-.controller__btn.play {
-    background-color: white;
-    color: black;
-}
-
 .controller__btn.play:hover {
     opacity: 0.8;
-}
-
-/* shine effect */
-.shine {
-    /* shine effect */
-    background-image: linear-gradient(
-        90deg,
-        rgba(255, 255, 255, 0),
-        rgba(255, 255, 255, 0.25),
-        rgba(255, 255, 255, 0)
-    );
-
-    background-size: 40px 100%;
-    background-repeat: no-repeat;
-    animation: shine 1s linear infinite;
-}
-
-.fadeInBg {
-    animation: fadeInBg 1s ease-in 0s forwards;
 }
 
 /* Skeletons */
@@ -237,35 +224,5 @@ button {
 
     .movie-list__item:nth-child(5n) {
         margin-right: 0px;
-    }
-}
-
-/* Animations */
-/* Skeleton Shine effect */
-@keyframes shine {
-    to {
-        background-position: right -40px top 0;
-    }
-}
-
-@keyframes fadeInBg {
-    0% {
-        opacity: 0;
-    }
-
-    30% {
-        opacity: 0.3;
-    }
-
-    50% {
-        opacity: 0.5;
-    }
-
-    70% {
-        opacity: 0.7;
-    }
-
-    100% {
-        opacity: 1;
     }
 }
