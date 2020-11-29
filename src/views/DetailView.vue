@@ -1,5 +1,6 @@
 <template>
   <MyModal class="detailView">
+    <!-- 로딩 시 렌더링 화면 -->
     <template v-if="isLoading">
       <div class="detailView__header" slot="header">
         <div class="detailView__bg-wrapper">
@@ -7,27 +8,37 @@
         </div>
       </div>
       <div class="detailView__content" slot="body">
-        <div class="detailView__overview-wrapper">
+        <div class="detailView__overview-wrapper skeleton">
           <div class="detailView__overview">
             <div class="detailView__overview__top">
-              <span class></span>
-              <span class></span>
-              <span class></span>
-              <span class></span>
+              <span class="skeleton-bar"></span>
+              <span class="skeleton-bar"></span>
+              <span class="skeleton-bar"></span>
+              <span class="skeleton-bar"></span>
             </div>
-            <p class="detailView__overview__synopsis synopsis skeleton"></p>
+            <p class="synopsis skeleton"></p>
           </div>
         </div>
-        <div class="detailView__info-wrapper">
-          <ul class="detailView__info">
-            <li></li>
-            <li></li>
-            <li></li>
+        <div class="detailView__info-wrapper skeleton">
+          <ul class="detailView__info skeleton">
+            <li class="skeleton-list-item">
+              <div class="skeleton-circle"></div>
+              <div class="skeleton-bar"></div>
+            </li>
+            <li class="skeleton-list-item">
+              <div class="skeleton-circle"></div>
+              <div class="skeleton-bar"></div>
+            </li>
+            <li class="skeleton-list-item">
+              <div class="skeleton-circle"></div>
+              <div class="skeleton-bar"></div>
+            </li>
           </ul>
         </div>
       </div>
       <div class="detailView__footer" slot="footer"></div>
     </template>
+    <!-- 데이터 렌더링 화면 -->
     <template v-else-if="!isLoading && movieDetail">
       <div class="detailView__header" slot="header">
         <!-- 이미지 영역 -->
@@ -319,11 +330,6 @@ export default {
   ); */
 }
 
-.detailView__bg.skeleton {
-  background: linear-gradient(to top, #181818, transparent 50%);
-  background-color: #000;
-}
-
 .detailView__bg img {
   display: block;
   width: 100%;
@@ -522,6 +528,38 @@ pre {
   height: 1rem;
   background-color: rgba(0, 0, 0, 0.5);
   border-radius: 5px;
+}
+
+/* skeletons */
+.detailView__bg.skeleton {
+  background: linear-gradient(to top, #181818, transparent 50%);
+  background-color: #000;
+}
+
+.detailView__overview-wrapper.skeleton {
+  flex: 1 1 70%;
+}
+
+.detailView__info-wrapper.skeleton {
+  flex: 1 1 30%;
+}
+
+.detailView__overview__top .skeleton-bar {
+  width: 25%;
+}
+
+.detailView__overview__top .skeleton-bar:last-child {
+  margin: 0;
+}
+
+.detailView__info .skeleton-bar {
+  width: 100%;
+}
+
+.synopsis.skeleton {
+  width: 100%;
+  height: 1.25rem;
+  background-color: var(--skeleton-color);
 }
 
 @media screen and (max-width: 968px) {

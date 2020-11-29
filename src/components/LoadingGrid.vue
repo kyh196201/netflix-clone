@@ -19,7 +19,6 @@ export default {
     };
   },
   computed: {
-    //   TODO 복습하기
     animationDelay() {
       return index => {
         const delay = index * this.delay;
@@ -57,7 +56,7 @@ export default {
 .skeleton-item > div {
   width: 100%;
   padding-bottom: 56.25%;
-  background-color: #212529;
+  background-color: var(--skeleton-color);
   border-radius: 5px;
 }
 </style>

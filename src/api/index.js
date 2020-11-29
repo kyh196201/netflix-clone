@@ -84,6 +84,7 @@ export const movies = {
     },
 };
 
+// 검색
 export const search = {
     // 멀티 검색
     async multi({ query, page }) {},
@@ -93,4 +94,10 @@ export const search = {
         const url = `/search/movie?query=${query}&page=${page}`;
         return await request.get(url);
     },
+};
+
+// 다양한 필터를 통해 영화 데이터 연동
+export const discover = async (query) => {
+    const url = `/discover/movie?${query}`;
+    return await request(url);
 };

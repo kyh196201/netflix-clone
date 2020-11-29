@@ -1,7 +1,7 @@
 <template>
   <section class="browseHome">
     <LoadingGrid v-if="isLoading" />
-    <div class="browseHome__content">
+    <div class="browseHome__content fadeIn" v-else>
       <!-- 백그라운드 이미지 영역 -->
       <div class="bilboard-container">
         <div class="bilboard-wrapper">
@@ -47,13 +47,11 @@
         <MovieSlider :title="listTitle.playing" :list="playing" />
       </div>
       <router-view></router-view>
-      <MyModal v-if="ismymodal" />
     </div>
   </section>
 </template>
 
 <script>
-import MyModal from "@/components/MyModal.vue";
 import MovieSlider from "@/components/MovieSlider.vue";
 import LoadingGrid from "@/components/LoadingGrid.vue";
 import * as api from "../api";
@@ -63,7 +61,6 @@ export default {
   name: "BrowseHome",
   components: {
     MovieSlider,
-    MyModal,
     LoadingGrid
   },
   data() {
@@ -72,7 +69,6 @@ export default {
       upComing: [],
       playing: [],
       listTitle: TITLE,
-      ismymodal: false,
       isLoading: false
     };
   },

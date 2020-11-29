@@ -330,6 +330,22 @@ modal이 created될때 전달받은 영화 id를 통해 selectedMovie를 set하�
 
 ---
 
+11/29
+
+1. detailView 로딩 컴포넌트 [O]
+
+2. 소스 복습 및 정리 [O]
+
+3. 반응형 그리드 만들기
+
+4. 장르 페이지 만들기 : 장르 api 연동
+
+5. detailView 라우팅 경로 변경하기
+
+6. 랜덤 숫자 생성을 이용해 fadeIn 애니메이션 delay 랜덤하게 설정하기
+
+---
+
 ### 기본 플로우
 
 1. 헤더 [O]
@@ -358,13 +374,13 @@ modal이 created될때 전달받은 영화 id를 통해 selectedMovie를 set하�
 
 => genre created 훅에서 genre id로 데이터 호출
 
-10. 찜한 콘텐츠
+10. 찜한 콘텐츠 [O]
 
-11. my-list/내가 찜한 콘텐츠
+11. my-list/내가 찜한 콘텐츠 [O]
 
 12. latest/최신 콘텐츠
 
-13. 영화 상세 정보
+13. 영화 상세 정보 [O]
 
 ### 추가 플로우
 
