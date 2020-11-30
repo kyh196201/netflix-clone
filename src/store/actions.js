@@ -123,4 +123,26 @@ export default {
             commit("PUSH_TO_MY_LIST", payload);
         }
     },
+
+    // 장르 페이지 데이터 FETCH
+    async FETCH_MOVIES({ commit }, query) {
+        try {
+            const response = await api.discover(query);
+            const { results } = response;
+            commit("SET_MOVIES", results);
+        } catch (e) {
+            return Promise.reject(e);
+        }
+    },
+
+    // 영화 장르 리스트 fetch
+    async FETCH_GENRES({ commit }) {
+        try {
+            const response = await api.getGenres();
+            const { genres } = response;
+            commit("SET_GENRES", genres);
+        } catch (e) {
+            return Promise.reject(e);
+        }
+    },
 };

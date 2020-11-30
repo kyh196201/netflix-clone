@@ -1,22 +1,15 @@
 <template>
-  <div class="browse__genre">This is Genre & genre Id is {{id}}</div>
+  <div class="browse__genre">
+    This is Genre Page
+    <router-view></router-view>
+  </div>
 </template>
 
 <script>
 export default {
   name: "Genre",
   data() {
-    return {
-      id: null
-    };
-  },
-  watch: {
-    $route: {
-      handler: function() {
-        this.id = this.$route.params.id;
-      },
-      immediate: true
-    }
+    return {};
   }
 };
 </script>

@@ -80,7 +80,7 @@ const links = [
   },
   {
     title: "영화",
-    route: "/browse/genre/84"
+    route: "/browse/movie"
   },
   {
     title: "최신 콘텐츠",

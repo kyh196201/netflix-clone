@@ -6,6 +6,7 @@ import BrowseHome from "../views/BrowseHome.vue";
 import Latest from "../views/Latest.vue";
 import MyList from "../views/MyList.vue";
 import Genre from "../views/Genre.vue";
+import Movie from "../views/Movie.vue";
 import Search from "../views/Search.vue";
 import DetailView from "../views/DetailView.vue";
 import NotFound from "../views/NotFound.vue";
@@ -51,9 +52,10 @@ const routes = [
                 component: MyList,
             },
             {
-                path: "genre/:id",
-                name: "Genre",
-                component: Genre,
+                path: "movie",
+                name: "Movie",
+                component: Movie,
+                props: true,
             },
         ],
     },

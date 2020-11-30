@@ -99,5 +99,10 @@ export const search = {
 // 다양한 필터를 통해 영화 데이터 연동
 export const discover = async (query) => {
     const url = `/discover/movie?${query}`;
-    return await request(url);
+    return await request.get(url);
+};
+
+export const getGenres = async () => {
+    const url = `/genre/movie/list`;
+    return await request.get(url);
 };

@@ -3,6 +3,8 @@
 
 :root {
     --skeleton-color: #212529;
+    --background-color: #141414;
+    --white-color: #fff;
 }
 
 *,
@@ -236,6 +238,35 @@ button {
 /* 반응형 그리드 리스트 */
 .grid-list {
     border: 1px solid #ddd;
+}
+
+/* 셀렉트 박스 */
+.option-container {
+    position: relative;
+}
+
+.option-title {
+    background-color: inherit;
+    border: 1px solid var(--white-color);
+    color: var(--white-color);
+    outline: none;
+    padding: 0.25rem 0.5rem;
+}
+
+.option-list {
+    position: absolute;
+    padding: 10px;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.option-listItem:hover a {
+    text-decoration: underline;
+}
+
+.option-listItem a {
+    display: block;
+    color: var(--white-color);
+    text-decoration: none;
 }
 
 /* Media querys */

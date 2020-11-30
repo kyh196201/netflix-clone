@@ -111,4 +111,14 @@ export default {
             localStorage.setItem("myList", JSON.stringify(state.myList));
         }
     },
+
+    // 영화 리스트
+    SET_MOVIES(state, movies) {
+        state.movies = movies || [];
+    },
+
+    // 영화 장르 리스트
+    SET_GENRES(state, genres) {
+        state.genres = genres;
+    },
 };
