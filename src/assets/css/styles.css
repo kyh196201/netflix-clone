@@ -30,6 +30,11 @@ body {
     line-height: 1.2;
 }
 
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
 #app {
     position: relative;
     width: 100%;
@@ -37,6 +42,12 @@ body {
     max-width: 1920px;
     min-height: 100vh;
     margin: 0 auto;
+}
+
+.hidden-title {
+    position: absolute;
+    top: -10000px;
+    font-size: 0;
 }
 
 /* buttons */
@@ -236,8 +247,15 @@ button {
 }
 
 /* 반응형 그리드 리스트 */
-.grid-list {
-    border: 1px solid #ddd;
+.movieList {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(200px, 1fr));
+    column-gap: 20px;
+    width: 100%;
+}
+
+.movieList__item {
+    margin-bottom: 20px;
 }
 
 /* 셀렉트 박스 */
@@ -251,22 +269,65 @@ button {
     color: var(--white-color);
     outline: none;
     padding: 0.25rem 0.5rem;
+    transition: opacity 0.3s linear;
 }
 
-.option-list {
+.option-title:hover {
+    opacity: 0.5;
+}
+
+.optionList {
+    display: flex;
     position: absolute;
     padding: 10px;
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(0, 0, 0, 0.9);
+    z-index: 10;
 }
 
-.option-listItem:hover a {
+.optionList.horizontal {
+    flex-wrap: wrap;
+}
+
+.optionList.column {
+    flex-direction: column;
+}
+
+.optionList__item:hover a {
     text-decoration: underline;
 }
 
-.option-listItem a {
+.optionList__item a {
     display: block;
     color: var(--white-color);
     text-decoration: none;
+}
+
+/* Breadcrumbs */
+.breadcrumbs {
+    display: flex;
+    align-items: center;
+}
+
+.breadcrumbs__depth {
+    font-size: 1.25rem;
+}
+
+.breadcrumbs__depth:not(:last-child) {
+    margin-right: 1rem;
+}
+
+.breadcrumbs__depth:not(:last-child):after {
+    display: inline-block;
+    margin-left: 1rem;
+    content: ">";
+}
+
+.breadcrumbs__depth.zero-depth {
+    color: gray;
+}
+
+.breadcrumbs__depth.current {
+    font-size: 2rem;
 }
 
 /* Media querys */
@@ -289,5 +350,32 @@ button {
 
     .movie-list__item:nth-child(5n) {
         margin-right: 0px;
+    }
+
+    .movieList {
+        display: grid;
+        grid-template-columns: repeat(6, minmax(200px, 1fr));
+        column-gap: 20px;
+        width: 100%;
+        border: 1px solid #ddd;
+    }
+}
+
+@media screen and (min-width: 1800px) {
+    .movie-list__item {
+        width: calc(20% - 10px);
+        margin-right: 10px;
+    }
+
+    .movie-list__item:nth-child(5n) {
+        margin-right: 0px;
+    }
+
+    .movieList {
+        display: grid;
+        grid-template-columns: repeat(7, minmax(200px, 1fr));
+        column-gap: 20px;
+        width: 100%;
+        border: 1px solid #ddd;
     }
 }

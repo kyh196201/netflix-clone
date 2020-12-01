@@ -2,58 +2,53 @@
   <div class="moviePage">
     <header class="moviePage__header">
       <div class="moviePage__header__inner">
-        <div class="moviePage__header__content isGenre" v-if="selectedGenre">
-          <div class="moviePage__breadcrumbs">
-            <span>영화 ></span>
-            <span class="moviePage__genreName">미국 영화</span>
+        <!-- 장르 선택되었을 경우 -->
+        <div class="moviePage__header__content isGenre" v-if="selectedGrenre">
+          <div class="moviePage__breadcrumbs breadcrumbs">
+            <span class="breadcrumbs__depth zero-depth">
+              <router-link to="/browse/movie">영화</router-link>
+            </span>
+            <span class="breadcrumbs__depth current">
+              <router-link :to="`/browse/movie?id=${selectedGrenre.id}`">{{ selectedGrenre.name }}</router-link>
+            </span>
           </div>
-          <div id="sort" class="moviePgae__sort option-container">
+          <div class="moviePage__sort option-container">
             <button class="option-title">
               <span class="option-selected">장르</span>
-              <span>&plus;</span>
+              <span class="option-icon">
+                <font-awesome-icon icon="caret-down" />
+              </span>
             </button>
-            <ul class="option-list">
-              <li class="option-listItem">
-                <a href="#">sort1</a>
-              </li>
-              <li class="option-listItem">
-                <a href="#">sort1</a>
-              </li>
-              <li class="option-listItem">
-                <a href="#">sort1</a>
-              </li>
-              <li class="option-listItem">
+            <ul class="optionList column">
+              <li class="optionList__item">
                 <a href="#">sort1</a>
               </li>
             </ul>
           </div>
         </div>
+        <!-- 장르 선택하기 전 -->
         <div class="moviePage__header__content" v-else>
           <span class="moviePage__title">영화</span>
-          <div id="genre" class="moviePage__genre option-container">
+          <div class="moviePage__genres option-container">
             <button class="option-title" @click="isOpenGenreList = !isOpenGenreList">
               <span class="option-selected">장르</span>
-              <span>&plus;</span>
+              <span class="option-icon">
+                <font-awesome-icon icon="caret-down" />
+              </span>
             </button>
-            <genre-list
-              :genres="genres"
-              v-show="isOpenGenreList"
-              @click="selectGenre"
-              @close="isOpenGenreList = false"
-            ></genre-list>
+            <genre-list :genres="genres" v-if="isOpenGenreList" @click="selectGrenre"></genre-list>
           </div>
         </div>
       </div>
     </header>
     <section class="moviePage__movies">
-      <h2 class="visually-hidden">영화 리스트</h2>
+      <h2 class="hidden-title">영화 리스트</h2>
       <div class="moviePage__list--wrapper movieList--wrapper">
         <ul class="moviePage__list movieList">
-          <li class="moviePage__listItem movieList__item"></li>
+          <li class="moviePage__listItem movieList__item" v-for="movie in movies" :key="movie.id">
+            <movie-card :data="movie"></movie-card>
+          </li>
         </ul>
-        <pre>
-            {{ movies }}
-        </pre>
       </div>
     </section>
   </div>
@@ -62,43 +57,97 @@
 <script>
 import { mapActions, mapState } from "vuex";
 import GenreList from "../components/GenreList.vue";
+import MovieCard from "../components/MovieCard.vue";
 
 export default {
   name: "Movie",
   components: {
-    "genre-list": GenreList
+    "genre-list": GenreList,
+    "movie-card": MovieCard
   },
   data() {
     return {
-      selectedGenre: "",
-      isOpenGenreList: false,
       page: 1,
-      title: "",
-      selectedMovie: "",
-      sort: ""
+      isOpenGenreList: false,
+      genre: null
     };
   },
   computed: {
     ...mapState({
       movies: state => state.movies,
       genres: state => state.genres
-    })
+    }),
+    selectedGrenre() {
+      return this.genre
+        ? this.genres.find(genre => genre.id == this.genre)
+        : null;
+    }
+  },
+  watch: {
+    $route: {
+      handler(route) {
+        const { query } = route;
+
+        if (query && query.id) {
+          this.genre = query.id;
+        } else {
+          this.genre = null;
+        }
+
+        if (query && query.sort) {
+          this.sort = query.sort;
+        } else {
+          this.sort = null;
+        }
+
+        const queryString = this.getMovieQuery(this.genre, this.sort);
+
+        console.log(queryString);
+
+        this.fetchMovies(queryString);
+      },
+      immediate: true
+    }
   },
   created() {
     this.fetchGenres();
-    this.fetchData();
   },
   methods: {
     ...mapActions(["FETCH_MOVIES", "FETCH_GENRES"]),
-    fetchData(query) {
+    fetchMovies(query) {
       query = query ? query + `&page=${this.page}` : `&page=${this.page}`;
       this.FETCH_MOVIES(query);
     },
     fetchGenres() {
       this.FETCH_GENRES();
     },
-    selectGenre(genre) {
-      this.selectedGenre = genre;
+    selectGrenre(genre) {
+      const { path } = this.$route;
+      const query = {
+        id: genre
+      };
+
+      this.isOpenGenreList = false;
+      this.goRoute(path, query);
+    },
+    goRoute(path, query) {
+      this.$router.push({
+        path,
+        query
+      });
+    },
+    getMovieQuery(genre, sort) {
+      let queryString = "";
+
+      if (genre && sort) {
+        queryString = `with_genres=${genre}&sort_by=${sort}`;
+      } else if (genre && !sort) {
+        queryString = `with_genres=${genre}`;
+      } else if (!genre && sort) {
+        queryString = `sort_by=${sort}`;
+      }
+
+      return queryString;
     }
   }
 };
@@ -107,17 +156,17 @@ export default {
 <style>
 .moviePage__header {
   width: 100%;
-  height: 60px;
+  margin-bottom: 2rem;
   background-color: var(--background-color);
 }
 
 .moviePage__header__inner {
-  height: 100%;
   padding: 0 30px;
 }
 
 .moviePage__header__content {
   display: flex;
+  height: 60px;
   align-items: center;
   color: var(--white-color);
 }
@@ -132,32 +181,23 @@ export default {
   margin-right: 3rem;
 }
 
-.option-container.moviePage__genre .option-list {
-  display: flex;
-  flex-wrap: wrap;
-  left: 0;
-  width: 300px;
+.moviePage__genres .option-selected {
+  margin-right: 2rem;
 }
 
-.option-container.moviePage__genre .option-title {
-  padding-right: 2rem;
+.moviePage__sort .option-selected {
+  margin-right: 5rem;
 }
 
-.option-container.moviePage__genre .option-listItem {
-  width: 33.3333%;
-  text-align: left;
-  font-size: 90%;
-}
-
-.option-container.moviePage__genre .option-listItem a {
-  line-height: 1.5;
-}
-
-.option-container.moviePgae__sort .option-list {
-  right: 0;
+.moviePage__sort .optionList {
+  width: 100%;
 }
 
 .moviePage__movies {
   padding: 0 30px;
+}
+
+.moviePage .movieCard {
+  max-width: 100%;
 }
 </style>

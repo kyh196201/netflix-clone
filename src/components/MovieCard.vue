@@ -81,7 +81,7 @@ export default {
     }
   },
   created() {
-    console.log(getPoster);
+    // console.log(getPoster);
   },
   methods: {
     ...mapActions(["SET_MY_LIST", "SET_HATE_LIST", "SET_FAVORITE_LIST"])

@@ -1,7 +1,11 @@
 <template>
-  <ul class="option-list genre-list">
-    <li class="option-listItem" v-for="genre in genres" :key="genre.id">
-      <a href="#" :data-genre-id="genre.id" @click.prevent="$emit('click', genre)">{{ genre.name }}</a>
+  <ul class="optionList genre-list horizontal">
+    <li class="optionList__item" v-for="genre in genres" :key="genre.id">
+      <a
+        href="#"
+        :data-genre-id="genre.id"
+        @click.prevent="$emit('click', genre.id)"
+      >{{ genre.name }}</a>
     </li>
   </ul>
 </template>
@@ -15,3 +19,17 @@ export default {
   }
 };
 </script>
+
+<style>
+.genre-list {
+  width: 300px;
+}
+
+.genre-list .optionList__item {
+  width: 33.3333%;
+}
+
+.genre-list .optionList__item a {
+  line-height: 1.5;
+}
+</style>
