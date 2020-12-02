@@ -13,15 +13,15 @@
             </span>
           </div>
           <div class="moviePage__sort option-container">
-            <button class="option-title">
-              <span class="option-selected">장르</span>
+            <button class="option-title" @click="isOpenFilter = !isOpenFilter">
+              <span class="option-selected">{{ getFilterTitle }}</span>
               <span class="option-icon">
                 <font-awesome-icon icon="caret-down" />
               </span>
             </button>
-            <ul class="optionList column">
-              <li class="optionList__item">
-                <a href="#">sort1</a>
+            <ul class="optionList column" v-if="isOpenFilter">
+              <li class="optionList__item" v-for="(filter, index) in filters" :key="index">
+                <a href="#" @click.prevent="selectSort(filter.name)">{{filter.title}}</a>
               </li>
             </ul>
           </div>
@@ -59,6 +59,24 @@ import { mapActions, mapState } from "vuex";
 import GenreList from "../components/GenreList.vue";
 import MovieCard from "../components/MovieCard.vue";
 
+const filters = [
+  {
+    name: "po",
+    title: "인기 순",
+    query: "popularity.desc"
+  },
+  {
+    name: "yr",
+    title: "출시일 순",
+    query: "release_date.desc"
+  },
+  {
+    name: "av",
+    title: "평점 높은 순",
+    query: "vote_averatge.desc"
+  }
+];
+
 export default {
   name: "Movie",
   components: {
@@ -69,7 +87,10 @@ export default {
     return {
       page: 1,
       isOpenGenreList: false,
-      genre: null
+      genre: null,
+      filters: filters,
+      isOpenFilter: false,
+      sort: null
     };
   },
   computed: {
@@ -81,12 +102,24 @@ export default {
       return this.genre
         ? this.genres.find(genre => genre.id == this.genre)
         : null;
+    },
+    getFilterTitle() {
+      return this.sort
+        ? this.filters.find(f => f.name === this.sort).title
+        : "필터를 선택하세요";
+    },
+    getFilter() {
+      return this.sort
+        ? this.filters.find(f => f.name === this.sort).query
+        : "";
     }
   },
   watch: {
     $route: {
       handler(route) {
         const { query } = route;
+
+        // this.page = 1;
 
         if (query && query.id) {
           this.genre = query.id;
@@ -99,11 +132,7 @@ export default {
         } else {
           this.sort = null;
         }
-
         const queryString = this.getMovieQuery(this.genre, this.sort);
-
-        console.log(queryString);
-
         this.fetchMovies(queryString);
       },
       immediate: true
@@ -111,6 +140,9 @@ export default {
   },
   created() {
     this.fetchGenres();
+  },
+  mounted() {
+    this.setScrollEvent();
   },
   methods: {
     ...mapActions(["FETCH_MOVIES", "FETCH_GENRES"]),
@@ -128,9 +160,10 @@ export default {
       };
 
       this.isOpenGenreList = false;
-      this.goRoute(path, query);
+      this.sort = null;
+      this.changeRoute(path, query);
     },
-    goRoute(path, query) {
+    changeRoute(path, query) {
       this.$router.push({
         path,
         query
@@ -140,14 +173,38 @@ export default {
       let queryString = "";
 
       if (genre && sort) {
-        queryString = `with_genres=${genre}&sort_by=${sort}`;
+        queryString = `with_genres=${genre}&sort_by=${this.getFilter}`;
       } else if (genre && !sort) {
         queryString = `with_genres=${genre}`;
       } else if (!genre && sort) {
-        queryString = `sort_by=${sort}`;
+        queryString = `sort_by=${this.getFilter}`;
       }
 
       return queryString;
+    },
+    selectSort(sort) {
+      if (!this.genre) {
+        console.error("장르가 선택되어어야합니다.");
+        return;
+      }
+
+      const { path } = this.$route;
+      const query = {
+        id: this.genre,
+        sort: sort
+      };
+
+      this.changeRoute(path, query);
+    },
+    setScrollEvent() {
+      document.addEventListener("scroll", e => {
+        console.log("window.innerHeight", window.innerHeight);
+        console.log("window.scrollY", window.scrollY);
+        console.log("document.body.offsetHeight", document.body.offsetHeight);
+      });
+    },
+    isBottom() {
+      // window.innerHeight + window.scrollY) >= document.body.offsetHeight
     }
   }
 };
