@@ -58,6 +58,8 @@
 import { mapActions, mapState } from "vuex";
 import GenreList from "../components/GenreList.vue";
 import MovieCard from "../components/MovieCard.vue";
+import throttle from "../utils/throttle.js";
+import debounce from "../utils/debounce.js";
 
 const filters = [
   {
@@ -90,7 +92,9 @@ export default {
       genre: null,
       filters: filters,
       isOpenFilter: false,
-      sort: null
+      sort: null,
+      isScrolling: false,
+      prevScrollPos: window.scrollY
     };
   },
   computed: {
@@ -161,6 +165,7 @@ export default {
 
       this.isOpenGenreList = false;
       this.sort = null;
+      this.page = 1;
       this.changeRoute(path, query);
     },
     changeRoute(path, query) {
@@ -169,6 +174,7 @@ export default {
         query
       });
     },
+    // computed 속성으로?
     getMovieQuery(genre, sort) {
       let queryString = "";
 
@@ -194,17 +200,58 @@ export default {
         sort: sort
       };
 
+      this.page = 1;
       this.changeRoute(path, query);
+      this.isOpenFilter = false;
     },
     setScrollEvent() {
-      document.addEventListener("scroll", e => {
-        console.log("window.innerHeight", window.innerHeight);
-        console.log("window.scrollY", window.scrollY);
-        console.log("document.body.offsetHeight", document.body.offsetHeight);
-      });
+      document.addEventListener("scroll", throttle(this.onScroll, 250));
+    },
+    onScroll(e) {
+      const direction = this.getScrollDirection();
+
+      this.prevScrollPos = window.scrollY;
+
+      if (this.isScrolling) return false;
+
+      const isBottom = this.isBottom();
+
+      if (isBottom) {
+        if (direction === "UP") return;
+
+        this.isScrolling = true;
+        // console.log("여기서 데이터를 로드합니다.");
+        this.fetchOnScroll();
+
+        setTimeout(() => {
+          this.isScrolling = false;
+        }, 3000);
+      }
     },
     isBottom() {
-      // window.innerHeight + window.scrollY) >= document.body.offsetHeight
+      const body = document.body;
+      // 브라우저 높이
+      const browserHeight = Math.max(window.innerHeight, body.clientHeight);
+      //   스크롤한 높이
+      const scrollY = window.scrollY || window.pageYOffset;
+      //   문서 총 높이
+      const documentHeight = body.scrollHeight;
+
+      return documentHeight * 0.9 <= browserHeight + scrollY;
+    },
+    getScrollDirection() {
+      if (this.prevScrollPos < window.scrollY) {
+        return "DOWN";
+      } else {
+        return "UP";
+      }
+    },
+    fetchOnScroll() {
+      this.page = this.page + 1;
+
+      const queryString = this.getMovieQuery(this.genre, this.sort);
+
+      console.log(queryString, this.page);
     }
   }
 };

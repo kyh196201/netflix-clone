@@ -357,7 +357,6 @@ button {
         grid-template-columns: repeat(6, minmax(200px, 1fr));
         column-gap: 20px;
         width: 100%;
-        border: 1px solid #ddd;
     }
 }
 
@@ -376,6 +375,5 @@ button {
         grid-template-columns: repeat(7, minmax(200px, 1fr));
         column-gap: 20px;
         width: 100%;
-        border: 1px solid #ddd;
     }
 }
