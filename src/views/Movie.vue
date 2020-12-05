@@ -116,6 +116,19 @@ export default {
       return this.sort
         ? this.filters.find(f => f.name === this.sort).query
         : "";
+    },
+    queryString() {
+      const { genre, sort, page } = this;
+      let queryString = `page=${page}`;
+
+      if (genre) {
+        queryString = queryString + `&with_genres=${genre}`;
+      }
+
+      if (sort) {
+        queryString = queryString + `&sort_by=${this.getFilter(sort)}`;
+      }
+      return queryString;
     }
   },
   watch: {
@@ -123,7 +136,7 @@ export default {
       handler(route) {
         const { query } = route;
 
-        // this.page = 1;
+        this.clearPage();
 
         if (query && query.id) {
           this.genre = query.id;
@@ -136,8 +149,7 @@ export default {
         } else {
           this.sort = null;
         }
-        const queryString = this.getMovieQuery(this.genre, this.sort);
-        this.fetchMovies(queryString);
+        this.fetchMovies(this.queryString);
       },
       immediate: true
     }
@@ -149,9 +161,8 @@ export default {
     this.setScrollEvent();
   },
   methods: {
-    ...mapActions(["FETCH_MOVIES", "FETCH_GENRES"]),
-    fetchMovies(query) {
-      query = query ? query + `&page=${this.page}` : `&page=${this.page}`;
+    ...mapActions(["FETCH_MOVIES", "FETCH_GENRES", "FETCH_PAGINATION_MOVIES"]),
+    fetchMovies(query = "") {
       this.FETCH_MOVIES(query);
     },
     fetchGenres() {
@@ -173,20 +184,6 @@ export default {
         path,
         query
       });
-    },
-    // computed 속성으로?
-    getMovieQuery(genre, sort) {
-      let queryString = "";
-
-      if (genre && sort) {
-        queryString = `with_genres=${genre}&sort_by=${this.getFilter}`;
-      } else if (genre && !sort) {
-        queryString = `with_genres=${genre}`;
-      } else if (!genre && sort) {
-        queryString = `sort_by=${this.getFilter}`;
-      }
-
-      return queryString;
     },
     selectSort(sort) {
       if (!this.genre) {
@@ -225,7 +222,7 @@ export default {
 
         setTimeout(() => {
           this.isScrolling = false;
-        }, 3000);
+        }, 1000);
       }
     },
     isBottom() {
@@ -249,9 +246,11 @@ export default {
     fetchOnScroll() {
       this.page = this.page + 1;
 
-      const queryString = this.getMovieQuery(this.genre, this.sort);
-
-      console.log(queryString, this.page);
+      //   데이터 fetch
+      this.FETCH_PAGINATION_MOVIES(this.queryString);
+    },
+    clearPage() {
+      this.page = 1;
     }
   }
 };

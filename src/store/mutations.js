@@ -117,6 +117,10 @@ export default {
         state.movies = movies || [];
     },
 
+    SET_PAGINATION_MOVIES(state, movies) {
+        state.movies = [...state.movies, ...movies];
+    },
+
     // 영화 장르 리스트
     SET_GENRES(state, genres) {
         state.genres = genres;

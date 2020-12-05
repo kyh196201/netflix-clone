@@ -135,6 +135,17 @@ export default {
         }
     },
 
+    // infinite scroll과 연동
+    async FETCH_PAGINATION_MOVIES({ commit }, query) {
+        try {
+            const response = await api.discover(query);
+            const { results } = response;
+            commit("SET_PAGINATION_MOVIES", results);
+        } catch (e) {
+            return Promise.reject(e);
+        }
+    },
+
     // 영화 장르 리스트 fetch
     async FETCH_GENRES({ commit }) {
         try {
