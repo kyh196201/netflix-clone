@@ -204,7 +204,7 @@ export default {
     setScrollEvent() {
       document.addEventListener("scroll", throttle(this.onScroll, 250));
     },
-    onScroll(e) {
+    async onScroll(e) {
       const direction = this.getScrollDirection();
 
       this.prevScrollPos = window.scrollY;
@@ -218,11 +218,8 @@ export default {
 
         this.isScrolling = true;
         // console.log("여기서 데이터를 로드합니다.");
-        this.fetchOnScroll();
-
-        setTimeout(() => {
-          this.isScrolling = false;
-        }, 1000);
+        await this.fetchOnScroll();
+        this.isScrolling = false;
       }
     },
     isBottom() {
@@ -243,11 +240,11 @@ export default {
         return "UP";
       }
     },
-    fetchOnScroll() {
+    async fetchOnScroll() {
       this.page = this.page + 1;
 
       //   데이터 fetch
-      this.FETCH_PAGINATION_MOVIES(this.queryString);
+      await this.FETCH_PAGINATION_MOVIES(this.queryString);
     },
     clearPage() {
       this.page = 1;
