@@ -48,14 +48,18 @@ export default {
   },
   watch: {
     $route: {
-      handler(value) {
-        let queryString = value.query.q;
+      handler(newRoute, oldRoute) {
+        let query = newRoute.query.q;
 
-        if (!queryString) {
+        if (oldRoute && oldRoute.query.q === query) {
+          return;
+        }
+
+        if (!query) {
           this.$router.push("/browse");
         } else {
           this.SET_IS_SEARCHING(true);
-          this.keyword = decodeURIComponent(queryString);
+          this.keyword = query;
           // 새로운 키워드로 검색시 항상 page값을 1로 설정해줘야한다.
           this.currentPage = 1;
           this.fetchData();

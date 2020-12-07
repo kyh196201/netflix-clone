@@ -2,11 +2,7 @@
   <div class="searchResult">
     <ul class="movie-list" v-if="data && data.length">
       <li class="movie-list__item" v-for="movie in data" :key="movie.id" :data-movie-id="movie.id">
-        <div class="movie">
-          <figure class="movie__thumbnail">
-            <img :src="getPoster(movie['poster_path'])" :alt="movie.title" @error="onError" />
-          </figure>
-        </div>
+        <movie-item :data="movie"></movie-item>
       </li>
     </ul>
     <no-result v-else />
@@ -17,12 +13,14 @@
 import { POSTER_PATH } from "../utils/constant.js";
 import defaultImage from "../assets/images/default_image.png";
 import NoResult from "./NoResult.vue";
+import MovieItem from "./MovieItem.vue";
 
 export default {
   name: "SearchResult",
   props: ["data"],
   components: {
-    "no-result": NoResult
+    "no-result": NoResult,
+    "movie-item": MovieItem
   },
   data() {
     return {

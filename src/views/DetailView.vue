@@ -185,26 +185,26 @@
 
 <script>
 import MyModal from "../components/MyModal.vue";
-import { mapActions, mapState, mapGetters } from "vuex";
+import { mapActions, mapState, mapGetters, mapMutations } from "vuex";
 import DEFAILT_BG from "@/assets/images/default_image.png";
 import titleSample from "@/assets/images/detailview-player-title.png";
 import { BACKDROP_PATH } from "../utils/constant.js";
 
 export default {
-  name: "Detail",
-  props: ["mid"],
+  name: "DetailView",
   components: {
     MyModal
   },
   data() {
     return {
       isLoading: false,
-      movieId: "",
       defaultBg: DEFAILT_BG,
       titleSample: titleSample,
       actor_length: 4,
       backDropPath: BACKDROP_PATH,
-      returnPath: "/browse"
+      returnPath: "/browse",
+      movieId: null,
+      prevRoute: null
     };
   },
   computed: {
@@ -256,8 +256,11 @@ export default {
     }
   },
   created() {
-    this.returnPath = this.$route.matched[0].path || "/browse";
-    this.movieId = this.$route.params.mid;
+    this.movieId = this.$route.query.jbv;
+
+    const prevRoute = localStorage.getItem("prevRoute");
+    this.prevRoute = prevRoute ? JSON.parse(prevRoute) : null;
+
     this.fetchData();
   },
   methods: {
@@ -267,22 +270,44 @@ export default {
       "SET_HATE_LIST",
       "SET_MY_LIST"
     ]),
+    ...mapMutations(["SET_IS_MOVIE_DETAIL"]),
     async fetchData() {
       this.isLoading = true;
-      await this.FETCH_MOVIE({
-        id: this.movieId
-      });
-      setTimeout(() => {
-        this.isLoading = false;
-      }, 1000);
+      try {
+        await this.FETCH_MOVIE({
+          id: this.movieId
+        });
+      } catch (err) {
+        this.goPrev();
+        this.SET_IS_MOVIE_DETAIL(false);
+      } finally {
+        setTimeout(() => {
+          this.isLoading = false;
+        }, 500);
+      }
     },
     onErrorPoster() {
       const $poster = this.$refs.poster;
-
       $poster.setAttribute("src", this.defaultBg);
     },
     onClose() {
-      this.$router.push(this.returnPath);
+      this.goPrev();
+      this.SET_IS_MOVIE_DETAIL(false);
+    },
+    goPrev() {
+      const { path, query, params } = this.prevRoute;
+
+      if (!path) {
+        this.$router.push({
+          path: "BrowseHome"
+        });
+      } else {
+        this.$router.push({
+          path: path,
+          query: query,
+          params: params
+        });
+      }
     }
   }
 };

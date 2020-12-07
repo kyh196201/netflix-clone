@@ -108,7 +108,7 @@ export default {
         }
     },
 
-    // 싫어요 리스트
+    // 찜한 리스트
     SET_MY_LIST({ state, commit, getters }, payload) {
         const { id } = payload;
 

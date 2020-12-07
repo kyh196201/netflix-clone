@@ -46,7 +46,7 @@
         <h3 class="movieSlider-title">{{ listTitle.playing }}</h3>
         <MovieSlider :title="listTitle.playing" :list="playing" />
       </div>
-      <router-view></router-view>
+      <!-- <router-view></router-view> -->
     </div>
   </section>
 </template>
@@ -56,6 +56,7 @@ import MovieSlider from "@/components/MovieSlider.vue";
 import LoadingGrid from "@/components/LoadingGrid.vue";
 import * as api from "../api";
 import { TITLE } from "../utils/constant.js";
+import { mapState } from "vuex";
 
 export default {
   name: "BrowseHome",
@@ -71,6 +72,11 @@ export default {
       listTitle: TITLE,
       isLoading: false
     };
+  },
+  computed: {
+    ...mapState({
+      isMovieDetail: state => state.isMovieDetail
+    })
   },
   created() {
     this.fetchAll();

@@ -126,15 +126,15 @@ export default {
       }
 
       if (sort) {
-        queryString = queryString + `&sort_by=${this.getFilter(sort)}`;
+        queryString = queryString + `&sort_by=${this.getFilter}`;
       }
       return queryString;
     }
   },
   watch: {
     $route: {
-      handler(route) {
-        const { query } = route;
+      handler(newRoute, oldRoute) {
+        const { query } = newRoute;
 
         this.clearPage();
 
@@ -149,6 +149,7 @@ export default {
         } else {
           this.sort = null;
         }
+
         this.fetchMovies(this.queryString);
       },
       immediate: true

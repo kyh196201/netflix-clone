@@ -14,33 +14,38 @@
             <font-awesome-icon icon="play" />
           </button>
         </li>
-        <li>
-          <button class="controller__btn" @click="SET_MY_LIST(data)">
+        <li v-if="isMyList">
+          <button class="controller__btn" @click.prevent="SET_MY_LIST(data)">
             <font-awesome-icon icon="check" />
           </button>
         </li>
+        <li v-else>
+          <button class="control__btn controller__btn" @click.prevent="SET_MY_LIST(data)">
+            <font-awesome-icon icon="plus" />
+          </button>
+        </li>
         <li v-if="isFavorite">
-          <button class="controller__btn">
+          <button class="controller__btn" @click="SET_FAVORITE_LIST(data.id)">
             <font-awesome-icon :icon="['fas', 'thumbs-up']" />
           </button>
         </li>
         <li v-else>
-          <button class="controller__btn">
+          <button class="controller__btn" @click="SET_FAVORITE_LIST(data.id)">
             <font-awesome-icon :icon="['far', 'thumbs-up']" />
           </button>
         </li>
         <li v-if="isHate">
-          <button class="controller__btn">
+          <button class="controller__btn" @click="SET_HATE_LIST(data.id)">
             <font-awesome-icon :icon="['fas', 'thumbs-down']" />
           </button>
         </li>
         <li v-else>
-          <button class="controller__btn">
+          <button class="controller__btn" @click="SET_HATE_LIST(data.id)">
             <font-awesome-icon :icon="['far', 'thumbs-down']" />
           </button>
         </li>
         <li class="movieCard__caretBtn">
-          <button class="controller__btn">
+          <button class="controller__btn" @click.prevent="goDetail(data.id)">
             <font-awesome-icon icon="caret-down" />
           </button>
         </li>
@@ -51,16 +56,13 @@
 
 <script>
 import { getPoster } from "../utils/constant.js";
-import { mapGetters, mapActions } from "vuex";
+import { mapGetters, mapActions, mapMutations } from "vuex";
 
 export default {
   name: "MovieCard",
   props: ["data"],
-  data() {
-    return {};
-  },
   computed: {
-    ...mapGetters(["isHateItem", "isFavoriteItem"]),
+    ...mapGetters(["isHateItem", "isFavoriteItem", "isInMyList"]),
     isFavorite() {
       return this.isFavoriteItem(this.data.id);
     },
@@ -78,13 +80,29 @@ export default {
     },
     isVideo() {
       return this.data.video;
+    },
+    isMyList() {
+      return this.isInMyList(this.data.id);
     }
   },
-  created() {
-    // console.log(getPoster);
-  },
   methods: {
-    ...mapActions(["SET_MY_LIST", "SET_HATE_LIST", "SET_FAVORITE_LIST"])
+    ...mapActions(["SET_MY_LIST", "SET_HATE_LIST", "SET_FAVORITE_LIST"]),
+    ...mapMutations(["SET_IS_MOVIE_DETAIL"]),
+    goDetail(id) {
+      this.SET_IS_MOVIE_DETAIL(true);
+
+      const { path, query, params } = this.$route;
+      const newQuery = {
+        ...query,
+        jbv: id
+      };
+
+      this.$router.push({
+        path: path,
+        query: newQuery,
+        params: params
+      });
+    }
   }
 };
 </script>

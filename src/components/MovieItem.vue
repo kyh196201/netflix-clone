@@ -1,33 +1,44 @@
 <template>
-  <router-link :to="nextPath" class="movie" data-movie-id="data.id">
+  <a href="#" class="movie" data-movie-id="data.id" @click.prevent="goDetail(data.id)">
     <figure class="movie__thumbnail">
       <img :src="imagePath" alt="thumbnail__img" />
     </figure>
-  </router-link>
+  </a>
 </template>
 
 <script>
 import { POSTER_PATH } from "../utils/constant.js";
+import { mapMutations } from "vuex";
 
 export default {
   name: "MovieItem",
   props: ["data"],
   data() {
     return {
-      posterPath: POSTER_PATH,
-      currentPath: ""
+      posterPath: POSTER_PATH
     };
   },
   computed: {
     imagePath() {
       return this.posterPath + this.data.poster_path;
-    },
-    nextPath() {
-      return this.currentPath + `/detail/${this.data.id}`;
     }
   },
-  created() {
-    this.currentPath = this.$route.fullPath;
+  methods: {
+    ...mapMutations(["SET_IS_MOVIE_DETAIL"]),
+    goDetail(id) {
+      this.SET_IS_MOVIE_DETAIL(true);
+
+      const { path, query, params } = this.$route;
+      const newQuery = {
+        ...query,
+        jbv: id
+      };
+
+      this.$router.push({
+        path: path,
+        query: newQuery
+      });
+    }
   }
 };
 </script>

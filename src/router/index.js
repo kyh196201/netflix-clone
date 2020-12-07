@@ -72,4 +72,16 @@ const router = new VueRouter({
     routes,
 });
 
+router.afterEach((to, from) => {
+    const { query, path, params } = from;
+
+    const prevRoute = {
+        path: path,
+        query: query,
+        params: params,
+    };
+
+    localStorage.setItem("prevRoute", JSON.stringify(prevRoute));
+});
+
 export default router;

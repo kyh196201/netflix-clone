@@ -22,4 +22,6 @@ export default {
     genres: [],
     // 최신 영화 리스트
     latestList: [],
+    // 영화 상세 정보 모달
+    isMovieDetail: false,
 };

@@ -125,4 +125,9 @@ export default {
     SET_GENRES(state, genres) {
         state.genres = genres;
     },
+
+    // detailView 선택
+    SET_IS_MOVIE_DETAIL(state, toggle = true) {
+        state.isMovieDetail = toggle;
+    },
 };
