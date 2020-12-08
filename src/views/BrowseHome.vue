@@ -2,31 +2,35 @@
   <section class="browseHome">
     <LoadingGrid v-if="isLoading" />
     <div class="browseHome__content fadeIn" v-else>
-      <!-- 백그라운드 이미지 영역 -->
-      <div class="bilboard-container">
+      <!-- 매인 영화 영역 -->
+      <div class="bilboard-container" v-if="mainMovie" R>
         <div class="bilboard-wrapper">
-          <!-- 이미지 wrapper -->
+          <!-- 영화 포스터 -->
           <div class="bilboard__image-wrapper">
             <figure class="bilboard__image">
-              <img
-                src="https://occ-0-1007-988.1.nflxso.net/dnm/api/v6/6AYY37jfdO6hpXcMjf9Yu5cnmO0/AAAABe5hOqOEh_QweztEJo7uV8DcG_eHpUZh-RdgPDSwUNFt0rNH_DU8N4YEGdVTnQF9pby0QeidQBmiF49vw4bTpPv7E7CC.webp?r=a83"
-                alt="hero-image"
-              />
+              <img :src="mainPoster" :alt="mainMovie.title" />
             </figure>
           </div>
-          <!-- 이미지 설명 영역 -->
+        </div>
+        <div class="bilboard-meta-wrapper">
+          <!-- 영화 정보 영역 -->
           <div class="bilboard__meta">
-            <div class="bilboard__meta__title">마약왕</div>
-            <p class="bilboard__meta__synopsis">
-              누군가는 노다지라고 했다. 누군가는 저승길이라고 했다.
-              그저 밥벌이하겠다고 뛰어든 어둠의 세계. 그 암흑 속에서
-              한 남자가 탐욕에 취해 흥청거리고 비틀거린다.
-            </p>
+            <div :class="mainTitleClass">{{ mainMovie.title }}</div>
+            <p class="bilboard__meta__synopsis">{{ mainMovie.overview }}</p>
             <div class="bilboard__meta__control">
-              <button class="meta__btn btn-l btn-default">
+              <button
+                type="button"
+                class="meta__btn btn-l btn-default"
+                :data-movie-id="mainMovie.id"
+              >
                 <font-awesome-icon icon="play" />재생
               </button>
-              <button class="meta__btn btn-l btn-gray">
+              <button
+                type="button"
+                class="meta__btn btn-l btn-gray"
+                :data-movie-id="mainMovie.id"
+                @click.prevent="goDetail(mainMovie.id)"
+              >
                 <font-awesome-icon icon="info-circle" />상세 정보
               </button>
             </div>
@@ -46,6 +50,7 @@
         <h3 class="movieSlider-title">{{ listTitle.playing }}</h3>
         <MovieSlider :title="listTitle.playing" :list="playing" />
       </div>
+      <VideoView></VideoView>
       <!-- <router-view></router-view> -->
     </div>
   </section>
@@ -54,15 +59,18 @@
 <script>
 import MovieSlider from "@/components/MovieSlider.vue";
 import LoadingGrid from "@/components/LoadingGrid.vue";
-import * as api from "../api";
-import { TITLE } from "../utils/constant.js";
-import { mapState } from "vuex";
+import VideoView from "@/components/VideoView.vue";
+import * as api from "@/api";
+import { TITLE, getBackdrop } from "@/utils/constant.js";
+import { mapState, mapMutations } from "vuex";
+import { getRandomNumber } from "@/utils/helpers.js";
 
 export default {
   name: "BrowseHome",
   components: {
     MovieSlider,
-    LoadingGrid
+    LoadingGrid,
+    VideoView
   },
   data() {
     return {
@@ -70,26 +78,44 @@ export default {
       upComing: [],
       playing: [],
       listTitle: TITLE,
-      isLoading: false
+      isLoading: false,
+      // 선택된 메인 영화
+      mainMovie: null
     };
   },
   computed: {
     ...mapState({
       isMovieDetail: state => state.isMovieDetail
-    })
+    }),
+    mainPoster() {
+      return this.mainMovie ? getBackdrop(this.mainMovie.backdrop_path) : "";
+    },
+    mainTitleClass() {
+      return {
+        bilboard__meta__title: true,
+        long: this.mainMovie.title && this.mainMovie.title.length >= 10
+      };
+    }
   },
-  created() {
-    this.fetchAll();
+  async created() {
+    // 영화 데이터 로드
+    await this.fetchAll();
+    // 메인 영화 선택
+    this.setMainMovie();
+
+    // fetch video
+    await api.movies.getVideo(this.mainMovie.id);
   },
   methods: {
+    ...mapMutations(["SET_IS_MOVIE_DETAIL"]),
     // 멀티 요청
     async fetchAll() {
       try {
         this.isLoading = true;
         const [topRated, upComing, playing] = await api.requestAll([
-          this.fetchData("topRated"),
-          this.fetchData("upComing"),
-          this.fetchData("playing")
+          this.fetchMovie("topRated"),
+          this.fetchMovie("upComing"),
+          this.fetchMovie("playing")
         ]);
         this.topRated = topRated && topRated.results;
         this.upComing = upComing && upComing.results;
@@ -97,22 +123,51 @@ export default {
       } catch (err) {
         console.error(err);
       } finally {
-        console.log("finally");
-        setTimeout(() => {
-          this.isLoading = false;
-        }, 1000);
+        this.isLoading = false;
       }
     },
-    // api call
-    async fetchData(type) {
+    async fetchMovie(type) {
       try {
         const res = await api.movies[type].call();
         return res;
       } catch (err) {
         console.error(err);
-      } finally {
-        console.log("finally");
       }
+    },
+    setMainMovie() {
+      const playing = this.playing;
+
+      if (!playing.length) {
+        console.error("playing length error");
+        return;
+      }
+
+      const randomIndex = getRandomNumber(playing.length);
+
+      if (randomIndex < 0 || randomIndex >= playing.length) {
+        console.error("randomIndex error");
+        return;
+      }
+
+      console.log(randomIndex);
+
+      this.mainMovie = playing[1] || null;
+    },
+    goDetail(id) {
+      const { path, query, params } = this.$route;
+
+      const newQuery = {
+        ...query,
+        jbv: id
+      };
+
+      this.$router.push({
+        path: path,
+        query: newQuery,
+        params: params
+      });
+
+      this.SET_IS_MOVIE_DETAIL(true);
     }
   }
 };
@@ -120,83 +175,93 @@ export default {
 
 <style>
 .browseHome__content {
-  margin-top: -80px;
+  margin-top: -8rem;
 }
 
 .bilboard-container {
   position: relative;
-  /* padding-bottom: 40%; */
-  /* z-index: -1; */
+  padding-bottom: 40%;
 }
 
-.bilboard-wrapper {
-  /* position: absolute; */
-  width: 100%;
-  height: 56.25vh;
-  background-color: #000;
-}
-
-.bilboard__image-wrapper {
+.bilboard-wrapper,
+.bilboard-meta-wrapper {
   position: absolute;
   top: 0;
   right: 0;
-  bottom: 0;
-  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #000;
+}
+
+.bilboard-meta-wrapper {
+  background-color: transparent;
+  background: linear-gradient(to top, #181818, transparent 50%);
+}
+
+.bilboard__image-wrapper {
+  overflow: hidden;
   width: 100%;
   height: 100%;
 }
 
 .bilboard__image {
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
   width: 100%;
   height: 100%;
 }
 
 .bilboard__image > img {
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
   width: 100%;
-  max-height: 100%;
+  height: 100%;
 }
 
 .bilboard__meta {
   position: absolute;
   top: 50%;
-  /* left: 3%; */
-  left: 30px;
-  transform: translate(0, -50%);
+  left: 0;
+  padding: 0 3rem;
+  transform: translate(0, -40%);
   z-index: 10;
-  width: 40%;
+  width: 100%;
 }
 
 .bilboard__meta__title {
-  margin-bottom: 24px;
+  overflow: hidden;
+  margin-bottom: 2.4rem;
+  width: 100%;
   color: #fff;
-  font-size: 120px;
+  font-size: 10rem;
   font-weight: bold;
   letter-spacing: 20px;
+  white-space: nowrap;
+}
+
+.bilboard__meta__title.long {
+  font-size: 5rem;
 }
 
 .bilboard__meta__synopsis {
-  max-width: 500px;
-  margin-bottom: 16px;
-  font-size: 18px;
+  max-width: 50rem;
+  margin-bottom: 1.6rem;
   color: #fff;
+  font-size: 1.7rem;
   line-height: 1.5;
+  max-height: 7.5em;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 5;
+  -webkit-box-orient: vertical;
 }
 
 .bilboard__meta__control > button:first-child {
-  margin-right: 16px;
+  margin-right: 1.6rem;
+}
+
+.bilboard__meta__control button {
+  padding: 1rem 2rem;
+  font-size: 1.5rem;
 }
 
 .browseHome button svg {
-  margin-right: 10px;
+  margin-right: 1rem;
 }
 </style>

@@ -299,7 +299,7 @@ export default {
 
       if (!path) {
         this.$router.push({
-          path: "BrowseHome"
+          path: "/browseHome"
         });
       } else {
         this.$router.push({
@@ -314,6 +314,10 @@ export default {
 </script>
 
 <style>
+.detailView {
+  font-size: 1.5rem;
+}
+
 .detailView .myModal-container {
   min-width: 650px;
   max-width: 900px;
@@ -399,7 +403,7 @@ export default {
 .detailView__player__title p {
   font-family: "Nanum Pen Script", cursive;
   font-weight: bold;
-  font-size: 4rem;
+  font-size: 6rem;
   color: white;
   letter-spacing: 1rem;
 }
@@ -467,8 +471,14 @@ pre {
 
 .detailView__overview__releaseDate {
   font-weight: bold;
+  font-size: 1.25rem;
   color: #44cc66;
   letter-spacing: 0.1rem;
+}
+
+.detailView__overview__title,
+.detailView__overview__runningTime {
+  font-size: 1.25rem;
 }
 
 .detailView__overview__adult {
@@ -491,7 +501,7 @@ pre {
   flex-wrap: wrap;
   align-items: center;
   margin-bottom: 0.75rem;
-  font-size: 0.85rem;
+  font-size: 1.25rem;
 }
 
 .detailView__info li:last-child {
@@ -589,7 +599,7 @@ pre {
 
 @media screen and (max-width: 968px) {
   .detailView__player__title p {
-    font-size: 2.5rem;
+    font-size: 4rem;
   }
 }
 </style>

@@ -71,7 +71,7 @@ export default {
 
 <style>
 .movieSlider-wrapper {
-  padding: 0 30px;
+  padding: 0 3rem;
 }
 
 .movieSlider {

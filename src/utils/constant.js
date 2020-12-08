@@ -21,6 +21,7 @@ export const POSTER_PATH = IMG_PATH + IMG_SIZES["poster_sizes"][2];
 export const BACKDROP_PATH = IMG_PATH + IMG_SIZES["backdrop_sizes"][2];
 
 export const getPoster = (url) => POSTER_PATH + url;
+export const getBackdrop = (url) => BACKDROP_PATH + url;
 
 // 스와이퍼 옵션
 export const SLIDES_PER_VIEW = 5;

@@ -410,11 +410,11 @@ modal이 created될때 전달받은 영화 id를 통해 selectedMovie를 set하�
 
 Todo
 
-1. latest
+1. latest [X]
 
 2. 사람, 감독, 장르 검색 기능
 
-3. 메인 영화
+3. 메인 영화 []
 
 4. video가져오고, video있으면 재생하기
 

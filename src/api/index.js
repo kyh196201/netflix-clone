@@ -82,6 +82,11 @@ export const movies = {
         const url = `/movie/upcoming?page=${page}&region=KR`;
         return await request.get(url);
     },
+    async getVideo(id) {
+        const url = `/movie/${id}/videos`;
+        const response = await request.get(url);
+        console.log(response);
+    },
 };
 
 // 검색
