@@ -8,7 +8,7 @@ export default function throttle(fn, delay) {
 
         if (!timer) {
             timer = setTimeout(() => {
-                fn.apply(context.args);
+                fn.apply(context, args);
                 // clearTimeout(timer);
                 timer = null;
             }, delay);

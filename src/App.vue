@@ -12,6 +12,8 @@ import Header from "./components/Header.vue";
 import DetailView from "./views/DetailView.vue";
 import { mapState } from "vuex";
 
+import { setYoutubeAPI } from "@/utils/youtube.js";
+
 export default {
   components: {
     Header,
@@ -21,6 +23,10 @@ export default {
     ...mapState({
       isMovieDetail: state => state.isMovieDetail
     })
+  },
+  created() {
+    console.log("app created");
+    setYoutubeAPI();
   }
 };
 </script>

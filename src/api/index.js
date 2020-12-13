@@ -20,8 +20,15 @@ movieAxios.defaults.params["api_key"] = API_KEY;
 movieAxios.defaults.params["language"] = LANG;
 movieAxios.defaults.params["include_adult"] = isAdult;
 
-// validation
-// console.log(axios.defaults.validateStatus);
+const videoAxios = axios.create({
+    baseURL: END_POINT,
+});
+
+videoAxios.defaults.timeout = 2500;
+videoAxios.defaults.params = {};
+videoAxios.defaults.params["api_key"] = API_KEY;
+videoAxios.defaults.params["language"] = "en-US";
+videoAxios.defaults.params["include_adult"] = isAdult;
 
 const request = {
     async get(url) {
@@ -82,10 +89,14 @@ export const movies = {
         const url = `/movie/upcoming?page=${page}&region=KR`;
         return await request.get(url);
     },
-    async getVideo(id) {
-        const url = `/movie/${id}/videos`;
-        const response = await request.get(url);
-        console.log(response);
+    async fetchVideo(id) {
+        try {
+            const url = `/movie/${id}/videos?language=en-US`;
+            const response = await videoAxios.get(url);
+            return response.data.results;
+        } catch (err) {
+            return Promise.reject(err);
+        }
     },
 };
 

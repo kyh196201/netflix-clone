@@ -138,7 +138,7 @@ export default {
 }
 
 .movieCard__controller {
-  padding: 0.5rem 1rem 1rem;
+  padding: 1.25rem 1.5rem 1.5rem;
   background-color: #1f1e1e;
   border-bottom-left-radius: 5px;
   border-bottom-right-radius: 5px;
@@ -146,9 +146,9 @@ export default {
 
 .movieCard .controller__btn {
   /* padding: 0.55em 0.65em; */
-  width: 2rem;
-  height: 2rem;
-  font-size: 0.75em;
+  width: 3rem;
+  height: 3rem;
+  font-size: 1em;
 }
 
 .movieCard__info {
@@ -161,14 +161,14 @@ export default {
   overflow: hidden;
   width: 100%;
   font-family: "Nanum Pen Script", cursive;
-  font-size: 1.75em;
+  font-size: 2em;
   color: white;
   white-space: nowrap;
   text-overflow: ellipsis;
 }
 
 .movieCard__releaseDate {
-  font-size: 1em;
+  font-size: 1.25em;
   font-weight: bold;
   color: #44cc66;
   letter-spacing: 0.1rem;

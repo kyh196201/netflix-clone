@@ -20,14 +20,15 @@
             <div class="bilboard__meta__control">
               <button
                 type="button"
-                class="meta__btn btn-l btn-default"
+                class="meta__btn btn-l btn-default meta__playBtn"
                 :data-movie-id="mainMovie.id"
+                @click="showTrailer"
               >
                 <font-awesome-icon icon="play" />재생
               </button>
               <button
                 type="button"
-                class="meta__btn btn-l btn-gray"
+                class="meta__btn btn-l btn-gray meta__detailBtn"
                 :data-movie-id="mainMovie.id"
                 @click.prevent="goDetail(mainMovie.id)"
               >
@@ -50,7 +51,7 @@
         <h3 class="movieSlider-title">{{ listTitle.playing }}</h3>
         <MovieSlider :title="listTitle.playing" :list="playing" />
       </div>
-      <VideoView></VideoView>
+      <Trailer v-if="isTrailer" @close="isTrailer = false" :movie-id="mainMovie.id" />
       <!-- <router-view></router-view> -->
     </div>
   </section>
@@ -59,7 +60,7 @@
 <script>
 import MovieSlider from "@/components/MovieSlider.vue";
 import LoadingGrid from "@/components/LoadingGrid.vue";
-import VideoView from "@/components/VideoView.vue";
+import Trailer from "@/components/Trailer.vue";
 import * as api from "@/api";
 import { TITLE, getBackdrop } from "@/utils/constant.js";
 import { mapState, mapMutations } from "vuex";
@@ -70,7 +71,7 @@ export default {
   components: {
     MovieSlider,
     LoadingGrid,
-    VideoView
+    Trailer
   },
   data() {
     return {
@@ -80,7 +81,8 @@ export default {
       listTitle: TITLE,
       isLoading: false,
       // 선택된 메인 영화
-      mainMovie: null
+      mainMovie: null,
+      isTrailer: false
     };
   },
   computed: {
@@ -102,9 +104,6 @@ export default {
     await this.fetchAll();
     // 메인 영화 선택
     this.setMainMovie();
-
-    // fetch video
-    await api.movies.getVideo(this.mainMovie.id);
   },
   methods: {
     ...mapMutations(["SET_IS_MOVIE_DETAIL"]),
@@ -149,9 +148,8 @@ export default {
         return;
       }
 
-      console.log(randomIndex);
-
-      this.mainMovie = playing[1] || null;
+      //FIXME playing => topRated로 임시 교체
+      this.mainMovie = this.topRated[randomIndex] || null;
     },
     goDetail(id) {
       const { path, query, params } = this.$route;
@@ -168,6 +166,10 @@ export default {
       });
 
       this.SET_IS_MOVIE_DETAIL(true);
+    },
+    // 예고편 모달창 여는 함수
+    showTrailer() {
+      this.isTrailer = true;
     }
   }
 };

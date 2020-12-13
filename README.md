@@ -414,9 +414,9 @@ Todo
 
 2. 사람, 감독, 장르 검색 기능
 
-3. 메인 영화 []
+3. 메인 영화 [O]
 
-4. video가져오고, video있으면 재생하기
+4. ✨ video가져오고, video있으면 재생하기 []
 
 5. movieItem CSS 수정
 

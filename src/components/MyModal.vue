@@ -4,13 +4,13 @@
       <div class="myModal-container">
         <div class="myModal__content">
           <div class="myModal__header">
-            <slot name="header">default header</slot>
+            <slot name="header"></slot>
           </div>
           <div class="myModal__body">
-            <slot name="body">default body</slot>
+            <slot name="body"></slot>
           </div>
           <div class="myModal__footer">
-            <slot name="footer">default footer</slot>
+            <slot name="footer"></slot>
           </div>
         </div>
       </div>
