@@ -5,6 +5,7 @@
     --skeleton-color: #212529;
     --background-color: #141414;
     --white-color: #fff;
+    --black-color: black;
 }
 
 *,
@@ -115,7 +116,7 @@ button {
 
 .movie-container .swiper-slide {
     transition: 250ms all;
-    height: 150px;
+    /* height: 150px; */
 }
 
 .movie-container .swiper-slide:hover {
@@ -126,25 +127,19 @@ button {
 .movie {
     display: block;
     overflow: hidden;
-    width: 100%;
-    height: 100%;
     cursor: pointer;
 }
 
 /* 이미지 비율 맞추는 부분! */
 .movie__thumbnail {
     display: block;
-    position: relative;
-    height: 100%;
 }
 
 .movie__thumbnail > img {
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+    display: block;
+    max-width: 100%;
+    height: auto;
+    margin: 0 auto;
     border-radius: 3px;
 }
 /* 이미지 비율 맞추는 부분! */

@@ -1,7 +1,7 @@
 <template>
   <header class="home__header">
     <div class="nav-wrapper">
-      <nav-bar />
+      <NavBar />
     </div>
   </header>
 </template>
@@ -12,7 +12,7 @@ import NavBar from "./Navbar.vue";
 export default {
   name: "Header",
   components: {
-    "nav-bar": NavBar
+    NavBar: NavBar
   }
 };
 </script>

@@ -24,8 +24,8 @@ export const getPoster = (url) => POSTER_PATH + url;
 export const getBackdrop = (url) => BACKDROP_PATH + url;
 
 // 스와이퍼 옵션
-export const SLIDES_PER_VIEW = 5;
-export const SPACE_BETWEEN = 5;
+export const SLIDES_PER_VIEW = 7;
+export const SPACE_BETWEEN = 20;
 export const SPEED = 500;
 
 export const KEYS = {

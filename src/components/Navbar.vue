@@ -1,5 +1,5 @@
 <template>
-  <nav class="home__nav nav">
+  <nav class="home__nav nav fixed">
     <!-- 네비게이션 왼쪽 섹션 -->
     <div class="home__nav__left">
       <!-- 사이트 로고 -->
@@ -68,6 +68,7 @@ import logoImage from "../assets/images/logo2.png";
 import avtarImage from "../assets/images/avatar.jpg";
 import SearchInput from "./SearchInput.vue";
 import { mapState } from "vuex";
+import throttle from "@/utils/throttle.js";
 
 const links = [
   {
@@ -101,7 +102,8 @@ export default {
     return {
       logoImage: logoImage,
       avtarImage: avtarImage,
-      links: links
+      links: links,
+      isBgBlack: false
     };
   },
   computed: {
@@ -110,12 +112,28 @@ export default {
       isSearching: state => state.isSearching
     })
   },
+  created() {
+    document.addEventListener("scroll", throttle(this.onScroll, 250));
+  },
   methods: {
     isActive(path) {
       return path === this.$route.path;
     },
     openSearch() {
       this.$store.commit("SET_IS_SEARCHING", true);
+    },
+    onScroll(event) {
+      const BLACK_CN = "black";
+
+      if (window.scrollY <= 0) {
+        this.$el.classList.remove(BLACK_CN);
+        this.isBgBlack = false;
+      } else if (window.scrollY > 0) {
+        if (this.isBgBlack) return;
+
+        this.isBgBlack = true;
+        this.$el.classList.add(BLACK_CN);
+      }
     }
   }
 };
@@ -154,6 +172,19 @@ export default {
     rgba(0, 0, 0, 0.7) 10%,
     rgba(0, 0, 0, 0)
   );
+  transition: background-color 0.5s linear 0s;
+}
+
+.home__nav.fixed {
+  position: fixed;
+  top: 0;
+  left: 0;
+  min-width: 1280px;
+  height: 60px;
+}
+
+.home__nav.black {
+  background-color: var(--black-color);
 }
 
 .home__nav > .home__nav__left {

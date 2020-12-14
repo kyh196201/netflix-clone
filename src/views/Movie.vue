@@ -100,7 +100,8 @@ export default {
       sort: null,
       isFetchingDataByScrolling: false,
       prevScrollPos: window.scrollY,
-      loading: false
+      loading: false,
+      throttledOnScroll: throttle(this.onScroll, 250)
     };
   },
   computed: {
@@ -167,6 +168,9 @@ export default {
   mounted() {
     this.setScrollEvent();
   },
+  destroyed() {
+    this.unSetScrollEvent();
+  },
   methods: {
     ...mapActions(["FETCH_MOVIES", "FETCH_GENRES", "FETCH_PAGINATION_MOVIES"]),
     async fetchMovies(query = "") {
@@ -211,7 +215,10 @@ export default {
       this.isOpenFilter = false;
     },
     setScrollEvent() {
-      document.addEventListener("scroll", throttle(this.onScroll, 250));
+      document.addEventListener("scroll", this.throttledOnScroll);
+    },
+    unSetScrollEvent() {
+      document.removeEventListener("scroll", this.throttledOnScroll);
     },
     async onScroll(e) {
       const direction = this.getScrollDirection();
