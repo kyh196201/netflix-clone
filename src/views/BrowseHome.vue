@@ -41,15 +41,15 @@
       <!-- 영화 리스트 영역 -->
       <div class="movieSlider-wrapper">
         <h3 class="movieSlider-title">{{ listTitle.topRated }}</h3>
-        <MovieSlider :title="listTitle.topRated" :list="topRated" />
+        <MovieSlider :title="listTitle.topRated" :list="topRated" :is-slider="true" />
       </div>
       <div class="movieSlider-wrapper">
         <h3 class="movieSlider-title">{{ listTitle.upComing }}</h3>
-        <MovieSlider :title="listTitle.upComing" :list="upComing" />
+        <MovieSlider :title="listTitle.upComing" :list="upComing" :is-slider="true" />
       </div>
       <div class="movieSlider-wrapper">
         <h3 class="movieSlider-title">{{ listTitle.playing }}</h3>
-        <MovieSlider :title="listTitle.playing" :list="playing" />
+        <MovieSlider :title="listTitle.playing" :list="playing" :is-slider="true" />
       </div>
       <Trailer v-if="isTrailer" @close="isTrailer = false" :movie-id="mainMovie.id" />
       <!-- <router-view></router-view> -->

@@ -5,6 +5,7 @@ import Browse from "../views/Browse.vue";
 import BrowseHome from "../views/BrowseHome.vue";
 import Latest from "../views/Latest.vue";
 import MyList from "../views/MyList.vue";
+import Person from "../views/Person.vue";
 import Genre from "../views/Genre.vue";
 import Movie from "../views/Movie.vue";
 import Search from "../views/Search.vue";
@@ -55,6 +56,11 @@ const routes = [
                 path: "movie",
                 name: "Movie",
                 component: Movie,
+            },
+            {
+                path: "person/:pid",
+                name: "Person",
+                component: Person,
                 props: true,
             },
         ],

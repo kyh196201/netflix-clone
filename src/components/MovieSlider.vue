@@ -41,7 +41,7 @@ const swiperOption = {
 
 export default {
   name: "MovieSlider",
-  props: ["title", "list"],
+  props: ["list", "isSlider"],
   components: {
     MovieItem
   },
@@ -51,10 +51,15 @@ export default {
       swiperOption: swiperOption
     };
   },
+  computed: {
+    isList() {
+      return this.list && this.list.length;
+    }
+  },
   mounted() {
     const target = this.$refs.movieSwiper;
     const options = this.swiperOption;
-    if (this.list && this.list.length) {
+    if (this.isList && this.isSlider) {
       this.movieSwiper = new Swiper(target, options);
     }
   },
@@ -62,7 +67,7 @@ export default {
     const target = this.$refs.movieSwiper;
     const options = this.swiperOption;
 
-    if (this.list && this.list.length) {
+    if (this.isList && this.isSlider) {
       this.movieSwiper = new Swiper(target, options);
     }
   }

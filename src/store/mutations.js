@@ -130,4 +130,9 @@ export default {
     SET_IS_MOVIE_DETAIL(state, toggle = true) {
         state.isMovieDetail = toggle;
     },
+
+    // Person 페이지 영화 리스트
+    SET_PERSON_MOVIES(state, movies) {
+        state.personMovieList = movies;
+    },
 };

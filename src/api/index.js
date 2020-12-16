@@ -118,6 +118,17 @@ export const discover = async (query) => {
     return await request.get(url);
 };
 
+// 배우 id로 영화 검색
+export const fetchByPeople = async (id) => {
+    const url = `/discover/movie?with_people=${id}`;
+    try {
+        const result = await request.get(url);
+        return result;
+    } catch (err) {
+        return Promise.reject(err);
+    }
+};
+
 export const getGenres = async () => {
     const url = `/genre/movie/list`;
     return await request.get(url);

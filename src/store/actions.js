@@ -2,6 +2,7 @@ import * as api from "../api/";
 import { MAX_HISTORY_SIZE } from "../utils/constant.js";
 
 export default {
+    // 영화 검색
     async SEARCH_MOVIE({ commit, dispatch, state }, { query, page }) {
         let newList;
 
@@ -24,6 +25,8 @@ export default {
             dispatch("ADD_SEARCH_HISTORY", { keyword: query });
         }
     },
+
+    // 검색 기록 추가
     ADD_SEARCH_HISTORY({ commit, state }, { keyword }) {
         let history;
 
@@ -49,6 +52,7 @@ export default {
         commit("SET_SEARCH_HISTORY", history);
     },
 
+    // 검색 기록 삭제
     DELETE_SEARCH_HISTORY({ commit, state }, { index }) {
         const newHistory = [
             ...state.searchHistory.slice(0, index),
@@ -58,6 +62,7 @@ export default {
         commit("SET_SEARCH_HISTORY", newHistory);
     },
 
+    // 영화 단일 데이터 가져오기
     async FETCH_MOVIE({ commit }, { id }) {
         try {
             const result = await api.movies.getMovieDetail(id);
@@ -154,6 +159,15 @@ export default {
             commit("SET_GENRES", genres);
         } catch (e) {
             return Promise.reject(e);
+        }
+    },
+
+    async FETCH_PERSON_MOVIES({ commit }, id) {
+        try {
+            const { results } = await api.fetchByPeople(id);
+            commit("SET_PERSON_MOVIES", results);
+        } catch (err) {
+            console.log(err);
         }
     },
 };

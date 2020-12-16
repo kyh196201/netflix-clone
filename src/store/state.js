@@ -24,4 +24,6 @@ export default {
     latestList: [],
     // 영화 상세 정보 모달
     isMovieDetail: false,
+    // person 페이지 영화 리스트
+    personMovieList: [],
 };
