@@ -135,4 +135,9 @@ export default {
     SET_PERSON_MOVIES(state, movies) {
         state.personMovieList = movies;
     },
+
+    // Person 페이지 배우 이름
+    SET_ACTOR_NAME(state, name) {
+        state.personActorName = name;
+    },
 };
