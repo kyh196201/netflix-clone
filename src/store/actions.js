@@ -170,4 +170,9 @@ export default {
             console.log(err);
         }
     },
+
+    async FETCH_PERSON_NAME({ commit }, id) {
+        const res = await api.getPeoPleInfo(id);
+        commit("SET_ACTOR_NAME", res.name);
+    },
 };

@@ -1,5 +1,6 @@
 import axios from "axios";
 import store from "../store/index.js";
+import { faEnvelopeOpenText } from "@fortawesome/free-solid-svg-icons";
 
 //FIXME 성인인지 체크 => 추후에 Profile의 나이 또는 키듸 여부 확인을 통해 변경 예정
 const isAdult = store.state.isAdult;
@@ -127,6 +128,13 @@ export const fetchByPeople = async (id) => {
     } catch (err) {
         return Promise.reject(err);
     }
+};
+
+// 배우 검색
+export const getPeoPleInfo = async (id) => {
+    const url = `/person/${id}`;
+    const result = await request.get(url);
+    return result;
 };
 
 export const getGenres = async () => {

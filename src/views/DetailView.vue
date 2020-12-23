@@ -271,7 +271,7 @@ export default {
       "SET_HATE_LIST",
       "SET_MY_LIST"
     ]),
-    ...mapMutations(["SET_IS_MOVIE_DETAIL", "SET_ACTOR_NAME"]),
+    ...mapMutations(["SET_IS_MOVIE_DETAIL"]),
     async fetchData() {
       this.isLoading = true;
       try {
@@ -313,7 +313,6 @@ export default {
     // 배우 페이지 이동
     onClickActor({ id, name }) {
       this.SET_IS_MOVIE_DETAIL(false);
-      this.SET_ACTOR_NAME(name);
 
       this.$router.push({
         name: "Person",

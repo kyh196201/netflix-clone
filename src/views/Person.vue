@@ -59,11 +59,12 @@ export default {
     this.SET_ACTOR_NAME("");
   },
   methods: {
-    ...mapActions(["FETCH_PERSON_MOVIES"]),
+    ...mapActions(["FETCH_PERSON_MOVIES", "FETCH_PERSON_NAME"]),
     ...mapMutations(["SET_ACTOR_NAME"]),
     async fetchMovies() {
       try {
         this.isLoading = true;
+        await this.FETCH_PERSON_NAME(this.pid);
         await this.FETCH_PERSON_MOVIES(this.pid);
       } catch (err) {
         console.log(err);
