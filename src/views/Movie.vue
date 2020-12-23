@@ -136,28 +136,44 @@ export default {
         queryString = queryString + `&sort_by=${this.getFilter}`;
       }
       return queryString;
+    },
+    query() {
+      return this.$route.query;
     }
   },
   watch: {
-    $route: {
-      handler(newRoute, oldRoute) {
-        const { query } = newRoute;
+    // $route: {
+    //   handler(newRoute, oldRoute) {
+    //     const { query } = newRoute;
 
-        this.clearPage();
+    //     this.clearPage();
 
-        if (query && query.id) {
-          this.genre = query.id;
+    //     if (query && query.id) {
+    //       this.genre = query.id;
+    //     } else {
+    //       this.genre = null;
+    //     }
+
+    //     if (query && query.sort) {
+    //       this.sort = query.sort;
+    //     } else {
+    //       this.sort = null;
+    //     }
+
+    //     this.fetchMovies(this.queryString);
+    //   },
+    //   immediate: true
+    // }
+    query: {
+      handler: function(newVal, oldVal) {
+        if (!this.checkIsSameQuery(newVal, oldVal)) {
+          this.genre = newVal.id ? newVal.id : null;
+          this.sort = newVal.sort ? newVal.sort : null;
+          this.fetchMovies(this.queryString);
         } else {
-          this.genre = null;
+          console.log("modal opened and not load movie data");
+          return;
         }
-
-        if (query && query.sort) {
-          this.sort = query.sort;
-        } else {
-          this.sort = null;
-        }
-
-        this.fetchMovies(this.queryString);
       },
       immediate: true
     }
@@ -264,6 +280,22 @@ export default {
     },
     clearPage() {
       this.page = 1;
+    },
+    checkIsSameQuery(query1, query2) {
+      const field = ["id", "sort"];
+      let isSame = true;
+
+      if (!query1 || !query2) {
+        return false;
+      }
+
+      for (let key of field) {
+        if (query1[key] !== query2[key]) {
+          isSame = false;
+        }
+      }
+
+      return isSame;
     }
   }
 };

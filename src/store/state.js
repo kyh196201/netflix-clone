@@ -27,5 +27,5 @@ export default {
     // person 페이지 영화 리스트
     personMovieList: [],
     // person 페이지 배우 이름
-    personActorName: [],
+    personActorName: "",
 };
