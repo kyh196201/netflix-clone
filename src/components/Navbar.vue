@@ -7,11 +7,7 @@
       <!-- 페이지 링크 -->
       <ul class="home__nav__links" v-if="isProfile">
         <li v-for="(link, index) in links" :key="index" ref="navLink">
-          <router-link
-            class="navLink"
-            :to="link.route"
-            :class="{ active: isActive(link.route) }"
-          >{{ link.title }}</router-link>
+          <router-link class="navLink" :to="link.route">{{ link.title }}</router-link>
         </li>
       </ul>
     </div>
@@ -103,7 +99,7 @@ export default {
       logoImage: logoImage,
       avtarImage: avtarImage,
       links: links,
-      isBgBlack: false
+      isHeaderFixed: false
     };
   },
   computed: {
@@ -127,12 +123,12 @@ export default {
 
       if (window.scrollY <= 0) {
         this.$el.classList.remove(BLACK_CN);
-        this.isBgBlack = false;
+        this.isHeaderFixed = false;
       } else if (window.scrollY > 0) {
-        if (this.isBgBlack) return;
+        if (this.isHeaderFixed) return;
 
-        this.isBgBlack = true;
         this.$el.classList.add(BLACK_CN);
+        this.isHeaderFixed = true;
       }
     }
   }
@@ -224,9 +220,9 @@ export default {
   color: rgba(255, 255, 255, 0.5);
 }
 
-.home__nav__links > li > a.active {
-  font-weight: bold;
-  color: rgba(255, 255, 255, 1);
+a.router-link-exact-active {
+  font-weight: bold !important;
+  color: rgba(255, 255, 255, 1) !important;
 }
 
 /* 헤더 오른쪽 섹션 */

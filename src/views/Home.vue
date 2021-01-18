@@ -1,20 +1,20 @@
 <template>
-    <div class="home">
-        <main></main>
-        <footer></footer>
-    </div>
+  <div class="home">
+    <main></main>
+    <footer></footer>
+  </div>
 </template>
 
 <script>
 // @ is an alias to /src
 
 export default {
-    name: "Home",
+  name: "Home"
 };
 </script>
 
 <style>
 .home {
-    position: relative;
+  position: relative;
 }
 </style>

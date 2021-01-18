@@ -18,26 +18,26 @@ const routes = [
     {
         path: "/",
         name: "Home",
-        component: Home,
+        redirect: "/browse",
     },
     {
         path: "/search",
         name: "Search",
-        component: Search,
+        component: () => import("@/views/Search.vue"),
     },
     {
         path: "/browse",
-        component: Browse,
+        component: () => import("@/views/Browse.vue"),
         children: [
             {
                 path: "",
                 name: "BrowseHome",
-                component: BrowseHome,
+                component: () => import("@/views/BrowseHome.vue"),
                 children: [
                     {
                         path: "detail/:mid",
-                        name: "Detail",
-                        component: DetailView,
+                        name: "DetailView",
+                        component: () => import("@/views/DetailView.vue"),
                         props: true,
                     },
                 ],
@@ -45,22 +45,22 @@ const routes = [
             {
                 path: "latest",
                 name: "Latest",
-                component: Latest,
+                component: () => import("@/views/Latest.vue"),
             },
             {
                 path: "my-list",
                 name: "MyList",
-                component: MyList,
+                component: () => import("@/views/MyList.vue"),
             },
             {
                 path: "movie",
                 name: "Movie",
-                component: Movie,
+                component: () => import("@/views/Movie.vue"),
             },
             {
                 path: "person/:pid",
                 name: "Person",
-                component: Person,
+                component: () => import("@/views/Person.vue"),
                 props: true,
             },
         ],
