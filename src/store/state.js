@@ -1,6 +1,7 @@
 export default {
     isProfile: true,
     isAdult: true,
+    language: "ko",
     isSearching: false,
     lastKeyword: "",
     totalLength: null,

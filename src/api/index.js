@@ -1,50 +1,27 @@
 import axios from "axios";
-import store from "../store/index.js";
-import { faEnvelopeOpenText } from "@fortawesome/free-solid-svg-icons";
+import setInterceptors from "./common/interceptors";
 
-//FIXME 성인인지 체크 => 추후에 Profile의 나이 또는 키듸 여부 확인을 통해 변경 예정
-const isAdult = store.state.isAdult;
+function createInstance() {
+    const instance = axios.create({
+        baseURL: process.env.VUE_APP_TMDB_END_POINT,
+        params: {
+            api_key: process.env.VUE_APP_TMDB_API_KEY,
+        },
+    });
+    return setInterceptors(instance);
+}
 
-const API_KEY = "5c641d77de2e4b7554d8ebbf14934986";
-const END_POINT = "https://api.themoviedb.org/3";
-const LANG = "ko";
-
-// Axios 인스턴스 만들기
-const movieAxios = axios.create({
-    baseURL: END_POINT,
-});
-
-// 2.5초 간만 대기 후 타임아웃 처리
-movieAxios.defaults.timeout = 2500;
-movieAxios.defaults.params = {};
-movieAxios.defaults.params["api_key"] = API_KEY;
-movieAxios.defaults.params["language"] = LANG;
-movieAxios.defaults.params["include_adult"] = isAdult;
-
-const videoAxios = axios.create({
-    baseURL: END_POINT,
-});
-
-videoAxios.defaults.timeout = 2500;
-videoAxios.defaults.params = {};
-videoAxios.defaults.params["api_key"] = API_KEY;
-videoAxios.defaults.params["language"] = "en-US";
-videoAxios.defaults.params["include_adult"] = isAdult;
+const movieAxios = createInstance();
 
 const request = {
     async get(url) {
-        try {
-            const res = await movieAxios.get(url);
-            return res.data;
-        } catch (err) {
-            // 여기서 에러 핸들링..?
-            return Promise.reject(err);
-        }
+        const res = await movieAxios.get(url);
+        return res.data;
     },
 };
 
 export const requestAll = async (...params) => {
-    return await axios.all.apply(this, params);
+    return await axios.all(...params);
 };
 
 export const movies = {
