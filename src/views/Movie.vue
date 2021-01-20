@@ -1,59 +1,56 @@
 <template>
   <div class="moviePage">
-    <LoadingGrid v-if="loading"></LoadingGrid>
-    <template v-else>
-      <header class="moviePage__header">
-        <div class="moviePage__header__inner">
-          <!-- 장르 선택되었을 경우 -->
-          <div class="moviePage__header__content isGenre" v-if="selectedGrenre">
-            <div class="moviePage__breadcrumbs breadcrumbs">
-              <span class="breadcrumbs__depth zero-depth">
-                <router-link to="/browse/movie">영화</router-link>
-              </span>
-              <span class="breadcrumbs__depth current">
-                <router-link :to="`/browse/movie?id=${selectedGrenre.id}`">{{ selectedGrenre.name }}</router-link>
-              </span>
-            </div>
-            <div class="moviePage__sort option-container">
-              <button class="option-title" @click="isOpenFilter = !isOpenFilter">
-                <span class="option-selected">{{ getFilterTitle }}</span>
-                <span class="option-icon">
-                  <font-awesome-icon icon="caret-down" />
-                </span>
-              </button>
-              <ul class="optionList column" v-if="isOpenFilter">
-                <li class="optionList__item" v-for="(filter, index) in filters" :key="index">
-                  <a href="#" @click.prevent="selectSort(filter.name)">{{filter.title}}</a>
-                </li>
-              </ul>
-            </div>
+    <header class="moviePage__header">
+      <div class="moviePage__header__inner">
+        <!-- 장르 선택되었을 경우 -->
+        <div class="moviePage__header__content isGenre" v-if="selectedGrenre">
+          <div class="moviePage__breadcrumbs breadcrumbs">
+            <span class="breadcrumbs__depth zero-depth">
+              <router-link to="/browse/movie">영화</router-link>
+            </span>
+            <span class="breadcrumbs__depth current">
+              <router-link :to="`/browse/movie?id=${selectedGrenre.id}`">{{ selectedGrenre.name }}</router-link>
+            </span>
           </div>
-          <!-- 장르 선택하기 전 -->
-          <div class="moviePage__header__content" v-else>
-            <span class="moviePage__title">영화</span>
-            <div class="moviePage__genres option-container">
-              <button class="option-title" @click="isOpenGenreList = !isOpenGenreList">
-                <span class="option-selected">장르</span>
-                <span class="option-icon">
-                  <font-awesome-icon icon="caret-down" />
-                </span>
-              </button>
-              <genre-list :genres="genres" v-if="isOpenGenreList" @click="selectGrenre"></genre-list>
-            </div>
+          <div class="moviePage__sort option-container">
+            <button class="option-title" @click="isOpenFilter = !isOpenFilter">
+              <span class="option-selected">{{ getFilterTitle }}</span>
+              <span class="option-icon">
+                <font-awesome-icon icon="caret-down" />
+              </span>
+            </button>
+            <ul class="optionList column" v-if="isOpenFilter">
+              <li class="optionList__item" v-for="(filter, index) in filters" :key="index">
+                <a href="#" @click.prevent="selectSort(filter.name)">{{filter.title}}</a>
+              </li>
+            </ul>
           </div>
         </div>
-      </header>
-      <section class="moviePage__movies">
-        <h2 class="hidden-title">영화 리스트</h2>
-        <div class="moviePage__list--wrapper movieList--wrapper">
-          <ul class="moviePage__list movieList">
-            <li class="moviePage__listItem movieList__item" v-for="movie in movies" :key="movie.id">
-              <movie-card :data="movie"></movie-card>
-            </li>
-          </ul>
+        <!-- 장르 선택하기 전 -->
+        <div class="moviePage__header__content" v-else>
+          <span class="moviePage__title">영화</span>
+          <div class="moviePage__genres option-container">
+            <button class="option-title" @click="isOpenGenreList = !isOpenGenreList">
+              <span class="option-selected">장르</span>
+              <span class="option-icon">
+                <font-awesome-icon icon="caret-down" />
+              </span>
+            </button>
+            <genre-list :genres="genres" v-if="isOpenGenreList" @click="selectGrenre"></genre-list>
+          </div>
         </div>
-      </section>
-    </template>
+      </div>
+    </header>
+    <section class="moviePage__movies">
+      <h2 class="hidden-title">영화 리스트</h2>
+      <div class="moviePage__list--wrapper movieList--wrapper">
+        <ul class="moviePage__list movieList">
+          <li class="moviePage__listItem movieList__item" v-for="movie in movies" :key="movie.id">
+            <movie-card :data="movie"></movie-card>
+          </li>
+        </ul>
+      </div>
+    </section>
   </div>
 </template>
 
@@ -61,7 +58,6 @@
 import { mapActions, mapState } from "vuex";
 import GenreList from "../components/GenreList.vue";
 import MovieCard from "../components/MovieCard.vue";
-import LoadingGrid from "@/components/LoadingGrid.vue";
 import throttle from "../utils/throttle.js";
 import debounce from "../utils/debounce.js";
 
@@ -87,8 +83,7 @@ export default {
   name: "Movie",
   components: {
     "genre-list": GenreList,
-    "movie-card": MovieCard,
-    LoadingGrid: LoadingGrid
+    "movie-card": MovieCard
   },
   data() {
     return {

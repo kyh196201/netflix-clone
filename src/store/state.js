@@ -4,6 +4,7 @@ export default {
     language: "ko",
     isSearching: false,
     lastKeyword: "",
+    loading: false,
     totalLength: null,
     // 검색 결과
     searchResult: [],

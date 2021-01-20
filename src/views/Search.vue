@@ -1,6 +1,5 @@
 <template>
   <section class="search">
-    <loading-grid v-if="loading">Loadinggrid...</loading-grid>
     <div class="search__content">
       <search-history />
       <search-result :data="list" />
@@ -12,15 +11,13 @@
 <script>
 import SearchResult from "../components/SearchResult.vue";
 import SearchHistory from "../components/SearchHistory.vue";
-import LoadingGrid from "../components/LoadingGrid.vue";
 import { mapState, mapMutations, mapActions } from "vuex";
 
 export default {
   name: "search",
   components: {
     "search-result": SearchResult,
-    "search-history": SearchHistory,
-    "loading-grid": LoadingGrid
+    "search-history": SearchHistory
   },
   data() {
     return {

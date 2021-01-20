@@ -1,16 +1,5 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-import Home from "../views/Home.vue";
-import Browse from "../views/Browse.vue";
-import BrowseHome from "../views/BrowseHome.vue";
-import Latest from "../views/Latest.vue";
-import MyList from "../views/MyList.vue";
-import Person from "../views/Person.vue";
-import Genre from "../views/Genre.vue";
-import Movie from "../views/Movie.vue";
-import Search from "../views/Search.vue";
-import DetailView from "../views/DetailView.vue";
-import NotFound from "../views/NotFound.vue";
 
 Vue.use(VueRouter);
 
@@ -67,8 +56,8 @@ const routes = [
     },
     {
         path: "*",
-        name: NotFound,
-        component: NotFound,
+        name: "NotFound",
+        component: () => import("@/views/NotFound.vue"),
     },
 ];
 

@@ -15,14 +15,12 @@
 
 <script>
 import MovieCard from "../components/MovieCard.vue";
-import LoadingGrid from "../components/LoadingGrid.vue";
 import { mapState } from "vuex";
 
 export default {
   name: "MyList",
   components: {
-    MovieCard,
-    LoadingGrid
+    MovieCard
   },
   data() {
     return {

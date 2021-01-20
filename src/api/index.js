@@ -15,8 +15,8 @@ const movieAxios = createInstance();
 
 const request = {
     async get(url) {
-        const res = await movieAxios.get(url);
-        return res.data;
+        const { data } = await movieAxios.get(url);
+        return data;
     },
 };
 

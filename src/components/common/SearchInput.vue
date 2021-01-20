@@ -20,7 +20,7 @@
 </template>
 
 <script>
-import { KEYS } from "../utils/constant.js";
+import { KEYS } from "@/utils/constant.js";
 import { mapMutations } from "vuex";
 
 export default {

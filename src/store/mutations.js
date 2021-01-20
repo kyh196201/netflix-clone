@@ -1,4 +1,9 @@
 export default {
+    // 로딩
+    SET_LOADING(state, payload) {
+        state.loading = payload;
+    },
+
     // 검색 창 display 변경
     SET_IS_SEARCHING(state, toggle) {
         state.isSearching = toggle;

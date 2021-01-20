@@ -1,6 +1,6 @@
 <template>
-  <section class="loading-grid">
-    <div class="skeleton-grid">
+  <section class="loading-page">
+    <div class="skeleton-page">
       <ul class="skeleton-list">
         <li class="skeleton-item" v-for="index in 10" :key="index">
           <div class="fadeInBg" :style="{ animationDelay : animationDelay(index) }"></div>
@@ -30,14 +30,20 @@ export default {
 </script>
 
 <style>
-.loading-grid {
-  width: 100%;
+.loading-page {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
   height: 100vh;
 }
 
-.skeleton-grid {
+.skeleton-page {
   width: 100%;
+  height: 100%;
   padding: 2%;
+  padding-top: 100px;
+  background-color: #000000;
 }
 
 .skeleton-list {

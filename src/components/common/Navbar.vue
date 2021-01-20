@@ -60,8 +60,8 @@
 </template>
 
 <script>
-import logoImage from "../assets/images/logo2.png";
-import avtarImage from "../assets/images/avatar.jpg";
+import logoImage from "@/assets/images/logo2.png";
+import avtarImage from "@/assets/images/avatar.jpg";
 import SearchInput from "./SearchInput.vue";
 import { mapState } from "vuex";
 import throttle from "@/utils/throttle.js";
@@ -70,10 +70,6 @@ const links = [
   {
     title: "홈",
     route: "/browse"
-  },
-  {
-    title: "TV 프로그램",
-    route: "/browse/genre/83"
   },
   {
     title: "영화",
@@ -194,7 +190,7 @@ export default {
   display: block;
   width: 140px;
   height: 35px;
-  background-image: url("../assets/images/netflix-logo.svg");
+  background-image: url("../../assets/images/netflix-logo.svg");
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center center;
