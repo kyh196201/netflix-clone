@@ -2,6 +2,7 @@ export default {
     isProfile: true,
     isAdult: true,
     language: "ko",
+    region: "KR",
     isSearching: false,
     lastKeyword: "",
     loading: false,

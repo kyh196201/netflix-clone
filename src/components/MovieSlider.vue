@@ -14,7 +14,7 @@
         <div class="swiper-button-prev"></div>
       </div>
     </template>
-    <div v-else>DataBase Error</div>
+    <div v-else>영화가 없습니다.😂</div>
   </div>
 </template>
 
@@ -33,9 +33,6 @@ const swiperOption = {
     nextEl: ".swiper-button-next",
     prevEl: ".swiper-button-prev"
   },
-  // scrollbar: {
-  //     el: ".swiper-scrollbar",
-  // },
   speed: SPEED
 };
 
