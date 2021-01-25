@@ -31,21 +31,24 @@
 <script>
 import { movies } from "@/api/index";
 import { getPoster, getBackdrop } from "@/utils/constant.js";
-import { createLogger } from "vuex";
+import { mapState, mapActions } from "vuex";
 
 export default {
-  data() {
-    return {
-      id: 372058,
-      movie: {}
-    };
+  props: {
+    id: {
+      type: Number,
+      required: true,
+    }
   },
   computed: {
+    ...mapState('movie', {
+      mainMovie: state => state.mainMovie,
+    }),
     poster() {
-      return this.movie ? getBackdrop(this.movie.backdrop_path) : "";
+      return this.mainMovie ? getBackdrop(this.mainMovie.backdrop_path) : "";
     },
     title() {
-      return this.movie ? this.movie.title : "";
+      return this.mainMovie ? this.mainMovie.title : "";
     },
     mainTitleClass() {
       return {
@@ -54,19 +57,17 @@ export default {
       };
     },
     overview() {
-      return this.movie ? this.movie.overview : "";
+      return this.mainMovie ? this.mainMovie.overview : "";
     }
   },
   created() {
     this.fetchMovie();
   },
   methods: {
+    //movie 모듈에 있는 actions 가져오기
+    ...mapActions('movie', ['FETCH_MAIN_MOVIE']),
     fetchMovie() {
-      try {
-        movies.detail(this.id).then(movie => (this.movie = movie));
-      } catch (err) {
-        console.log(err);
-      }
+        this.FETCH_MAIN_MOVIE(this.id);
     }
   }
 };

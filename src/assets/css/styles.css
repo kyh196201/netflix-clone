@@ -39,8 +39,8 @@ a {
 #app {
     position: relative;
     width: 100%;
-    min-width: 1280px;
-    max-width: 1920px;
+    /* min-width: 1280px;
+    max-width: 1920px; */
     min-height: 100vh;
     margin: 0 auto;
 }

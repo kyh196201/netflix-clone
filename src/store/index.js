@@ -4,6 +4,7 @@ import state from "./state.js";
 import getters from "./getters.js";
 import mutations from "./mutations.js";
 import actions from "./actions.js";
+import movie from "./movie";
 
 Vue.use(Vuex);
 
@@ -12,7 +13,9 @@ const store = new Vuex.Store({
     getters: getters,
     mutations: mutations,
     actions: actions,
-    modules: {},
+    modules: {
+        movie,
+    },
 });
 
 export default store;

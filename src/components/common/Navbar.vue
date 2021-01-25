@@ -171,7 +171,7 @@ export default {
   position: fixed;
   top: 0;
   left: 0;
-  min-width: 1280px;
+  /* min-width: 1280px; */
   height: 60px;
 }
 

@@ -1,7 +1,7 @@
 <template>
     <div class="movieItem">
         <figure>
-            <img :src="poster" :alt="title" />
+            <img :src="poster" :alt="title"/>
         </figure>
     </div>
 </template>
@@ -30,15 +30,18 @@ export default {
 
 .movieItem figure {
     display: block;
+    position: relative;
     width: 100%;
-    height: 100%;
+    padding-bottom: 150%;
 }
 
 .movieItem img {
     display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
     width: 100%;
-    height: auto;
-    max-height: 260px;
+    height: 100%;
     border-radius: 5px;
 }
 </style>

@@ -1,7 +1,10 @@
 <template>
     <div class="movieSlide">
         <h3 class="movieSlide__title">{{ categoryTitle }}</h3>
-        <div v-if="isLoading">loading movies....</div>
+        <template v-if="isLoading">
+            <!-- spinner -->
+            <Spinner></Spinner>
+        </template>
         <template v-else>
             <div class="movieSlide__movies" v-if="isMovies">
                 <MovieSwiper :movies="movies"></MovieSwiper>
@@ -13,6 +16,7 @@
 
 <script>
 import MovieSwiper from "@/components/movie/MovieSwiper.vue";
+import Spinner from '@/components/common/Spinner.vue';
 import { movieCategories } from "@/utils/constants/movie";
 import { fetchMovies } from "@/api";
 
@@ -32,6 +36,7 @@ export default {
     },
     components: {
         MovieSwiper,
+        Spinner
     },
     computed: {
         isMovies() {

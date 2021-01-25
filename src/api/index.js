@@ -84,6 +84,11 @@ export const fetchMovies = async (category, page) => {
     return await movieAxios.get(url);
 };
 
+export const fetchMovie = async (id) => {
+    const url = `/movie/${id}`;
+    return await movieAxios.get(url);
+}
+
 // 검색
 export const search = {
     // 멀티 검색
