@@ -8,10 +8,7 @@
                     v-for="movie in movies"
                     :key="movie.id"
                 >
-                    <MovieItem
-                        :poster="getPoster(movie.poster_path)"
-                        :title="movie.title"
-                    ></MovieItem>
+                    <MovieItem :movie="movie"></MovieItem>
                 </div>
             </div>
             <!-- 네비게이션 -->
@@ -24,7 +21,6 @@
 <script>
 import Swiper from "swiper";
 import MovieItem from "@/components/movie/MovieItem.vue";
-import getImageUrl from "@/utils/helpers/getImageUrl";
 
 export default {
     name: "MovieSlider",
@@ -53,13 +49,6 @@ export default {
                 speed: 500,
             },
         };
-    },
-    computed: {
-        getPoster() {
-            return function(url) {
-                return getImageUrl(url, 2, "poster");
-            };
-        },
     },
     mounted() {
         this.createSlider();
