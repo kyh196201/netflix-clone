@@ -22,14 +22,6 @@ const routes = [
                 path: "",
                 name: "BrowseHome",
                 component: () => import("@/views/BrowseHome.vue"),
-                children: [
-                    {
-                        path: "detail/:mid",
-                        name: "DetailView",
-                        component: () => import("@/views/DetailView.vue"),
-                        props: true,
-                    },
-                ],
             },
             {
                 path: "latest",

@@ -1,55 +1,18 @@
 <template>
     <MyModal class="detailView">
-        <!-- 로딩 시 렌더링 화면 -->
         <template v-if="isLoading">
-            <div class="detailView__header" slot="header">
-                <div class="detailView__bg-wrapper">
-                    <div class="detailView__bg skeleton"></div>
-                </div>
-            </div>
-            <div class="detailView__content" slot="body">
-                <div class="detailView__overview-wrapper skeleton">
-                    <div class="detailView__overview">
-                        <div class="detailView__overview__top">
-                            <span class="skeleton-bar"></span>
-                            <span class="skeleton-bar"></span>
-                            <span class="skeleton-bar"></span>
-                            <span class="skeleton-bar"></span>
-                        </div>
-                        <p class="synopsis skeleton"></p>
-                    </div>
-                </div>
-                <div class="detailView__info-wrapper skeleton">
-                    <ul class="detailView__info skeleton">
-                        <li class="skeleton-list-item">
-                            <div class="skeleton-circle"></div>
-                            <div class="skeleton-bar"></div>
-                        </li>
-                        <li class="skeleton-list-item">
-                            <div class="skeleton-circle"></div>
-                            <div class="skeleton-bar"></div>
-                        </li>
-                        <li class="skeleton-list-item">
-                            <div class="skeleton-circle"></div>
-                            <div class="skeleton-bar"></div>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-            <div class="detailView__footer" slot="footer"></div>
+            <MovieDetailLoading></MovieDetailLoading>
         </template>
-        <!-- 데이터 렌더링 화면 -->
         <template v-else>
-            <template v-if="movieDetail">
+            <template v-if="movieData">
                 <div class="detailView__header" slot="header">
                     <!-- 이미지 영역 -->
                     <div class="detailView__bg-wrapper">
-                        <!-- <div class="loadingBg" v-if="loading"></div> -->
                         <figure class="detailView__bg">
                             <img
-                                :src="poster"
-                                @error="onErrorPoster"
-                                ref="poster"
+                                :src="backdrop"
+                                @error="onErrorBackdrop"
+                                ref="backdrop"
                             />
                         </figure>
                         <!-- 플레이어 영역 -->
@@ -57,38 +20,36 @@
                             <div class="detailView__player">
                                 <!-- 영화 제목 -->
                                 <div class="detailView__player__title">
-                                    <p>{{ detail.title }}</p>
+                                    <p>{{ movieData.title }}</p>
                                 </div>
+                                <!-- 좋아요, 싫어요 등등 버튼들 -->
                                 <div class="detailView__player__control">
+                                    <!-- buttons -->
                                     <button
                                         class="control__btn btn-l btn-default"
                                     >
                                         <font-awesome-icon icon="play" />
                                         <span>재생</span>
                                     </button>
-                                    <!-- buttons -->
                                     <a
                                         href="#"
                                         class="control__btn controller__btn"
-                                        v-if="isMyList"
-                                        @click.prevent="SET_MY_LIST(detail)"
+                                        @click.prevent="SET_MY_LIST(movieData)"
                                     >
                                         <font-awesome-icon icon="check" />
                                     </a>
                                     <a
                                         href="#"
                                         class="control__btn controller__btn"
-                                        v-else
-                                        @click.prevent="SET_MY_LIST(detail)"
+                                        @click.prevent="SET_MY_LIST(movieData)"
                                     >
                                         <font-awesome-icon icon="plus" />
                                     </a>
                                     <a
                                         href="#"
                                         class="control__btn controller__btn"
-                                        v-if="isFavorite"
                                         @click.prevent="
-                                            SET_FAVORITE_LIST(detail.id)
+                                            SET_FAVORITE_LIST(movieData.id)
                                         "
                                     >
                                         <font-awesome-icon
@@ -98,9 +59,8 @@
                                     <a
                                         href="#"
                                         class="control__btn controller__btn"
-                                        v-else
                                         @click.prevent="
-                                            SET_FAVORITE_LIST(detail.id)
+                                            SET_FAVORITE_LIST(movieData.id)
                                         "
                                     >
                                         <font-awesome-icon
@@ -110,9 +70,8 @@
                                     <a
                                         href="#"
                                         class="control__btn controller__btn"
-                                        v-if="isHate"
                                         @click.prevent="
-                                            SET_HATE_LIST(detail.id)
+                                            SET_HATE_LIST(movieData.id)
                                         "
                                     >
                                         <font-awesome-icon
@@ -122,9 +81,8 @@
                                     <a
                                         href="#"
                                         class="control__btn controller__btn"
-                                        v-else
                                         @click.prevent="
-                                            SET_HATE_LIST(detail.id)
+                                            SET_HATE_LIST(movieData.id)
                                         "
                                     >
                                         <font-awesome-icon
@@ -139,7 +97,7 @@
                     <a
                         href="#"
                         class="detailView__closeBtn close-icon"
-                        @click.prevent="onClose"
+                        @click.prevent="closeModal"
                     >
                         <font-awesome-icon icon="times" />
                     </a>
@@ -150,25 +108,24 @@
                     <div class="detailView__overview-wrapper">
                         <div class="detailView__overview">
                             <div class="detailView__overview__top">
-                                <span
-                                    class="detailView__overview__releaseDate"
-                                    >{{ relaseDate }}</span
-                                >
-                                <span class="detailView__overview__title">{{
-                                    detail.title
-                                }}</span>
-                                <span
-                                    class="detailView__overview__runningTime"
-                                    >{{ runtime }}</span
-                                >
+                                <span class="detailView__overview__releaseDate">
+                                    {{ movieData.release_date }}
+                                </span>
+                                <span class="detailView__overview__title">
+                                    {{ movieData.title }}
+                                </span>
+                                <span class="detailView__overview__runningTime">
+                                    {{ runtime }}
+                                </span>
                                 <span
                                     class="detailView__overview__adult"
                                     v-if="isAdult"
-                                    >19 &plus;</span
                                 >
+                                    19 &plus;
+                                </span>
                             </div>
                             <p class="detailView__overview__synopsis">
-                                {{ detail.overview }}
+                                {{ movieData.overview }}
                             </p>
                         </div>
                     </div>
@@ -178,31 +135,37 @@
                             <li>
                                 <span
                                     class="detailView__info__tagLabel tag-label"
-                                    >감독:</span
                                 >
-                                <a
-                                    href="#"
-                                    class="detailView__info__tag tag-item"
-                                    v-for="director in directors"
-                                    :key="director.id"
-                                    :data-director-id="director.id"
-                                    >{{ director.name }}</a
-                                >
+                                    감독 :
+                                </span>
+                                <template v-if="directors && directors.length">
+                                    <a
+                                        href="#"
+                                        class="detailView__info__tag tag-item"
+                                        v-for="director in directors"
+                                        :key="director.id"
+                                        :data-director-id="director.id"
+                                    >
+                                        {{ director.name }}
+                                    </a>
+                                </template>
                             </li>
                             <li>
                                 <span
                                     class="detailView__info__tag-label tag-label"
                                     >출연:</span
                                 >
-                                <a
-                                    href="#"
-                                    class="detailView__info__tag tag-item"
-                                    v-for="actor in actors"
-                                    :key="actor.id"
-                                    :data-actor-id="actor.id"
-                                    @click.prevent="onClickActor(actor)"
-                                    >{{ actor.name }},</a
-                                >
+                                <template v-if="actors && actors.length">
+                                    <a
+                                        href="#"
+                                        class="detailView__info__tag tag-item"
+                                        v-for="actor in actors"
+                                        :key="actor.id"
+                                        :data-actor-id="actor.id"
+                                        @click.prevent="onClickActor(actor)"
+                                        >{{ actor.name }},</a
+                                    >
+                                </template>
                                 <a
                                     href="#"
                                     class="detailView__info__more tag-more"
@@ -215,18 +178,20 @@
                                     class="detailView__info__tagLabel tag-label"
                                     >장르:</span
                                 >
-                                <a
-                                    href="#"
-                                    class="detailView__info__tag tag-item"
-                                    v-for="(genre, index) in genres"
-                                    :key="genre.id"
-                                    :data-genre-id="genre.id"
-                                    >{{
-                                        index === genres.length - 1
-                                            ? `${genre.name}`
-                                            : `${genre.name},`
-                                    }}</a
-                                >
+                                <template v-if="genres && genres.length">
+                                    <a
+                                        href="#"
+                                        class="detailView__info__tag tag-item"
+                                        v-for="(genre, index) in genres"
+                                        :key="genre.id"
+                                        :data-genre-id="genre.id"
+                                        >{{
+                                            index === genres.length - 1
+                                                ? `${genre.name}`
+                                                : `${genre.name},`
+                                        }}</a
+                                    >
+                                </template>
                             </li>
                             <li class="detailView__info__voteAverage">
                                 <span
@@ -234,7 +199,7 @@
                                     >평점:</span
                                 >
                                 <span class="detailView__info__tag tag-item">{{
-                                    detail["vote_average"]
+                                    movieData.vote_average
                                 }}</span>
                             </li>
                         </ul>
@@ -249,122 +214,109 @@
 </template>
 
 <script>
-import MyModal from "../components/MyModal.vue";
+import MyModal from "@/components/MyModal.vue";
+import MovieDetailLoading from "@/components/movie/MovieDetailLoading.vue";
 import { mapActions, mapState, mapGetters, mapMutations } from "vuex";
-import DEFAILT_BG from "@/assets/images/default_image.png";
-import titleSample from "@/assets/images/detailview-player-title.png";
-import { BACKDROP_PATH } from "../utils/constant.js";
+import defaultBackgroundImage from "@/assets/images/default_image.png";
+import getImageUrl from "@/utils/helpers/getImageUrl";
 
 export default {
-    name: "DetailView",
+    name: "MovieDetailModal",
     components: {
         MyModal,
+        MovieDetailLoading,
     },
     data() {
         return {
             isLoading: false,
-            defaultBg: DEFAILT_BG,
-            titleSample: titleSample,
-            actor_length: 4,
-            backDropPath: BACKDROP_PATH,
-            returnPath: "/browse",
+            defaultBg: defaultBackgroundImage,
+            maxActorLength: 4,
             movieId: null,
             prevRoute: null,
         };
     },
     computed: {
+        // mapState of movie modules
+        ...mapState("movie", {
+            movieData: (state) => state.selectedMovie,
+        }),
         ...mapState({
-            movieDetail: (state) => state.movieDetail,
+            isAdult: (state) => state.isAdult,
         }),
         ...mapGetters(["isHateItem", "isFavoriteItem", "isInMyList"]),
-        cast() {
-            return this.movieDetail.cast;
+
+        // get moive backdrop image url
+        backdrop() {
+            return getImageUrl(this.movieData.backdrop_path, 2, "backdrop");
         },
-        crew() {
-            return this.movieDetail.crew;
-        },
-        detail() {
-            return this.movieDetail.detail;
-        },
-        relaseDate() {
-            return this.detail["release_date"].substring(0, 4);
-        },
+
+        // get movie runtime
         runtime() {
-            const _time = this.detail.runtime;
-            const _hour = Math.floor(_time / 60);
-            const _min = _time % 60;
-            return `${_hour}시 ${_min}분`;
+            const runtime = this.movieData.runtime;
+            const hours = parseInt(runtime / 60);
+            const mins = runtime - hours * 60;
+            return `${hours}시간 ${mins}분`;
         },
-        isAdult() {
-            return this.detail.adult;
-        },
+
+        // get movie directors
         directors() {
-            return this.crew.filter((c) => c.job === "Director");
+            return this.movieData.crew
+                ? this.movieData.crew.filter((crew) => crew.job === "Director")
+                : [];
         },
+
+        // get movie main actors
         actors() {
-            return this.cast.slice(0, this.actor_length);
+            return this.movieData.cast
+                ? this.movieData.cast.slice(0, this.maxActorLength)
+                : [];
         },
+
+        // get movie genres
         genres() {
-            return this.detail.genres;
-        },
-        poster() {
-            return this.backDropPath + this.detail["backdrop_path"];
-        },
-        isHate() {
-            return this.isHateItem(this.detail.id);
-        },
-        isFavorite() {
-            return this.isFavoriteItem(this.detail.id);
-        },
-        isMyList() {
-            return this.isInMyList(this.detail.id);
+            return this.movieData.genres;
         },
     },
     created() {
-        this.movieId = this.$route.query.jbv;
+        this.movieId = this.$route.query.movieId;
 
         const prevRoute = localStorage.getItem("prevRoute");
         this.prevRoute = prevRoute ? JSON.parse(prevRoute) : null;
 
-        this.fetchData();
+        this.fetchMovie();
     },
     methods: {
-        ...mapActions([
-            "FETCH_MOVIE",
-            "SET_FAVORITE_LIST",
-            "SET_HATE_LIST",
-            "SET_MY_LIST",
-        ]),
-        ...mapMutations(["SET_IS_MOVIE_DETAIL"]),
-        async fetchData() {
-            this.isLoading = true;
+        ...mapActions("movie", ["FETCH_SELECTED_MOVIE"]),
+        ...mapMutations("movie", ["SET_IS_DETAIL_MODAL"]),
+        async fetchMovie() {
+            // this.isLoading = true;
             try {
-                await this.FETCH_MOVIE({
-                    id: this.movieId,
-                });
-            } catch (err) {
-                this.goPrev();
-                this.SET_IS_MOVIE_DETAIL(false);
+                await this.FETCH_SELECTED_MOVIE(this.movieId);
+            } catch (error) {
+                console.log(error);
+                // this.goPrev();
+                // this.SET_IS_DETAIL_MODAL(false);
             } finally {
-                setTimeout(() => {
-                    this.isLoading = false;
-                }, 500);
+                // setTimeout(() => {
+                //     this.isLoading = false;
+                // }, 500);
             }
         },
-        onErrorPoster() {
-            const $poster = this.$refs.poster;
-            $poster.setAttribute("src", this.defaultBg);
+        // backdrop image onerror event handler
+        onErrorBackdrop() {
+            const $backdrop = this.$refs.backdrop;
+            $backdrop.setAttribute("src", this.defaultBg);
         },
-        onClose() {
+        closeModal() {
             this.goPrev();
-            this.SET_IS_MOVIE_DETAIL(false);
+            this.SET_IS_DETAIL_MODAL(false);
         },
         goPrev() {
             const { path, query, params } = this.prevRoute;
 
             if (!path) {
                 this.$router.push({
-                    path: "/browseHome",
+                    path: "/browse",
                 });
             } else {
                 this.$router.push({
@@ -376,7 +328,7 @@ export default {
         },
         // 배우 페이지 이동
         onClickActor({ id, name }) {
-            this.SET_IS_MOVIE_DETAIL(false);
+            this.SET_IS_DETAIL_MODAL(false);
 
             this.$router.push({
                 name: "Person",
@@ -639,38 +591,6 @@ pre {
     height: 1rem;
     background-color: rgba(0, 0, 0, 0.5);
     border-radius: 5px;
-}
-
-/* skeletons */
-.detailView__bg.skeleton {
-    background: linear-gradient(to top, #181818, transparent 50%);
-    background-color: #000;
-}
-
-.detailView__overview-wrapper.skeleton {
-    flex: 1 1 70%;
-}
-
-.detailView__info-wrapper.skeleton {
-    flex: 1 1 30%;
-}
-
-.detailView__overview__top .skeleton-bar {
-    width: 25%;
-}
-
-.detailView__overview__top .skeleton-bar:last-child {
-    margin: 0;
-}
-
-.detailView__info .skeleton-bar {
-    width: 100%;
-}
-
-.synopsis.skeleton {
-    width: 100%;
-    height: 1.25rem;
-    background-color: var(--skeleton-color);
 }
 
 @media screen and (max-width: 968px) {

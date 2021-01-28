@@ -1,4 +1,4 @@
-import { fetchMovie, fetchSelectedMovie } from "@/api";
+import { fetchMovie, fetchMovieDetail } from "@/api";
 
 const movie = {
     namespaced: true,
@@ -7,6 +7,8 @@ const movie = {
         mainMovie: {},
         // selected movie
         selectedMovie: {},
+        // is detail modal
+        isDetailModal: false,
     }),
     mutations: {
         // set main movie data
@@ -16,6 +18,10 @@ const movie = {
         // set selected movie data
         SET_SELECTED_MOVIE(state, movie) {
             state.selectedMovie = movie;
+        },
+        // set detail modal view
+        SET_IS_DETAIL_MODAL(state, toggle) {
+            state.isDetailModal = toggle;
         },
     },
     actions: {
@@ -34,8 +40,9 @@ const movie = {
             }
         },
         // fetch selected movie data
-        async FETCH_SELECTED_MOVIE(context, movieId) {
-            return await fetchSelectedMovie(movieId);
+        async FETCH_SELECTED_MOVIE({ commit }, movieId) {
+            const movieData = await fetchMovieDetail(movieId);
+            commit("SET_SELECTED_MOVIE", movieData);
         },
     },
 };
