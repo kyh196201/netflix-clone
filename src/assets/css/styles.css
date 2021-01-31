@@ -1,11 +1,12 @@
 @import "./reset.css";
 @import "./animations.css";
+@import "./common.css";
 
 :root {
     --skeleton-color: #212529;
     --background-color: #141414;
     --white-color: #fff;
-    --black-color: black;
+    --black-color: #000000;
 }
 
 *,
@@ -44,65 +45,6 @@ a {
     min-height: 100vh;
     margin: 0 auto;
 }
-
-.hidden-title {
-    position: absolute;
-    top: -10000px;
-    font-size: 0;
-}
-
-.blind {
-    position: absolute;
-    top: auto;
-    left: -10000px;
-    height: 1px;
-    overflow: hidden;
-}
-
-/* buttons */
-button {
-    padding: 0;
-    margin: 0;
-    /* outline: none; */
-    border: none;
-    cursor: pointer;
-}
-
-.btn-default {
-    background-color: rgba(255, 255, 255, 0.8);
-    color: #000;
-    font-weight: bold;
-    transition: background-color 0.3s ease;
-}
-
-.btn-default:hover {
-    background-color: rgba(255, 255, 255, 0.5);
-}
-
-.btn-gray {
-    background-color: rgba(109, 109, 110, 0.7);
-    color: white;
-    font-weight: bold;
-    transition: background-color 0.3s ease;
-}
-
-.btn-gray:hover {
-    background-color: rgba(109, 109, 110, 0.4);
-}
-
-.btn-l {
-    font-size: 15px;
-    padding: 10px 20px;
-    border-radius: 6px;
-}
-
-.btn-xl {
-    font-size: 20px;
-    padding: 10px 25px;
-    border-radius: 8px;
-}
-
-/* buttons */
 
 /* 이따가 옮길 부분 */
 .show-container {

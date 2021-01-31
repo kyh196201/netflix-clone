@@ -13,6 +13,7 @@ const imgSizes = {
 //
 function getImageUrl(url, size = 2, type) {
     if (type === "backdrop") {
+        console.log(arguments);
         return baseUrl + imgSizes.backdrop_sizes[size] + url;
     } else {
         return baseUrl + imgSizes.poster_sizes[size] + url;
