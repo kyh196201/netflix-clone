@@ -1,8 +1,7 @@
 <template>
   <MyModal class="movieDetail">
     <template v-if="isLoading">
-      <!-- <MovieDetailSkeleton slot="body"></MovieDetailSkeleton> -->
-      loading...
+      <MovieDetailSkeleton slot="body"></MovieDetailSkeleton>loading...
     </template>
     <template v-else-if="!isLoading && isMovieData">
       <section slot="body" class="movieDetail__content">
@@ -128,10 +127,12 @@ export default {
     async fetchMovie() {
       try {
         console.log("[fetchMovie in moviedetailModal]");
+        this.isLoading = true;
         await this.FETCH_SELECTED_MOVIE(this.movieId);
       } catch (error) {
       } finally {
         console.log("finally");
+        this.isLoading = false;
       }
     },
 
@@ -167,7 +168,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style>
 .movieDetail__content {
   background-color: #292929;
   color: var(--white-color);

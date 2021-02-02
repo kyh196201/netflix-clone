@@ -1,6 +1,7 @@
 @import "./reset.css";
 @import "./animations.css";
 @import "./common.css";
+@import "./skeleton.css";
 
 :root {
     --skeleton-color: #212529;
@@ -157,37 +158,6 @@ a {
 
 .controller__btn.play:hover {
     opacity: 0.8;
-}
-
-/* Skeletons */
-/* Movie Skeleton */
-.skeleton-grid {
-    display: flex;
-}
-
-.skeleton-bar {
-    width: 100px;
-    height: 1.25rem;
-    background-color: var(--skeleton-color);
-}
-
-.skeleton-list-item {
-    display: flex;
-    width: 100%;
-    justify-content: flex-start;
-    align-items: center;
-}
-
-.skeleton-circle {
-    width: 1.25rem;
-    height: 1.25rem;
-    margin-right: 1rem;
-    background-color: var(--skeleton-color);
-    border-radius: 50%;
-}
-
-.skeleton-list-item .skeleton-bar {
-    flex: 1 1;
 }
 
 /* 반응형 그리드 리스트 */

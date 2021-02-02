@@ -2,7 +2,7 @@
   <div class="movieDetail__backdrop">
     <div class="movieDetail__backdropImg">
       <figure>
-        <img :src="poster" alt="트와일라잇 이미지" />
+        <img :src="poster" :alt="movieTitle" @error="onErrorImage($event)" />
       </figure>
     </div>
     <div class="movieDetail__backdropInfo">
@@ -41,9 +41,11 @@
 </template>
 
 <script>
+import imageMixin from "@/mixin/image/index";
 import { getImageUrl } from "@/utils/helpers/getImageUrl.js";
 
 export default {
+  mixins: [imageMixin],
   props: {
     movie: {
       type: Object,

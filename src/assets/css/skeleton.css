@@ -1,0 +1,29 @@
+.skeleton-bar,
+.skeleton-content {
+    background-color: var(--skeleton-color);
+}
+
+/* Skeletons */
+/* Movie Skeleton */
+.skeleton-grid {
+    display: flex;
+}
+
+.skeleton-list-item {
+    display: flex;
+    width: 100%;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.skeleton-circle {
+    width: 1.25rem;
+    height: 1.25rem;
+    margin-right: 1rem;
+    background-color: var(--skeleton-color);
+    border-radius: 50%;
+}
+
+.skeleton-list-item .skeleton-bar {
+    flex: 1 1;
+}
