@@ -45,6 +45,7 @@ import MovieDetailSkeleton from "@/components/skeleton/MovieDetailSkeleton.vue";
 import { mapActions, mapState, mapGetters, mapMutations } from "vuex";
 import { getItem } from "@/utils/helpers/storage.js";
 import { getRuntime, getReleaseDate } from "@/utils/helpers/movie.js";
+import { getPrevRoute } from "@/utils/helpers/prevRoute.js";
 import defaultBackgroundImage from "@/assets/images/default_image.png";
 
 function isEmptyObject(object) {
@@ -116,6 +117,7 @@ export default {
     }
   },
   created() {
+    console.log(this.$route);
     this.setMovieId();
     this.fetchMovie();
   },
@@ -130,6 +132,8 @@ export default {
         this.isLoading = true;
         await this.FETCH_SELECTED_MOVIE(this.movieId);
       } catch (error) {
+        // 영화 상세 모달 에러 핸들링
+        this.onError(error);
       } finally {
         console.log("finally");
         this.isLoading = false;
@@ -163,6 +167,23 @@ export default {
     getPrevRoute() {
       const route = getItem("prevRoute");
       return route ? JSON.parse(route) : null;
+    },
+
+    // handle error when error occurs
+    onError(error) {
+      // 이전 라우트 경로
+      const prevRoute = getPrevRoute();
+      const { response } = error;
+      const resStatus = response.status;
+      console.log("[resStatus in movieDetailModal] status : ", resStatus);
+
+      this.SET_IS_DETAIL_MODAL(false);
+
+      if (prevRoute) {
+        this.$router.push(prevRoute);
+      } else {
+        this.$router.push("/browse");
+      }
     }
   }
 };

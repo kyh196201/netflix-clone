@@ -1,5 +1,7 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
+import store from "@/store/index";
+import { setPrevRoute } from "@/utils/helpers/prevRoute.js";
 
 Vue.use(VueRouter);
 
@@ -60,15 +62,12 @@ const router = new VueRouter({
 });
 
 router.afterEach((to, from) => {
-    const { query, path, params } = from;
+    setPrevRoute(from);
 
-    const prevRoute = {
-        path: path,
-        query: query,
-        params: params,
-    };
-
-    localStorage.setItem("prevRoute", JSON.stringify(prevRoute));
+    // 라우트에 movieId 쿼리가 있으면, 영화 상세 모달 노출
+    if (to.query.movieId) {
+        store.commit("movie/SET_IS_DETAIL_MODAL", true);
+    }
 });
 
 export default router;

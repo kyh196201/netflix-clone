@@ -8,11 +8,15 @@ export default {
     item: {
       type: Object,
       required: true
+    },
+    tagType: {
+      type: String,
+      required: true
     }
   },
   computed: {
     path() {
-      return "/person/" + this.item.id;
+      return `/${this.tagType.type}/` + this.item.id;
     }
   }
 };
