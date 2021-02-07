@@ -4,290 +4,292 @@
 @import "./skeleton.css";
 
 :root {
-    --skeleton-color: #212529;
-    --background-color: #141414;
-    --white-color: #fff;
-    --black-color: #000000;
+  --skeleton-color: #212529;
+  --background-color: #141414;
+  --white-color: #fff;
+  --black-color: #000000;
+  --release-date-color: #44cc66;
+  --vote-color: #fcc419;
 }
 
 *,
 *::after,
 *::before {
-    box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 html {
-    font-size: 62.5%;
+  font-size: 62.5%;
 }
 
 html,
 body {
-    width: 100%;
-    height: 100vh;
+  width: 100%;
+  height: 100vh;
 }
 
 body {
-    background-color: #141414;
-    font-family: "Noto Sans KR", sans-serif;
-    letter-spacing: 0.5px;
-    line-height: 1.2;
+  background-color: #141414;
+  font-family: "Noto Sans KR", sans-serif;
+  letter-spacing: 0.5px;
+  line-height: 1.2;
 }
 
 a {
-    color: inherit;
-    text-decoration: none;
+  color: inherit;
+  text-decoration: none;
 }
 
 #app {
-    position: relative;
-    width: 100%;
-    /* min-width: 1280px;
+  position: relative;
+  width: 100%;
+  /* min-width: 1280px;
     max-width: 1920px; */
-    min-height: 100vh;
-    margin: 0 auto;
+  min-height: 100vh;
+  margin: 0 auto;
 }
 
 /* 이따가 옮길 부분 */
 .show-container {
-    position: relative;
+  position: relative;
 }
 
 /* 영화 슬라이드 컨테이너 */
 .swiper-container.movie-container {
-    width: 100%;
-    height: auto;
-    /* padding: 0 30px; */
+  width: 100%;
+  height: auto;
+  /* padding: 0 30px; */
 }
 
 /* Swiper Scale 적용위해서 필수! */
 .movie-container .swiper-wrapper {
-    padding: 30px 0;
+  padding: 30px 0;
 }
 
 .movie-container .swiper-slide {
-    transition: 250ms all;
-    /* height: 150px; */
+  transition: 250ms all;
+  /* height: 150px; */
 }
 
 .movie-container .swiper-slide:hover {
-    transform: scale(1.1);
-    z-index: 3;
+  transform: scale(1.1);
+  z-index: 3;
 }
 
 .movie {
-    display: block;
-    overflow: hidden;
-    cursor: pointer;
+  display: block;
+  overflow: hidden;
+  cursor: pointer;
 }
 
 /* 이미지 비율 맞추는 부분! */
 .movie__thumbnail {
-    display: block;
+  display: block;
 }
 
 .movie__thumbnail > img {
-    display: block;
-    max-width: 100%;
-    height: auto;
-    margin: 0 auto;
-    border-radius: 3px;
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin: 0 auto;
+  border-radius: 3px;
 }
 /* 이미지 비율 맞추는 부분! */
 
 /* swiper navigation */
 .movie-container .swiper-button-next:after,
 .movie-container .swiper-button-prev:after {
-    color: rgba(255, 255, 255, 0.5);
-    font-weight: bold;
+  color: rgba(255, 255, 255, 0.5);
+  font-weight: bold;
 }
 
 .movie-container .swiper-button-next:hover:after,
 .movie-container .swiper-button-prev:hover:after {
-    color: rgba(255, 255, 255, 0.8);
+  color: rgba(255, 255, 255, 0.8);
 }
 
 /* form-control 2020.11.09 */
 .form-control {
-    height: 34px;
-    line-height: 34px;
-    background-origin: 1px solid gray;
-    border-radius: 5px;
-    outline: none;
+  height: 34px;
+  line-height: 34px;
+  background-origin: 1px solid gray;
+  border-radius: 5px;
+  outline: none;
 }
 
 /* modal scroll lock 2020.11.19 */
 .scroll-lock {
-    overflow: hidden;
+  overflow: hidden;
 }
 
 /* list, good, bad icons */
 .controller__btn {
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
-    /* padding: 0.75rem 0.85rem; */
-    width: 4rem;
-    height: 4rem;
-    border: 2px solid rgba(255, 255, 255, 0.7);
-    border-radius: 50%;
-    background-color: rgba(42, 42, 42, 0.6);
-    color: white;
-    font-size: 1.5rem;
-    outline: none;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  /* padding: 0.75rem 0.85rem; */
+  width: 4rem;
+  height: 4rem;
+  border: 2px solid rgba(255, 255, 255, 0.7);
+  border-radius: 50%;
+  background-color: rgba(42, 42, 42, 0.6);
+  color: white;
+  font-size: 1.5rem;
+  outline: none;
 }
 
 .controller__btn:hover {
-    border-color: rgba(255, 255, 255, 1);
+  border-color: rgba(255, 255, 255, 1);
 }
 
 .controller__btn.play {
-    background-color: white;
-    color: black;
+  background-color: white;
+  color: black;
 }
 
 .close-icon {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 40px;
-    height: 40px;
-    color: white;
-    background-color: #181818;
-    border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 40px;
+  height: 40px;
+  color: white;
+  background-color: #181818;
+  border-radius: 50%;
 }
 
 .controller__btn.play:hover {
-    opacity: 0.8;
+  opacity: 0.8;
 }
 
 /* 반응형 그리드 리스트 */
 .movieList {
-    display: grid;
-    grid-template-columns: repeat(5, minmax(200px, 1fr));
-    column-gap: 20px;
-    width: 100%;
+  display: grid;
+  grid-template-columns: repeat(5, minmax(200px, 1fr));
+  column-gap: 20px;
+  width: 100%;
 }
 
 .movieList__item {
-    margin-bottom: 20px;
+  margin-bottom: 20px;
 }
 
 /* 셀렉트 박스 */
 .option-container {
-    position: relative;
+  position: relative;
 }
 
 .option-title {
-    background-color: inherit;
-    border: 1px solid var(--white-color);
-    color: var(--white-color);
-    outline: none;
-    padding: 0.25rem 0.5rem;
-    transition: opacity 0.3s linear;
+  background-color: inherit;
+  border: 1px solid var(--white-color);
+  color: var(--white-color);
+  outline: none;
+  padding: 0.25rem 0.5rem;
+  transition: opacity 0.3s linear;
 }
 
 .option-title:hover {
-    opacity: 0.5;
+  opacity: 0.5;
 }
 
 .optionList {
-    display: flex;
-    position: absolute;
-    padding: 10px;
-    background-color: rgba(0, 0, 0, 0.9);
-    z-index: 10;
+  display: flex;
+  position: absolute;
+  padding: 10px;
+  background-color: rgba(0, 0, 0, 0.9);
+  z-index: 10;
 }
 
 .optionList.horizontal {
-    flex-wrap: wrap;
+  flex-wrap: wrap;
 }
 
 .optionList.column {
-    flex-direction: column;
+  flex-direction: column;
 }
 
 .optionList__item:hover a {
-    text-decoration: underline;
+  text-decoration: underline;
 }
 
 .optionList__item a {
-    display: block;
-    color: var(--white-color);
-    text-decoration: none;
+  display: block;
+  color: var(--white-color);
+  text-decoration: none;
 }
 
 /* Breadcrumbs */
 .breadcrumbs {
-    display: flex;
-    align-items: center;
+  display: flex;
+  align-items: center;
 }
 
 .breadcrumbs__depth {
-    font-size: 1.25rem;
+  font-size: 1.25rem;
 }
 
 .breadcrumbs__depth:not(:last-child) {
-    margin-right: 1rem;
+  margin-right: 1rem;
 }
 
 .breadcrumbs__depth:not(:last-child):after {
-    display: inline-block;
-    margin-left: 1rem;
-    content: ">";
+  display: inline-block;
+  margin-left: 1rem;
+  content: ">";
 }
 
 .breadcrumbs__depth.zero-depth {
-    color: gray;
+  color: gray;
 }
 
 .breadcrumbs__depth.current {
-    font-size: 2rem;
+  font-size: 2rem;
 }
 
 /* Media querys */
 @media screen and (max-width: 1599px) {
-    .movie-list__item {
-        width: calc(25% - 10px);
-        margin-right: 10px;
-    }
+  .movie-list__item {
+    width: calc(25% - 10px);
+    margin-right: 10px;
+  }
 
-    .movie-list__item:nth-child(4n) {
-        margin-right: 0px;
-    }
+  .movie-list__item:nth-child(4n) {
+    margin-right: 0px;
+  }
 }
 
 @media screen and (min-width: 1600px) {
-    .movie-list__item {
-        width: calc(20% - 10px);
-        margin-right: 10px;
-    }
+  .movie-list__item {
+    width: calc(20% - 10px);
+    margin-right: 10px;
+  }
 
-    .movie-list__item:nth-child(5n) {
-        margin-right: 0px;
-    }
+  .movie-list__item:nth-child(5n) {
+    margin-right: 0px;
+  }
 
-    .movieList {
-        display: grid;
-        grid-template-columns: repeat(6, minmax(200px, 1fr));
-        column-gap: 20px;
-        width: 100%;
-    }
+  .movieList {
+    display: grid;
+    grid-template-columns: repeat(6, minmax(200px, 1fr));
+    column-gap: 20px;
+    width: 100%;
+  }
 }
 
 @media screen and (min-width: 1800px) {
-    .movie-list__item {
-        width: calc(20% - 10px);
-        margin-right: 10px;
-    }
+  .movie-list__item {
+    width: calc(20% - 10px);
+    margin-right: 10px;
+  }
 
-    .movie-list__item:nth-child(5n) {
-        margin-right: 0px;
-    }
+  .movie-list__item:nth-child(5n) {
+    margin-right: 0px;
+  }
 
-    .movieList {
-        display: grid;
-        grid-template-columns: repeat(7, minmax(200px, 1fr));
-        column-gap: 20px;
-        width: 100%;
-    }
+  .movieList {
+    display: grid;
+    grid-template-columns: repeat(7, minmax(200px, 1fr));
+    column-gap: 20px;
+    width: 100%;
+  }
 }

@@ -1,75 +1,107 @@
 .hidden-title {
-    position: absolute;
-    top: -10000px;
-    font-size: 0;
+  position: absolute;
+  top: -10000px;
+  font-size: 0;
 }
 
 .blind {
-    position: absolute;
-    top: auto;
-    left: -10000px;
-    height: 1px;
-    overflow: hidden;
+  position: absolute;
+  top: auto;
+  left: -10000px;
+  height: 1px;
+  overflow: hidden;
 }
 
 /* buttons */
 button {
-    padding: 0;
-    margin: 0;
-    border: none;
-    cursor: pointer;
+  padding: 0;
+  margin: 0;
+  border: none;
+  cursor: pointer;
 }
 
 .btn {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 /* 재생 버튼 */
 .btn-play {
-    display: flex;
-    background-color: var(--white-color);
-    color: var(--black-color);
-    /* padding: 10px 20px; */
-    align-items: center;
-    justify-content: center;
+  display: flex;
+  background-color: var(--white-color);
+  color: var(--black-color);
+  /* padding: 10px 20px; */
+  align-items: center;
+  justify-content: center;
 }
 
 /* 좋아요, 싫어요 버튼 */
-.btn-icon {
-}
-
 .btn-default {
-    background-color: rgba(255, 255, 255, 0.8);
-    color: #000;
-    font-weight: bold;
-    transition: background-color 0.3s ease;
+  background-color: rgba(255, 255, 255, 0.8);
+  color: #000;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
 }
 
 .btn-default:hover {
-    background-color: rgba(255, 255, 255, 0.5);
+  background-color: rgba(255, 255, 255, 0.5);
 }
 
 .btn-gray {
-    background-color: rgba(109, 109, 110, 0.7);
-    color: white;
-    font-weight: bold;
-    transition: background-color 0.3s ease;
+  background-color: rgba(109, 109, 110, 0.7);
+  color: white;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
 }
 
 .btn-gray:hover {
-    background-color: rgba(109, 109, 110, 0.4);
+  background-color: rgba(109, 109, 110, 0.4);
 }
 
 .btn-l {
-    font-size: 15px;
-    padding: 10px 20px;
-    border-radius: 6px;
+  font-size: 15px;
+  padding: 10px 20px;
+  border-radius: 6px;
 }
 
 .btn-xl {
-    font-size: 20px;
-    padding: 10px 25px;
-    border-radius: 8px;
+  font-size: 20px;
+  padding: 10px 25px;
+  border-radius: 8px;
 }
 
+/* 재생 버튼 */
+.btn-play {
+  display: flex;
+  align-items: center;
+  padding: 1rem 2rem;
+  border-radius: 5px;
+  font-weight: bold;
+}
+
+.btn-play:hover {
+  opacity: 0.8;
+}
+
+/* 좋아요, 싫어요, 버튼들 */
+.btn-user {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  border-radius: 50%;
+  background-color: #292929;
+  border: 1px solid gray;
+  color: var(--white-color);
+  font-weight: bold;
+}
+
+.btn-user:hover {
+  border-color: var(--white-color);
+}
 /* buttons */
+
+/* 비디오 컨트롤러 */
+.movie-controls {
+  display: flex;
+  align-items: center;
+}

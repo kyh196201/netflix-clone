@@ -19,7 +19,9 @@
                 <span class="movieDetail__runTime">{{ runtime }}</span>
                 <span class="movieDetail__vote">{{ vote }}</span>
               </div>
-              <div class="movieDetail__overview" v-if="overview">{{overview}}</div>
+              <div class="movieDetail__overview" v-if="overview">
+                {{ overview }}
+              </div>
               <p v-else>줄거리가 없습니다.</p>
             </div>
             <div class="movieDetail__info__tagList">
@@ -58,18 +60,18 @@ export default {
     MyModal,
     BackDrop,
     MovieTagList,
-    MovieDetailSkeleton
+    MovieDetailSkeleton,
   },
   data() {
     return {
       isLoading: false,
-      movieId: null
+      movieId: null,
     };
   },
   computed: {
     // get state from store
     ...mapState("movie", {
-      movieData: state => state.selectedMovie
+      movieData: (state) => state.selectedMovie,
     }),
 
     // check movie data is exist
@@ -107,14 +109,14 @@ export default {
     // get movie directors
     directors() {
       return this.isMovieData
-        ? this.movieData.crew.filter(crew => crew.job === "Director")
+        ? this.movieData.crew.filter((crew) => crew.job === "Director")
         : [];
     },
 
     // get movie genres
     genres() {
       return this.isMovieData ? this.movieData.genres : [];
-    }
+    },
   },
   created() {
     console.log(this.$route);
@@ -184,8 +186,8 @@ export default {
       } else {
         this.$router.push("/browse");
       }
-    }
-  }
+    },
+  },
 };
 </script>
 
@@ -217,7 +219,7 @@ export default {
 }
 
 .movieDetail__releaseDate {
-  color: #44cc66;
+  color: var(--release-date-color);
 }
 
 .movieDetail__releaseDate,
@@ -228,7 +230,7 @@ export default {
   font-size: 1em;
 }
 .movieDetail__vote {
-  color: #fcc419;
+  color: var(--vote-color);
 }
 
 .movieDetail__overview {

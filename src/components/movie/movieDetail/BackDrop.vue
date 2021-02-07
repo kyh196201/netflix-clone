@@ -8,7 +8,7 @@
     <div class="movieDetail__backdropInfo">
       <div class="movieDetail__backdropInfo__content">
         <p class="movieDetail__backdropTitle">{{ movieTitle }}</p>
-        <div class="movieDetail__backdrop__control">
+        <div class="movieDetail__backdrop__controls movie-controls">
           <button type="button" id="play" class="btn btn-play">
             <font-awesome-icon icon="play" />
             <span class="btn__title">재생</span>
@@ -49,8 +49,8 @@ export default {
   props: {
     movie: {
       type: Object,
-      required: true
-    }
+      required: true,
+    },
   },
   computed: {
     // get movie backdrop image
@@ -60,13 +60,13 @@ export default {
     },
     movieTitle() {
       return this.movie.title;
-    }
+    },
   },
   methods: {
     closeModal() {
       this.$emit("close");
-    }
-  }
+    },
+  },
 };
 </script>
 
@@ -126,45 +126,25 @@ export default {
   line-height: 1.2;
 }
 
-.movieDetail__backdrop__control {
-  display: flex;
-  align-items: center;
-}
-
-.movieDetail__backdrop__control .btn {
+.movieDetail__backdrop__controls .btn {
   margin: 0.25rem;
   font-size: 1.5rem;
 }
 
-.movieDetail__backdrop__control .btn-play {
-  display: flex;
-  align-items: center;
+.movieDetail__backdrop__controls .btn-play {
   padding: 1.25rem 3rem;
-  border-radius: 5px;
-  font-weight: bold;
 }
 
-.movieDetail__backdrop__control .btn-play:hover {
-  opacity: 0.8;
-}
-
-.movieDetail__backdrop__control .btn-play .btn__title {
+.movieDetail__backdrop__controls .btn-play .btn__title {
   margin-left: 1rem;
 }
 
-.movieDetail__backdrop__control .btn-user {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.movieDetail__backdrop__controls .btn-user {
   padding: 1.5rem;
-  border-radius: 50%;
-  background-color: #292929;
-  border: 2px solid gray;
-  color: var(--white-color);
-  font-weight: bold;
+  border-width: 2px;
 }
 
-.movieDetail__backdrop__control .btn-user:hover {
+.movieDetail__backdrop__controls .btn-user:hover {
   border-color: var(--white-color);
 }
 
