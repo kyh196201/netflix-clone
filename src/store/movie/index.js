@@ -20,6 +20,9 @@ const movie = {
 
     // movie card offset
     movieCardOffset: null,
+
+    // movie card data
+    movieCardData: null,
   }),
   mutations: {
     // set main movie data
@@ -51,6 +54,12 @@ const movie = {
     SET_MOVIE_CARD_OFFSET(state, offset) {
       state.movieCardOffset = offset;
     },
+
+    // set movie card data
+    SET_MOVIE_CARD_DATA(state, data) {
+      console.log("SET_MOVIE_CARD_DATA", data);
+      state.movieCardData = data;
+    },
   },
   actions: {
     // fetch main movie data
@@ -67,10 +76,19 @@ const movie = {
         // commit("SET_LOADING", false, { root: true });
       }
     },
+
     // fetch selected movie data
     async FETCH_SELECTED_MOVIE({ commit }, movieId) {
       const movieData = await fetchMovieDetail(movieId);
       commit("SET_SELECTED_MOVIE", movieData);
+    },
+
+    // fetch movie card data
+    async FETCH_MOVIE_CARD({ commit }, id) {
+      const response = fetchMovie(id);
+      console.log("FETCH_MOVIE_CARD response", response);
+      commit("SET_MOVIE_CARD_DATA", response.data);
+      // commit("SET_IS_MOVIE_CARD", true);
     },
   },
 };

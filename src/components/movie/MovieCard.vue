@@ -1,6 +1,6 @@
 <template>
   <HoverCard>
-    <div class="movie-card" :style="offset">
+    <div class="movie-card" :style="offset" :class="{ active: isMovieCard }">
       <figure class="movie-card__image">
         <img :src="defaultImage" alt="이미지 제목" />
       </figure>
@@ -68,13 +68,16 @@ export default {
   components: {
     HoverCard,
   },
-  data() {
-    return {
-      offset: {
-        width: 300 + "px",
-        "font-size": 10 + "px",
-      },
-    };
+  computed: {
+    offset() {
+      return this.$store.state.movie.movieCardOffset;
+    },
+    isMovieCard() {
+      return this.$store.state.movie.isMovieCard;
+    },
+  },
+  mounted() {
+    console.log(this.offset);
   },
 };
 </script>
@@ -85,6 +88,11 @@ export default {
   font-size: 1rem;
   color: var(--white-color);
   background-color: var(--background-color);
+}
+
+.movie-card.active {
+  position: fixed;
+  z-index: 99;
 }
 
 .movie-card__image {
