@@ -85,10 +85,16 @@ const movie = {
 
     // fetch movie card data
     async FETCH_MOVIE_CARD({ commit }, id) {
-      const response = fetchMovie(id);
-      console.log("FETCH_MOVIE_CARD response", response);
-      commit("SET_MOVIE_CARD_DATA", response.data);
+      const { data } = await fetchMovie(id);
+      commit("SET_MOVIE_CARD_DATA", data);
       // commit("SET_IS_MOVIE_CARD", true);
+    },
+
+    // clear movie card state
+    CLEAR_MOVIE_CARD({ commit }) {
+      commit("SET_IS_MOVIE_CARD", false);
+      commit("SET_MOVIE_CARD_ID", null);
+      commit("SET_MOVIE_CARD_OFFSET", null);
     },
   },
 };

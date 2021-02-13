@@ -1,99 +1,184 @@
 <template>
-  <HoverCard>
-    <div class="movie-card" :style="offset" :class="{ active: isMovieCard }">
-      <figure class="movie-card__image">
-        <img :src="defaultImage" alt="이미지 제목" />
-      </figure>
-      <div class="movie-card__content">
-        <!-- 영화 컨트롤러 -->
-        <div class="movie-controls">
-          <button type="button" id="play" class="btn btn-play">
-            <font-awesome-icon icon="play" />
-          </button>
-          <button type="button" class="btn btn-user" v-if="false">
-            <font-awesome-icon icon="check" />
-          </button>
-          <button type="button" class="btn btn-user">
-            <font-awesome-icon icon="plus" />
-          </button>
-          <button type="button" class="btn btn-user" v-if="false">
-            <font-awesome-icon :icon="['fas', 'thumbs-up']" />
-          </button>
-          <button type="button" class="btn btn-user">
-            <font-awesome-icon :icon="['far', 'thumbs-up']" />
-          </button>
-          <button type="button" class="btn btn-user" v-if="false">
-            <font-awesome-icon :icon="['fas', 'thumbs-down']" />
-          </button>
-          <button type="button" class="btn btn-user">
-            <font-awesome-icon :icon="['far', 'thumbs-down']" />
-          </button>
-          <button type="button" class="btn btn-user btn-user--caret">
-            <font-awesome-icon :icon="['fas', 'caret-down']" />
-          </button>
-        </div>
-        <div class="movie-card__info">
-          <div class="movie-card__detail">
-            <span class="movie-card__releaseDate">2009</span>
-            <span class="movie-card__runtime">2시간 15분</span>
+  <HoverCard :style="offset" :class="cardClass">
+    <template v-if="!isEmpty">
+      <div class="movie-card" @mouseleave="onMouseLeave">
+        <figure class="movie-card__image">
+          <img :src="backdrop" :alt="movieTitle" @error="onErrorImage" />
+        </figure>
+        <div class="movie-card__content">
+          <!-- 영화 컨트롤러 -->
+          <div class="movie-controls">
+            <button type="button" id="play" class="btn btn-play">
+              <font-awesome-icon icon="play" />
+            </button>
+            <button
+              type="button"
+              class="btn btn-user"
+              v-if="isInMyList(movieId)"
+              @click.prevent="removeMyList(movieData)"
+            >
+              <font-awesome-icon icon="check" />
+            </button>
+            <button
+              type="button"
+              class="btn btn-user"
+              v-else
+              @click.prevent="addMyList(movieData)"
+            >
+              <font-awesome-icon icon="plus" />
+            </button>
+            <button type="button" class="btn btn-user" v-if="false">
+              <font-awesome-icon :icon="['fas', 'thumbs-up']" />
+            </button>
+            <button type="button" class="btn btn-user">
+              <font-awesome-icon :icon="['far', 'thumbs-up']" />
+            </button>
+            <button type="button" class="btn btn-user" v-if="false">
+              <font-awesome-icon :icon="['fas', 'thumbs-down']" />
+            </button>
+            <button type="button" class="btn btn-user">
+              <font-awesome-icon :icon="['far', 'thumbs-down']" />
+            </button>
+            <button type="button" class="btn btn-user btn-user--caret">
+              <font-awesome-icon :icon="['fas', 'caret-down']" />
+            </button>
           </div>
-          <ul class="movie-card__genre-list">
-            <li class="movie-card__genre">
-              소름
-            </li>
-            <li class="movie-card__genre">
-              폭력
-            </li>
-            <li class="movie-card__genre">
-              무서운 이야기
-            </li>
-            <li class="movie-card__genre">
-              무서운 이야기
-            </li>
-            <li class="movie-card__genre">
-              무서운 이야기
-            </li>
-          </ul>
+          <div class="movie-card__info">
+            <div class="movie-card__detail">
+              <span class="movie-card__releaseDate">{{ releaseDate }}</span>
+              <span class="movie-card__runtime">{{ runtime }}</span>
+            </div>
+            <ul class="movie-card__genre-list" v-if="genres">
+              <li
+                class="movie-card__genre"
+                v-for="(genre, index) in genres"
+                :key="`genre-${index}`"
+              >
+                {{ genre.name }}
+              </li>
+            </ul>
+          </div>
         </div>
       </div>
-    </div>
+    </template>
   </HoverCard>
 </template>
 
 <script>
+import { mapState, mapActions, mapGetters } from "vuex";
 import HoverCard from "@/components/common/HoverCard.vue";
 import imageMixin from "@/mixin/image/index";
+import movieControlMixin from "@/mixin/movieControl/index";
+import { getRuntime, getReleaseDate } from "@/utils/helpers/movie.js";
+import getImageUrl from "@/utils/helpers/getImageUrl.js";
+
 export default {
-  mixins: [imageMixin],
+  mixins: [imageMixin, movieControlMixin],
   components: {
     HoverCard,
   },
   computed: {
+    ...mapState("movie", {
+      movieId: (state) => state.movieCardId,
+      movieData: (state) => state.selectedMovie,
+    }),
+
+    // check movieData is empty
+    isEmpty() {
+      return !Object.keys(this.movieData).length;
+    },
+
+    // movie card offset
     offset() {
       return this.$store.state.movie.movieCardOffset;
     },
+
+    // check is movie card
     isMovieCard() {
       return this.$store.state.movie.isMovieCard;
     },
+
+    // hover card class
+    cardClass() {
+      return {
+        "movie-card-wrapper": true,
+        active: this.isMovieCard,
+        "animation--bigger": this.isMovieCard,
+      };
+    },
+
+    // template bindings
+    releaseDate() {
+      const date = this.movieData.release_date;
+      return getReleaseDate(date);
+    },
+
+    runtime() {
+      return getRuntime(this.movieData.runtime);
+    },
+
+    backdrop() {
+      return getImageUrl(this.movieData.backdrop_path, 2, "backdrop");
+    },
+
+    movieTitle() {
+      return this.movieData.title;
+    },
+
+    genres() {
+      return this.movieData.genres;
+    },
   },
-  mounted() {
-    console.log(this.offset);
+
+  watch: {
+    movieId: {
+      handler: function(newValue, oldValue) {
+        this.fetchData();
+      },
+      immediate: true,
+    },
+  },
+
+  methods: {
+    ...mapActions("movie", ["CLEAR_MOVIE_CARD", "FETCH_SELECTED_MOVIE"]),
+
+    onMouseLeave(event) {
+      // close movie card
+      // this.CLEAR_MOVIE_CARD();
+    },
+
+    // fetch movie data
+    fetchData() {
+      try {
+        this.FETCH_SELECTED_MOVIE(this.movieId);
+      } catch (error) {
+        console.error(error);
+      }
+    },
   },
 };
 </script>
 
 <style>
+.movie-card-wrapper.active {
+  position: absolute;
+  z-index: 99;
+}
+
 .movie-card {
+  display: flex;
+  flex-direction: column;
   width: 100%;
+  height: 100%;
   font-size: 1rem;
   color: var(--white-color);
   background-color: var(--background-color);
 }
 
-.movie-card.active {
+/* .movie-card.active {
   position: fixed;
   z-index: 99;
-}
+} */
 
 .movie-card__image {
   display: block;
@@ -117,11 +202,12 @@ export default {
 }
 
 .movie-card .movie-controls {
+  font-size: 0.85vw;
   margin-bottom: 1em;
 }
 
 .movie-card .movie-controls button {
-  font-size: 1.25em;
+  font-size: 1em;
   padding: 1em;
   margin: 0.25em;
 }

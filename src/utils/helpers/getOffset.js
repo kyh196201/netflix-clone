@@ -1,8 +1,6 @@
 import { isHTMLElement } from "@/utils/helpers/index";
 
 function getOffset(element) {
-  console.log(element);
-
   if (!isHTMLElement) {
     throw new TypeError(`${element} is not html element!`);
   }

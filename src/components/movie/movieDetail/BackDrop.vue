@@ -42,7 +42,7 @@
 
 <script>
 import imageMixin from "@/mixin/image/index";
-import { getImageUrl } from "@/utils/helpers/getImageUrl.js";
+import getImageUrl from "@/utils/helpers/getImageUrl.js";
 
 export default {
   mixins: [imageMixin],
@@ -55,8 +55,8 @@ export default {
   computed: {
     // get movie backdrop image
     poster() {
-      return "https://image.tmdb.org/t/p/w1280" + this.movie.backdrop_path;
-      // return getImageUrl(this.movie.backdrop_path, 2, 'backdrop');
+      // return "https://image.tmdb.org/t/p/w1280" + this.movie.backdrop_path;
+      return getImageUrl(this.movie.backdrop_path, 2, "backdrop");
     },
     movieTitle() {
       return this.movie.title;

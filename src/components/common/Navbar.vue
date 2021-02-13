@@ -7,7 +7,9 @@
       <!-- 페이지 링크 -->
       <ul class="home__nav__links" v-if="isProfile">
         <li v-for="(link, index) in links" :key="index" ref="navLink">
-          <router-link class="navLink" :to="link.route">{{ link.title }}</router-link>
+          <router-link class="navLink" :to="link.route">{{
+            link.title
+          }}</router-link>
         </li>
       </ul>
     </div>
@@ -69,40 +71,40 @@ import throttle from "@/utils/throttle.js";
 const links = [
   {
     title: "홈",
-    route: "/browse"
+    route: "/browse",
   },
   {
     title: "영화",
-    route: "/browse/movie"
+    route: "/browse/movie",
   },
   {
     title: "최신 콘텐츠",
-    route: "/browse/latest"
+    route: "/browse/latest",
   },
   {
     title: "내가 찜한 콘텐츠",
-    route: "/browse/my-list"
-  }
+    route: "/browse/my-list",
+  },
 ];
 
 export default {
   name: "NavBar",
   components: {
-    "search-input": SearchInput
+    "search-input": SearchInput,
   },
   data() {
     return {
       logoImage: logoImage,
       avtarImage: avtarImage,
       links: links,
-      isHeaderFixed: false
+      isHeaderFixed: false,
     };
   },
   computed: {
     ...mapState({
-      isProfile: state => state.isProfile,
-      isSearching: state => state.isSearching
-    })
+      isProfile: (state) => state.isProfile,
+      isSearching: (state) => state.isSearching,
+    }),
   },
   created() {
     document.addEventListener("scroll", throttle(this.onScroll, 250));
@@ -126,8 +128,8 @@ export default {
         this.$el.classList.add(BLACK_CN);
         this.isHeaderFixed = true;
       }
-    }
-  }
+    },
+  },
 };
 </script>
 
@@ -173,6 +175,7 @@ export default {
   left: 0;
   /* min-width: 1280px; */
   height: 60px;
+  z-index: 100;
 }
 
 .home__nav.black {

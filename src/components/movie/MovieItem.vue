@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import { mapActions, mapMutations } from "vuex";
+import { mapActions, mapMutations, mapState } from "vuex";
 import getImageUrl from "@/utils/helpers/getImageUrl";
 import getOffset from "@/utils/helpers/getOffset";
 import imageMixin from "@/mixin/image/index";
@@ -40,7 +40,7 @@ export default {
         timer: null,
 
         // 딜레이
-        delay: 1500,
+        delay: 1200,
       },
 
       // 엘리먼트 offset
@@ -51,6 +51,9 @@ export default {
     };
   },
   computed: {
+    ...mapState("movie", {
+      movieCardId: (state) => state.movieCardId,
+    }),
     title() {
       return this.movie.title;
     },
@@ -77,9 +80,6 @@ export default {
   },
 
   methods: {
-    // set actions
-    ...mapActions("movie", ["FETCH_MOVIE_CARD"]),
-
     // set mutations
     ...mapMutations("movie", [
       "SET_IS_DETAIL_MODAL",
@@ -141,17 +141,13 @@ export default {
         if (elapsed >= this.hoverEvent.delay) {
           this.clearHoverEvent();
 
-          // 여기서 부터 로직 시작
-          console.log("set movie card position");
-
           // moviecard offset 설정
           this.getImageOffset();
           this.SET_MOVIE_CARD_OFFSET(this.cardOffset);
           this.SET_IS_MOVIE_CARD(true);
+          this.SET_MOVIE_CARD_ID(this.movieId);
         }
       }, 500);
-
-      console.log("mouse over to movie item");
     },
 
     // mouseover movie item event handler
@@ -180,19 +176,21 @@ export default {
       // 이미지 태그를 기준으로 offset 계산
       this.offset = getOffset(this.$refs.poster);
 
+      const _width = this.offset.width * 2;
+      const _height = this.offset.height * 1.5;
+
+      // get center of poster
+      const centerOffsetLeft = this.offset.left + this.offset.width / 2;
+      const centerOffsetTop = this.offset.top + this.offset.height / 2;
+
+      const _left = centerOffsetLeft - _width / 2;
+      const _top = centerOffsetTop - _height / 2;
+
       // set cardoffset
-      this.$set(this.cardOffset, "width", this.offset.width * 1.1 + "px");
-      this.$set(this.cardOffset, "height", this.offset.height + "px");
-      this.$set(
-        this.cardOffset,
-        "left",
-        this.offset.left + this.offset.width / 2 + "px"
-      );
-      this.$set(
-        this.cardOffset,
-        "top",
-        this.offset.top + this.offset.height / 2 + "px"
-      );
+      this.$set(this.cardOffset, "width", _width + "px");
+      this.$set(this.cardOffset, "height", _height + "px");
+      this.$set(this.cardOffset, "left", _left + "px");
+      this.$set(this.cardOffset, "top", _top + "px");
     },
   },
 };
