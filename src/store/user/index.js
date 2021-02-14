@@ -1,3 +1,5 @@
+import { setItem, getItem, STORAGE_KEY } from "@/utils/helpers/storage";
+
 const user = {
   namespaced: true,
 
@@ -27,7 +29,15 @@ const user = {
   mutations: {
     // push movie to my list
     PUSH_MY_LIST(state, movie) {
-      state.myList.push(movie);
+      if (Array.isArray(movie)) {
+        // movie가 배열일 경우
+        state.myList.push(...movie);
+      } else {
+        // movie가 일반 객체일 경우
+        state.myList.push(movie);
+      }
+
+      setItem(STORAGE_KEY.my_list, state.myList);
     },
 
     // remove movie from my list
@@ -37,6 +47,7 @@ const user = {
       if (_index > -1) {
         state.myList.splice(_index, 1);
       }
+      setItem(STORAGE_KEY.my_list, state.myList);
     },
   },
 
@@ -49,6 +60,17 @@ const user = {
     // remove movie from my list
     REMOVE_FROM_MY_LIST({ commit }, movieId) {
       commit("REMOVE_MY_LIST", movieId);
+    },
+
+    // 좋아요, 싫어요, 찜한 목록 초기화 action
+    INIT_USER_LIST({ commit }) {
+      console.log("INIT_USER_LIST");
+
+      const myList = getItem(STORAGE_KEY.my_list);
+
+      if (myList) {
+        commit("PUSH_MY_LIST", JSON.parse(myList));
+      }
     },
   },
 };

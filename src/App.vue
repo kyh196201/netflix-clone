@@ -1,11 +1,11 @@
 <template>
-    <div id="app">
-        <Header />
-        <router-view></router-view>
-        <footer>Footer</footer>
-        <MovieDetailModal v-if="isDetailModal" />
-        <LoadingPage v-if="isLoading"></LoadingPage>
-    </div>
+  <div id="app">
+    <Header />
+    <router-view></router-view>
+    <footer>Footer</footer>
+    <MovieDetailModal v-if="isDetailModal" />
+    <LoadingPage v-if="isLoading"></LoadingPage>
+  </div>
 </template>
 
 <script>
@@ -16,22 +16,25 @@ import { mapState } from "vuex";
 import { setYoutubeAPI } from "@/utils/youtube.js";
 
 export default {
-    components: {
-        Header,
-        MovieDetailModal,
-        LoadingPage,
-    },
-    computed: {
-        ...mapState({
-            isLoading: (state) => state.loading,
-        }),
-        ...mapState("movie", {
-            isDetailModal: (state) => state.isDetailModal,
-        }),
-    },
-    created() {
-        setYoutubeAPI();
-    },
+  components: {
+    Header,
+    MovieDetailModal,
+    LoadingPage,
+  },
+  computed: {
+    ...mapState({
+      isLoading: (state) => state.loading,
+    }),
+    ...mapState("movie", {
+      isDetailModal: (state) => state.isDetailModal,
+    }),
+  },
+  created() {
+    setYoutubeAPI();
+
+    // init user list store
+    this.$store.dispatch("user/INIT_USER_LIST");
+  },
 };
 </script>
 
