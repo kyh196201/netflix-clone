@@ -39,7 +39,11 @@
             <button type="button" class="btn btn-user">
               <font-awesome-icon :icon="['far', 'thumbs-down']" />
             </button>
-            <button type="button" class="btn btn-user btn-user--caret">
+            <button
+              type="button"
+              class="btn btn-user btn-user--caret"
+              @click.prevent="showDetailView"
+            >
               <font-awesome-icon :icon="['fas', 'caret-down']" />
             </button>
           </div>
@@ -153,6 +157,21 @@ export default {
         this.FETCH_SELECTED_MOVIE(this.movieId);
       } catch (error) {
         console.error(error);
+      }
+    },
+
+    // show detail modal
+    showDetailView() {
+      if (this.movieId && typeof this.movieId === "number") {
+        this.$router
+          .replace({
+            query: {
+              movieId: this.movieId,
+            },
+          })
+          .then(() => {
+            this.CLEAR_MOVIE_CARD();
+          });
       }
     },
   },

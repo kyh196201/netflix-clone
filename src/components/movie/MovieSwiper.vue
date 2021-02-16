@@ -3,8 +3,12 @@
     <div class="swiper-container movie-container" ref="slider">
       <div class="swiper-wrapper movie-wrapper">
         <!-- 슬라이드 -->
-        <div class="swiper-slide" v-for="movie in movies" :key="movie.id">
-          <MovieItem :movie="movie"></MovieItem>
+        <div
+          class="swiper-slide"
+          v-for="(movie, index) in movies"
+          :key="movie.id"
+        >
+          <MovieItem :movie="movie" :data-slide-index="index"></MovieItem>
         </div>
       </div>
       <!-- 네비게이션 -->
@@ -31,12 +35,15 @@ export default {
   },
   data() {
     return {
+      // swiper object
       slider: null,
+
+      // swiper options
       swiperOptions: {
         slidesPerView: 7,
         spaceBetween: 10,
         slidesPerGroup: 7,
-        loop: true,
+        loop: false,
         loopFillGroupWithBlank: true,
         navigation: {
           nextEl: ".swiper-button-next",
@@ -47,6 +54,9 @@ export default {
         // https://github.com/nolimits4web/swiper/blob/master/demos/380-responsive-breakpoints.html
         breakpoints: {},
       },
+
+      // currentSlide
+      currentSlide: 0,
     };
   },
   mounted() {

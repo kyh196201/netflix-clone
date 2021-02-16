@@ -2,7 +2,7 @@
   <div
     class="movieItem"
     @click="onClickMovieItem"
-    @mouseover="onMouseOver($event)"
+    @mouseenter="onMouseEnter($event)"
     @mouseout="onMouseOut($event)"
     :data-movie-id="this.movieId"
   >
@@ -113,7 +113,7 @@ export default {
     },
 
     // mouseover movie item event handler
-    onMouseOver(event) {
+    onMouseEnter(event) {
       event.stopPropagation();
 
       /*
@@ -173,6 +173,27 @@ export default {
 
     // get image offset
     getImageOffset() {
+      console.log("getImageOffset");
+      const $poster = this.$refs.poster;
+
+      // 카드 최소 너비, 높이
+      const cardMinWidth = 200;
+      const cardMinHeight = 250;
+
+      /**
+       * 1. 슬라이드 기준으로 슬라이드 아이템의 인덱스를 구한다.
+       * 2. 인덱스가 0 일 경우와 6일 경우
+       * 3. 인덱스가 0일 경우, top은 똑같이, left는 현재 카드의 left값과 똑같이 구한다.
+       * 4. 인덱스가 6일 경우, top은 똑같이, left는 현재 카드의 left + 현재 카드의 width, - 새로운 카드의 width로 구한다.
+       */
+
+      // 카드가 슬라이드에서 첫번째에 있을 경우
+      const slideIndex = this.$el.dataset.slideIndex;
+      console.log(slideIndex);
+
+      // 카드가 슬라이드에서 마지막에 있을 경우
+
+      // 일반적인 경우
       // 이미지 태그를 기준으로 offset 계산
       this.offset = getOffset(this.$refs.poster);
 
@@ -183,12 +204,34 @@ export default {
       const centerOffsetLeft = this.offset.left + this.offset.width / 2;
       const centerOffsetTop = this.offset.top + this.offset.height / 2;
 
-      const _left = centerOffsetLeft - _width / 2;
-      const _top = centerOffsetTop - _height / 2;
+      let _left = 0;
+      let _top = 0;
+
+      // 제일 왼쪽에 있을 경우 (0, 7 ...번 인덱스)
+      if (slideIndex % 7 === 0) {
+        _left = this.offset.left;
+      } else if (slideIndex % 7 === 6) {
+        _left = this.offset.left + this.offset.width - _width;
+      } else {
+        _left = centerOffsetLeft - _width / 2;
+      }
+      // 제일 오른쪽에 있을 경우 (6, 13, ...번 인덱스)
+
+      _top = centerOffsetTop - _height / 2;
 
       // set cardoffset
-      this.$set(this.cardOffset, "width", _width + "px");
-      this.$set(this.cardOffset, "height", _height + "px");
+      if (_width < cardMinWidth) {
+        this.$set(this.cardOffset, "width", cardMinWidth + "px");
+      } else {
+        this.$set(this.cardOffset, "width", _width + "px");
+      }
+
+      if (_height < cardMinHeight) {
+        this.$set(this.cardOffset, "height", cardMinHeight + "px");
+      } else {
+        this.$set(this.cardOffset, "height", _height + "px");
+      }
+
       this.$set(this.cardOffset, "left", _left + "px");
       this.$set(this.cardOffset, "top", _top + "px");
     },
