@@ -13,22 +13,52 @@
             <font-awesome-icon icon="play" />
             <span class="btn__title">재생</span>
           </button>
-          <button type="button" class="btn btn-user">
+          <button
+            type="button"
+            class="btn btn-user"
+            v-if="isInMyList(movieId)"
+            @click="removeMyList(movie)"
+          >
             <font-awesome-icon icon="check" />
           </button>
-          <button type="button" class="btn btn-user">
+          <button
+            type="button"
+            class="btn btn-user"
+            v-else
+            @click="addMyList(movie)"
+          >
             <font-awesome-icon icon="plus" />
           </button>
-          <button type="button" class="btn btn-user">
+          <button
+            type="button"
+            class="btn btn-user"
+            v-if="isInLikeList(movieId)"
+            @click="removeLikeList(movie)"
+          >
             <font-awesome-icon :icon="['fas', 'thumbs-up']" />
           </button>
-          <button type="button" class="btn btn-user">
+          <button
+            type="button"
+            class="btn btn-user"
+            v-else
+            @click="addLikeList(movie)"
+          >
             <font-awesome-icon :icon="['far', 'thumbs-up']" />
           </button>
-          <button type="button" class="btn btn-user">
+          <button
+            type="button"
+            class="btn btn-user"
+            v-if="isInHateList(movieId)"
+            @click="removeHateList(movie)"
+          >
             <font-awesome-icon :icon="['fas', 'thumbs-down']" />
           </button>
-          <button type="button" class="btn btn-user">
+          <button
+            type="button"
+            class="btn btn-user"
+            v-else
+            @click="addHateList(movie)"
+          >
             <font-awesome-icon :icon="['far', 'thumbs-down']" />
           </button>
         </div>
@@ -41,11 +71,15 @@
 </template>
 
 <script>
+// mixins
 import imageMixin from "@/mixin/image/index";
+import movieControlMixin from "@/mixin/movieControl/index";
+
+// functions
 import getImageUrl from "@/utils/helpers/getImageUrl.js";
 
 export default {
-  mixins: [imageMixin],
+  mixins: [imageMixin, movieControlMixin],
   props: {
     movie: {
       type: Object,
@@ -58,8 +92,15 @@ export default {
       // return "https://image.tmdb.org/t/p/w1280" + this.movie.backdrop_path;
       return getImageUrl(this.movie.backdrop_path, 2, "backdrop");
     },
+
+    // get movie title
     movieTitle() {
       return this.movie.title;
+    },
+
+    // get movie id
+    movieId() {
+      return this.movie.id;
     },
   },
   methods: {

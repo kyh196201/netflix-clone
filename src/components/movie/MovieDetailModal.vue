@@ -48,7 +48,6 @@ import { mapActions, mapState, mapGetters, mapMutations } from "vuex";
 import { getItem } from "@/utils/helpers/storage.js";
 import { getRuntime, getReleaseDate } from "@/utils/helpers/movie.js";
 import { getPrevRoute } from "@/utils/helpers/prevRoute.js";
-import defaultBackgroundImage from "@/assets/images/default_image.png";
 
 function isEmptyObject(object) {
   return !Object.keys(object).length;

@@ -3,7 +3,7 @@
     class="movieItem"
     @click="onClickMovieItem"
     @mouseenter="onMouseEnter($event)"
-    @mouseout="onMouseOut($event)"
+    @mouseleave="onMouseLeave($event)"
     :data-movie-id="this.movieId"
   >
     <figure>
@@ -53,6 +53,7 @@ export default {
   computed: {
     ...mapState("movie", {
       movieCardId: (state) => state.movieCardId,
+      isMovieCard: (state) => state.isMovieCard,
     }),
     title() {
       return this.movie.title;
@@ -80,6 +81,9 @@ export default {
   },
 
   methods: {
+    // actions
+    ...mapActions("movie", ["CLEAR_MOVIE_CARD"]),
+
     // set mutations
     ...mapMutations("movie", [
       "SET_IS_DETAIL_MODAL",
@@ -88,7 +92,7 @@ export default {
       "SET_MOVIE_CARD_OFFSET",
     ]),
 
-    // click movie item event handler
+    // 영화 상세 모달 띄우기
     onClickMovieItem(event) {
       event.stopPropagation();
 
@@ -101,6 +105,11 @@ export default {
       else {
         // 현재 라우트 경로를 유지하면서, 쿼리스트링만 변경하기
         // https://stackoverflow.com/questions/40382388/how-to-set-url-query-params-in-vue-with-vue-router/40394184
+
+        // movieCard가 있으면 movieCard 초기화
+        if (this.isMovieCard) {
+          this.CLEAR_MOVIE_CARD();
+        }
 
         this.SET_IS_DETAIL_MODAL(true);
         return this.$router.replace({
@@ -115,20 +124,6 @@ export default {
     // mouseover movie item event handler
     onMouseEnter(event) {
       event.stopPropagation();
-
-      /*
-        1. 마우스를 무비 아이템에 올린다.
-        2. 마우스를 올린 후 일정 시간이 지나면, 포지션을 계산한다.
-        3. 스토어에 무비 카드 오프셋을 갱신한다.
-        4. api를 요청한다.
-        5. api요청이 완료 되면 스토어를 세팅한다.
-        6. 무비 카드를 보여준다.
-      */
-
-      /*
-        1. 마우스를 올린 순간 이벤트 타겟과 시작 시간을 설정한다.
-        2. setInterval을 통해서 시간이 3초 지났는지 체크하고, 3초보다 커졌을 경우 원하는 로직을 실행한다.
-      */
 
       this.hoverEvent.startTime = new Date().getTime();
       this.hoverEvent.target = event.target;
@@ -151,7 +146,7 @@ export default {
     },
 
     // mouseover movie item event handler
-    onMouseOut(event) {
+    onMouseLeave(event) {
       event.stopPropagation();
 
       // 마우스 오버 도중 마우스 아웃 이벤트가 발생했을 경우
@@ -174,26 +169,13 @@ export default {
     // get image offset
     getImageOffset() {
       console.log("getImageOffset");
-      const $poster = this.$refs.poster;
 
       // 카드 최소 너비, 높이
       const cardMinWidth = 200;
       const cardMinHeight = 250;
 
-      /**
-       * 1. 슬라이드 기준으로 슬라이드 아이템의 인덱스를 구한다.
-       * 2. 인덱스가 0 일 경우와 6일 경우
-       * 3. 인덱스가 0일 경우, top은 똑같이, left는 현재 카드의 left값과 똑같이 구한다.
-       * 4. 인덱스가 6일 경우, top은 똑같이, left는 현재 카드의 left + 현재 카드의 width, - 새로운 카드의 width로 구한다.
-       */
-
-      // 카드가 슬라이드에서 첫번째에 있을 경우
       const slideIndex = this.$el.dataset.slideIndex;
-      console.log(slideIndex);
 
-      // 카드가 슬라이드에서 마지막에 있을 경우
-
-      // 일반적인 경우
       // 이미지 태그를 기준으로 offset 계산
       this.offset = getOffset(this.$refs.poster);
 
@@ -210,13 +192,13 @@ export default {
       // 제일 왼쪽에 있을 경우 (0, 7 ...번 인덱스)
       if (slideIndex % 7 === 0) {
         _left = this.offset.left;
-      } else if (slideIndex % 7 === 6) {
+      }
+      // 제일 오른쪽에 있을 경우 (6, 13, ...번 인덱스)
+      else if (slideIndex % 7 === 6) {
         _left = this.offset.left + this.offset.width - _width;
       } else {
         _left = centerOffsetLeft - _width / 2;
       }
-      // 제일 오른쪽에 있을 경우 (6, 13, ...번 인덱스)
-
       _top = centerOffsetTop - _height / 2;
 
       // set cardoffset

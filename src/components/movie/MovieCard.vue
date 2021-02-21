@@ -27,16 +27,36 @@
             >
               <font-awesome-icon icon="plus" />
             </button>
-            <button type="button" class="btn btn-user" v-if="false">
+            <button
+              type="button"
+              class="btn btn-user"
+              v-if="isInLikeList(movieId)"
+              @click="removeLikeList(movieData)"
+            >
               <font-awesome-icon :icon="['fas', 'thumbs-up']" />
             </button>
-            <button type="button" class="btn btn-user">
+            <button
+              type="button"
+              class="btn btn-user"
+              v-else
+              @click="addLikeList(movieData)"
+            >
               <font-awesome-icon :icon="['far', 'thumbs-up']" />
             </button>
-            <button type="button" class="btn btn-user" v-if="false">
+            <button
+              type="button"
+              class="btn btn-user"
+              v-if="isInHateList(movieId)"
+              @click="removeHateList(movieData)"
+            >
               <font-awesome-icon :icon="['fas', 'thumbs-down']" />
             </button>
-            <button type="button" class="btn btn-user">
+            <button
+              type="button"
+              class="btn btn-user"
+              v-else
+              @click="addHateList(movieData)"
+            >
               <font-awesome-icon :icon="['far', 'thumbs-down']" />
             </button>
             <button
@@ -69,10 +89,16 @@
 </template>
 
 <script>
-import { mapState, mapActions, mapGetters } from "vuex";
+import { mapState, mapActions } from "vuex";
+
+// components
 import HoverCard from "@/components/common/HoverCard.vue";
+
+// mixins
 import imageMixin from "@/mixin/image/index";
 import movieControlMixin from "@/mixin/movieControl/index";
+
+// functions
 import { getRuntime, getReleaseDate } from "@/utils/helpers/movie.js";
 import getImageUrl from "@/utils/helpers/getImageUrl.js";
 
@@ -148,7 +174,7 @@ export default {
 
     onMouseLeave(event) {
       // close movie card
-      // this.CLEAR_MOVIE_CARD();
+      this.CLEAR_MOVIE_CARD();
     },
 
     // fetch movie data
