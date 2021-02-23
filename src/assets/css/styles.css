@@ -10,6 +10,10 @@
   --black-color: #000000;
   --release-date-color: #44cc66;
   --vote-color: #fcc419;
+  --red-color: red;
+  --blue-color: blue;
+  --grey-color: grey;
+  --light-grey-color: #ddd;
 }
 
 *,
