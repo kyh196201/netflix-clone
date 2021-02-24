@@ -12,3 +12,16 @@ export function isHTMLElement(obj) {
     );
   }
 }
+
+// 특정 개수로 배열 잘라서 이중 배열 만들기
+export function division(arr, n) {
+  var len = arr.length;
+  var count = Math.floor(len / n);
+  var tmp = [];
+
+  for (var i = 0; i <= count; i++) {
+    tmp.push(arr.splice(0, n));
+  }
+
+  return tmp;
+}

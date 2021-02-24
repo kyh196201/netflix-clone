@@ -1,7 +1,10 @@
 import { fetchMovie, fetchMovieDetail } from "@/api";
+import { getGenres } from "@/api/movie";
 
 const movie = {
   namespaced: true,
+
+  // State
   state: () => ({
     // main movie
     mainMovie: {},
@@ -23,7 +26,48 @@ const movie = {
 
     // movie card data
     movieCardData: null,
+
+    // all genres
+    genres: [],
+
+    // movie sorts/filteres
+    movieFilters: [
+      {
+        name: "인기 많은 순",
+        value: "populairty.desc",
+      },
+      {
+        name: "인기 적은 순",
+        value: "populairty.asc",
+      },
+      {
+        name: "출시 빠른 순",
+        value: "release_date.desc",
+      },
+      {
+        name: "출시 늦은 순",
+        value: "release_date.desc",
+      },
+
+      {
+        name: "평점 높은 순",
+        value: "vote_average.desc",
+      },
+      {
+        name: "평점 낮은 순",
+        value: "vote_average.desc",
+      },
+    ],
   }),
+
+  // Getters
+  getters: {
+    genres(state) {
+      return state.genres;
+    },
+  },
+
+  // Mutations
   mutations: {
     // set main movie data
     SET_MAIN_MOVIE(state, mainMovie) {
@@ -60,7 +104,14 @@ const movie = {
       console.log("SET_MOVIE_CARD_DATA", data);
       state.movieCardData = data;
     },
+
+    // set all genres
+    SET_GENRES(state, genres) {
+      state.genres = genres;
+    },
   },
+
+  // Actions
   actions: {
     // fetch main movie data
     async FETCH_MAIN_MOVIE({ commit }, id) {
@@ -95,6 +146,17 @@ const movie = {
       commit("SET_IS_MOVIE_CARD", false);
       commit("SET_MOVIE_CARD_ID", null);
       commit("SET_MOVIE_CARD_OFFSET", null);
+    },
+
+    // FETCH ALL GENRES
+    async FETCH_GENRES({ commit }) {
+      const { data } = await getGenres();
+      commit("SET_GENRES", data.genres);
+    },
+
+    // init movie store
+    INIT_MOVIE_STORE({ dispatch }) {
+      dispatch("FETCH_GENRES");
     },
   },
 };

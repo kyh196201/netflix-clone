@@ -26,70 +26,29 @@
               </button>
 
               <!-- 장르 리스트 컨테이너 -->
-              <div class="genres__list-container">
+              <div class="genres__list-container" v-if="true">
                 <!-- 장르 리스트 -->
-                <ul class="genres__list">
-                  <li class="genres__item">
-                    <a href="#" class="genres__link">설 연휴 정주행 가이드</a>
-                  </li>
-                  <li class="genres__item">
-                    <a href="#" class="genres__link">한국</a>
-                  </li>
-                  <li class="genres__item">
-                    <a href="#" class="genres__link">미국 영화</a>
-                  </li>
-                  <li class="genres__item">
-                    <a href="#" class="genres__link">영화제 수상작</a>
-                  </li>
-                  <li class="genres__item">
-                    <a href="#" class="genres__link">인디</a>
-                  </li>
-                  <li class="genres__item">
-                    <a href="#" class="genres__link">어린이/가족</a>
-                  </li>
-                </ul>
-
-                <ul class="genres__list">
-                  <li class="genres__item">
-                    <a href="#" class="genres__link">애니메이션</a>
-                  </li>
-                  <li class="genres__item">
-                    <a href="#" class="genres__link">액션</a>
-                  </li>
-                  <li class="genres__item">
-                    <a href="#" class="genres__link">미국</a>
-                  </li>
-                  <li class="genres__item">
-                    <a href="#" class="genres__link">영화제</a>
-                  </li>
-                  <li class="genres__item">
-                    <a href="#" class="genres__link">인디</a>
-                  </li>
-                  <li class="genres__item">
-                    <a href="#" class="genres__link">어린이</a>
-                  </li>
-                </ul>
-
-                <ul class="genres__list">
-                  <li class="genres__item">
-                    <a href="#" class="genres__link">판타지</a>
-                  </li>
-                  <li class="genres__item">
-                    <a href="#" class="genres__link">액션</a>
-                  </li>
-                  <li class="genres__item">
-                    <a href="#" class="genres__link">다큐멘터리</a>
-                  </li>
-                  <li class="genres__item">
-                    <a href="#" class="genres__link">음악/뮤지컬</a>
-                  </li>
-                  <li class="genres__item">
-                    <a href="#" class="genres__link">인디</a>
-                  </li>
-                  <li class="genres__item">
-                    <a href="#" class="genres__link">어린이</a>
-                  </li>
-                </ul>
+                <template v-if="genres && genres.length">
+                  <template>
+                    <ul
+                      class="genres__list"
+                      v-for="(genrelist, index) in genres"
+                      :key="`genre-list-${index}`"
+                    >
+                      <template v-if="genrelist && genrelist.length">
+                        <!-- 장르 아이템 -->
+                        <li
+                          class="genres__item"
+                          v-for="genre in genrelist"
+                          :key="`genre-id-${genre.id}`"
+                          :data-genre-id="genre.id"
+                        >
+                          <a href="#" class="genres__link">{{ genre.name }}</a>
+                        </li>
+                      </template>
+                    </ul>
+                  </template>
+                </template>
               </div>
             </div>
           </div>
@@ -109,7 +68,7 @@
               </button>
 
               <!-- 필터 리스트 -->
-              <div class="filters__list-container">
+              <div class="filters__list-container" v-if="false">
                 <ul class="filters__list">
                   <li class="filters__item">
                     추천 콘텐츠
@@ -147,6 +106,76 @@
               </figure>
             </a>
           </div>
+          <div class="movie-list__item">
+            <a href="#" class="movie-list__link">
+              <figure class="movie-list__poster">
+                <img
+                  src="https://t1.daumcdn.net/thumb/R720x0.fjpg/?fname=http://t1.daumcdn.net/brunch/service/user/1ZgO/image/7fQUFh8JeRGH4JGLAPayJp7_XGo.jpeg"
+                  alt="영화 포스터"
+                />
+              </figure>
+            </a>
+          </div>
+          <div class="movie-list__item">
+            <a href="#" class="movie-list__link">
+              <figure class="movie-list__poster">
+                <img
+                  src="https://t1.daumcdn.net/thumb/R720x0.fjpg/?fname=http://t1.daumcdn.net/brunch/service/user/1ZgO/image/7fQUFh8JeRGH4JGLAPayJp7_XGo.jpeg"
+                  alt="영화 포스터"
+                />
+              </figure>
+            </a>
+          </div>
+          <div class="movie-list__item">
+            <a href="#" class="movie-list__link">
+              <figure class="movie-list__poster">
+                <img
+                  src="https://t1.daumcdn.net/thumb/R720x0.fjpg/?fname=http://t1.daumcdn.net/brunch/service/user/1ZgO/image/7fQUFh8JeRGH4JGLAPayJp7_XGo.jpeg"
+                  alt="영화 포스터"
+                />
+              </figure>
+            </a>
+          </div>
+          <div class="movie-list__item">
+            <a href="#" class="movie-list__link">
+              <figure class="movie-list__poster">
+                <img
+                  src="https://t1.daumcdn.net/thumb/R720x0.fjpg/?fname=http://t1.daumcdn.net/brunch/service/user/1ZgO/image/7fQUFh8JeRGH4JGLAPayJp7_XGo.jpeg"
+                  alt="영화 포스터"
+                />
+              </figure>
+            </a>
+          </div>
+          <div class="movie-list__item">
+            <a href="#" class="movie-list__link">
+              <figure class="movie-list__poster">
+                <img
+                  src="https://t1.daumcdn.net/thumb/R720x0.fjpg/?fname=http://t1.daumcdn.net/brunch/service/user/1ZgO/image/7fQUFh8JeRGH4JGLAPayJp7_XGo.jpeg"
+                  alt="영화 포스터"
+                />
+              </figure>
+            </a>
+          </div>
+          <div class="movie-list__item">
+            <a href="#" class="movie-list__link">
+              <figure class="movie-list__poster">
+                <img
+                  src="https://t1.daumcdn.net/thumb/R720x0.fjpg/?fname=http://t1.daumcdn.net/brunch/service/user/1ZgO/image/7fQUFh8JeRGH4JGLAPayJp7_XGo.jpeg"
+                  alt="영화 포스터"
+                />
+              </figure>
+            </a>
+          </div>
+          <div class="movie-list__item">
+            <a href="#" class="movie-list__link">
+              <figure class="movie-list__poster">
+                <img
+                  src="https://t1.daumcdn.net/thumb/R720x0.fjpg/?fname=http://t1.daumcdn.net/brunch/service/user/1ZgO/image/7fQUFh8JeRGH4JGLAPayJp7_XGo.jpeg"
+                  alt="영화 포스터"
+                />
+              </figure>
+            </a>
+          </div>
         </div>
       </div>
     </section>
@@ -154,23 +183,37 @@
 </template>
 
 <script>
-import { getGenres } from "@/api";
+import { division } from "@/utils/helpers/index";
 
 export default {
   data() {
     return {
       pageName: "영화",
 
-      // 장르
-      genres: [],
-
       // 선택된 장르
-      selectedGenre: null,
+      selectedGenre: "한국 영화",
     };
   },
 
+  computed: {
+    // 장르
+    genres() {
+      const genres = this.$store.getters["movie/genres"];
+
+      if (genres) {
+        return division(genres.slice(), 7);
+      } else {
+        return [];
+      }
+    },
+
+    movieFilters() {
+      return this.$store.state.movie.movieFilters;
+    },
+  },
+
   created() {
-    getGenres().then((res) => console.log(res));
+    console.log("created movie page");
   },
 };
 </script>
@@ -179,16 +222,16 @@ export default {
 /* 헤더 */
 .movie-page__header {
   height: 100px;
-  border: 3px solid var(--red-color);
+  margin: 0 0 20px 0;
 }
 
 /* 헤더 inner */
 .movie-page__header__inner {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   height: 100%;
   padding: 0 40px;
-  border: 3px solid var(--blue-color);
 }
 
 .movie-page__header.fixed .movie-page__header__inner {
@@ -272,6 +315,7 @@ export default {
   display: inline-block;
   margin-right: 30px;
   font-size: 14px;
+  vertical-align: top;
 }
 
 .movie-page__genres .genres__list:last-child {
@@ -340,5 +384,25 @@ export default {
 
 .movie-page .filters__item:last-child {
   margin: 0;
+}
+
+/* 영화 섹션 */
+.movie-page .movie-section {
+  padding: 0 40px;
+}
+
+.movie-page .movie-list {
+  font-size: 0;
+  margin: 0 -10px 0 0;
+}
+
+.movie-page .movie-list__item {
+  display: inline-block;
+  width: calc(12.5% - 10px);
+  margin: 0 10px 0 0;
+}
+
+.movie-page .movie-list__item img {
+  width: 100%;
 }
 </style>

@@ -32,8 +32,13 @@ export default {
   created() {
     setYoutubeAPI();
 
+    console.log("App.vue Created!!");
+
     // init user list store
     this.$store.dispatch("user/INIT_USER_LIST");
+
+    // init movie store
+    this.$store.dispatch("movie/INIT_MOVIE_STORE");
   },
 };
 </script>
