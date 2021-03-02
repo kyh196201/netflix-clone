@@ -10,15 +10,26 @@
         <div class="movie-page__header__left">
           <!-- 페이지 타이틀 -->
           <div class="movie-page__title">
-            <span class="movie-page__subtitle">{{ pageName }}</span>
-            <span class="movie-page__maintitle">{{ selectedGenre }}</span>
+            <template v-if="genreList.selectedGenre">
+              <span class="movie-page__subtitle" @click="clearQuery">{{
+                pageName
+              }}</span>
+              <span class="movie-page__maintitle">{{
+                genreList.selectedGenre.name
+              }}</span>
+            </template>
+
+            <span class="movie-page__maintitle" v-else>{{ pageName }}</span>
           </div>
 
           <!-- 영화 장르 -->
           <div class="movie-page__genres">
             <div class="genres">
               <!-- 장르 셀렉터 -->
-              <button class="genres__title">
+              <button
+                class="genres__title"
+                @click="genreList.open = !genreList.open"
+              >
                 장르
                 <span class="genres__title__icon">
                   <font-awesome-icon icon="caret-down" />
@@ -26,7 +37,7 @@
               </button>
 
               <!-- 장르 리스트 컨테이너 -->
-              <div class="genres__list-container" v-if="true">
+              <div class="genres__list-container" v-if="genreList.open">
                 <!-- 장르 리스트 -->
                 <template v-if="genres && genres.length">
                   <template>
@@ -43,7 +54,12 @@
                           :key="`genre-id-${genre.id}`"
                           :data-genre-id="genre.id"
                         >
-                          <a href="#" class="genres__link">{{ genre.name }}</a>
+                          <a
+                            href="#"
+                            class="genres__link"
+                            @click.prevent="selectGenre(genre)"
+                            >{{ genre.name }}</a
+                          >
                         </li>
                       </template>
                     </ul>
@@ -94,104 +110,144 @@
     <!-- 영화 리스트 -->
     <section class="movie-section">
       <h3 class="blind">영화 리스트</h3>
-      <div class="movie-section__row">
-        <div class="movie-list">
-          <div class="movie-list__item">
-            <a href="#" class="movie-list__link">
-              <figure class="movie-list__poster">
-                <img
-                  src="https://t1.daumcdn.net/thumb/R720x0.fjpg/?fname=http://t1.daumcdn.net/brunch/service/user/1ZgO/image/7fQUFh8JeRGH4JGLAPayJp7_XGo.jpeg"
-                  alt="영화 포스터"
-                />
-              </figure>
-            </a>
-          </div>
-          <div class="movie-list__item">
-            <a href="#" class="movie-list__link">
-              <figure class="movie-list__poster">
-                <img
-                  src="https://t1.daumcdn.net/thumb/R720x0.fjpg/?fname=http://t1.daumcdn.net/brunch/service/user/1ZgO/image/7fQUFh8JeRGH4JGLAPayJp7_XGo.jpeg"
-                  alt="영화 포스터"
-                />
-              </figure>
-            </a>
-          </div>
-          <div class="movie-list__item">
-            <a href="#" class="movie-list__link">
-              <figure class="movie-list__poster">
-                <img
-                  src="https://t1.daumcdn.net/thumb/R720x0.fjpg/?fname=http://t1.daumcdn.net/brunch/service/user/1ZgO/image/7fQUFh8JeRGH4JGLAPayJp7_XGo.jpeg"
-                  alt="영화 포스터"
-                />
-              </figure>
-            </a>
-          </div>
-          <div class="movie-list__item">
-            <a href="#" class="movie-list__link">
-              <figure class="movie-list__poster">
-                <img
-                  src="https://t1.daumcdn.net/thumb/R720x0.fjpg/?fname=http://t1.daumcdn.net/brunch/service/user/1ZgO/image/7fQUFh8JeRGH4JGLAPayJp7_XGo.jpeg"
-                  alt="영화 포스터"
-                />
-              </figure>
-            </a>
-          </div>
-          <div class="movie-list__item">
-            <a href="#" class="movie-list__link">
-              <figure class="movie-list__poster">
-                <img
-                  src="https://t1.daumcdn.net/thumb/R720x0.fjpg/?fname=http://t1.daumcdn.net/brunch/service/user/1ZgO/image/7fQUFh8JeRGH4JGLAPayJp7_XGo.jpeg"
-                  alt="영화 포스터"
-                />
-              </figure>
-            </a>
-          </div>
-          <div class="movie-list__item">
-            <a href="#" class="movie-list__link">
-              <figure class="movie-list__poster">
-                <img
-                  src="https://t1.daumcdn.net/thumb/R720x0.fjpg/?fname=http://t1.daumcdn.net/brunch/service/user/1ZgO/image/7fQUFh8JeRGH4JGLAPayJp7_XGo.jpeg"
-                  alt="영화 포스터"
-                />
-              </figure>
-            </a>
-          </div>
-          <div class="movie-list__item">
-            <a href="#" class="movie-list__link">
-              <figure class="movie-list__poster">
-                <img
-                  src="https://t1.daumcdn.net/thumb/R720x0.fjpg/?fname=http://t1.daumcdn.net/brunch/service/user/1ZgO/image/7fQUFh8JeRGH4JGLAPayJp7_XGo.jpeg"
-                  alt="영화 포스터"
-                />
-              </figure>
-            </a>
-          </div>
-          <div class="movie-list__item">
-            <a href="#" class="movie-list__link">
-              <figure class="movie-list__poster">
-                <img
-                  src="https://t1.daumcdn.net/thumb/R720x0.fjpg/?fname=http://t1.daumcdn.net/brunch/service/user/1ZgO/image/7fQUFh8JeRGH4JGLAPayJp7_XGo.jpeg"
-                  alt="영화 포스터"
-                />
-              </figure>
-            </a>
+      <Spinner v-if="loading"></Spinner>
+      <template v-else>
+        <!-- 영화 리스트 -->
+        <div class="movie-section__row">
+          <div class="movie-list">
+            <!-- 영화 아이템 -->
+            <template v-if="tempMovies && tempMovies.length > 0">
+              <div
+                class="movie-list__item"
+                v-for="movie in tempMovies"
+                :key="movie.id"
+              >
+                <a href="#" class="movie-list__link">
+                  <figure class="movie-list__poster">
+                    <img :src="poster(movie.poster_path)" :alt="movie.title" />
+                  </figure>
+                </a>
+              </div>
+              <!-- <div class="movie-list__item">
+              <a href="#" class="movie-list__link">
+                <figure class="movie-list__poster">
+                  <img
+                    src="https://t1.daumcdn.net/thumb/R720x0.fjpg/?fname=http://t1.daumcdn.net/brunch/service/user/1ZgO/image/7fQUFh8JeRGH4JGLAPayJp7_XGo.jpeg"
+                    alt="영화 포스터"
+                  />
+                </figure>
+              </a>
+            </div>
+            <div class="movie-list__item">
+              <a href="#" class="movie-list__link">
+                <figure class="movie-list__poster">
+                  <img
+                    src="https://t1.daumcdn.net/thumb/R720x0.fjpg/?fname=http://t1.daumcdn.net/brunch/service/user/1ZgO/image/7fQUFh8JeRGH4JGLAPayJp7_XGo.jpeg"
+                    alt="영화 포스터"
+                  />
+                </figure>
+              </a>
+            </div>
+            <div class="movie-list__item">
+              <a href="#" class="movie-list__link">
+                <figure class="movie-list__poster">
+                  <img
+                    src="https://t1.daumcdn.net/thumb/R720x0.fjpg/?fname=http://t1.daumcdn.net/brunch/service/user/1ZgO/image/7fQUFh8JeRGH4JGLAPayJp7_XGo.jpeg"
+                    alt="영화 포스터"
+                  />
+                </figure>
+              </a>
+            </div>
+            <div class="movie-list__item">
+              <a href="#" class="movie-list__link">
+                <figure class="movie-list__poster">
+                  <img
+                    src="https://t1.daumcdn.net/thumb/R720x0.fjpg/?fname=http://t1.daumcdn.net/brunch/service/user/1ZgO/image/7fQUFh8JeRGH4JGLAPayJp7_XGo.jpeg"
+                    alt="영화 포스터"
+                  />
+                </figure>
+              </a>
+            </div>
+            <div class="movie-list__item">
+              <a href="#" class="movie-list__link">
+                <figure class="movie-list__poster">
+                  <img
+                    src="https://t1.daumcdn.net/thumb/R720x0.fjpg/?fname=http://t1.daumcdn.net/brunch/service/user/1ZgO/image/7fQUFh8JeRGH4JGLAPayJp7_XGo.jpeg"
+                    alt="영화 포스터"
+                  />
+                </figure>
+              </a>
+            </div>
+            <div class="movie-list__item">
+              <a href="#" class="movie-list__link">
+                <figure class="movie-list__poster">
+                  <img
+                    src="https://t1.daumcdn.net/thumb/R720x0.fjpg/?fname=http://t1.daumcdn.net/brunch/service/user/1ZgO/image/7fQUFh8JeRGH4JGLAPayJp7_XGo.jpeg"
+                    alt="영화 포스터"
+                  />
+                </figure>
+              </a>
+            </div>
+            <div class="movie-list__item">
+              <a href="#" class="movie-list__link">
+                <figure class="movie-list__poster">
+                  <img
+                    src="https://t1.daumcdn.net/thumb/R720x0.fjpg/?fname=http://t1.daumcdn.net/brunch/service/user/1ZgO/image/7fQUFh8JeRGH4JGLAPayJp7_XGo.jpeg"
+                    alt="영화 포스터"
+                  />
+                </figure>
+              </a>
+            </div> -->
+            </template>
           </div>
         </div>
-      </div>
+      </template>
     </section>
   </section>
 </template>
 
 <script>
+// Components
+import Spinner from "@/components/common/Spinner.vue";
+
+// helpers
 import { division } from "@/utils/helpers/index";
+import getImageUrl from "@/utils/helpers/getImageUrl";
+
+// APIs
+import { fetchSortedMovie } from "@/api/movie";
 
 export default {
+  components: {
+    Spinner,
+  },
   data() {
     return {
+      loading: false,
+
       pageName: "영화",
 
-      // 선택된 장르
-      selectedGenre: "한국 영화",
+      // 영화 리스트
+      movies: [],
+
+      // 페이지 네이션
+      pagination: {
+        page: 1,
+        totalPages: 0,
+        totalResult: 0,
+      },
+
+      // 장르 셀렉트 박스
+      genreList: {
+        open: false,
+        selectedGenre: null,
+      },
+
+      // 필터
+      filters: {
+        open: false,
+        selectedFilter: null,
+      },
     };
   },
 
@@ -200,20 +256,153 @@ export default {
     genres() {
       const genres = this.$store.getters["movie/genres"];
 
-      if (genres) {
-        return division(genres.slice(), 7);
-      } else {
-        return [];
-      }
+      return genres ? division(genres.slice(), 7) : [];
     },
 
+    // 영화 필터
     movieFilters() {
       return this.$store.state.movie.movieFilters;
+    },
+
+    // 쿼리 스트링
+    queryString() {
+      return {
+        with_genres: this.genreList.selectedGenre?.id,
+        sort_by: this.filters.selectedFilter?.value,
+        page: this.pagination.page,
+      };
+    },
+
+    // 선택된 장르, 필터, 페이지를 통해 변경된 쿼리 스트링
+    queryStringParams() {
+      return this.qs(this.queryString);
+    },
+
+    // 임시 영화 7개로 자른 것
+    tempMovies() {
+      return this.movies.length ? this.movies.slice(0, 8) : [];
+    },
+
+    // 영화 포스터
+    poster() {
+      return (imagePath) => {
+        return getImageUrl(imagePath, 2, "poster");
+      };
+    },
+  },
+
+  watch: {
+    queryString: {
+      handler(newQs, oldQs) {
+        if (newQs !== oldQs) {
+          this.fetchData();
+        }
+      },
     },
   },
 
   created() {
-    console.log("created movie page");
+    // 쿼리스트링 설정
+    this.setQueryString();
+
+    // 데이터 fetch
+    this.fetchData();
+  },
+
+  methods: {
+    // 장르 선택 이벤트 핸들러
+    selectGenre(genre) {
+      if (!genre || (!genre.id && genre.id !== 0)) return;
+
+      // this.$router.replace({
+      //   path: this.$route.path,
+      //   query: {
+      //     ...this.$route.query,
+      //     with_genres: genre.id,
+      //   },
+      // });
+
+      this.genreList.selectedGenre = genre;
+      this.genreList.open = false;
+    },
+
+    // 쿼리 스트링 만드는 함수
+    qs(query) {
+      let queryString = "";
+
+      for (const key in query) {
+        const _value = query[key];
+
+        if (_value !== undefined && _value !== null && _value !== "") {
+          queryString += `&${key}=${encodeURIComponent(_value)}`;
+        }
+      }
+
+      return queryString.replace(/\&/, "");
+    },
+
+    // 페이지 초기 진입 시 url 쿼리로 쿼리스트링 설정
+    setQueryString() {
+      const { query } = this.$route;
+
+      if (!Object.keys(query).length) return;
+
+      // 장르 설정
+      if (query["with_genres"] !== undefined) {
+        const genreId = query["with_genres"];
+
+        const genres = this.$store.getters["movie/genres"];
+        const _genre = genres.find((genre) => +genre.id === +genreId);
+
+        if (_genre) this.genreList.selectedGenre = _genre;
+      }
+
+      // 페이지 설정
+      if (query.page !== undefined) {
+        this.pagination.page = query.page;
+      }
+
+      // 필터 설정
+      if (query.filter !== undefined) {
+        const filter = this.movieFilters.find(
+          (filter) => filter.value === query.filter
+        );
+
+        if (filter) this.filters.selectedFilter = filter;
+      }
+    },
+
+    // 장르, 필터링 초기화
+    clearQuery() {
+      this.genreList.selectedGenre = null;
+      this.filters.selectedFilter = null;
+
+      // this.$router.replace({
+      //   path: this.$route.path,
+      //   query: {},
+      // });
+    },
+
+    // 영화 불러오는 함수
+    async fetchData() {
+      try {
+        this.loading = true;
+        const _queryString = this.queryStringParams;
+        const data = await fetchSortedMovie(_queryString);
+
+        const { page, results, total_pages, total_results } = data;
+
+        this.pagination.page = page;
+        this.pagination.totalPages = total_pages;
+        this.pagination.totalResult = total_results;
+
+        this.movies = results;
+      } catch (error) {
+        console.error(error);
+      } finally {
+        this.loading = false;
+      }
+    },
   },
 };
 </script>

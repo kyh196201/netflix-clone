@@ -43,3 +43,9 @@ export const fetchMovieDetail = async (id) => {
 
   return result;
 };
+
+export const fetchSortedMovie = async (query) => {
+  const url = `/discover/movie?${query}`;
+  const response = await movieAxios(url);
+  return response.data;
+};
