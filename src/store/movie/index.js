@@ -46,7 +46,7 @@ const movie = {
       },
       {
         name: "출시 늦은 순",
-        value: "release_date.desc",
+        value: "release_date.asc",
       },
 
       {
@@ -55,7 +55,7 @@ const movie = {
       },
       {
         name: "평점 낮은 순",
-        value: "vote_average.desc",
+        value: "vote_average.asc",
       },
     ],
   }),

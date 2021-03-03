@@ -7,9 +7,9 @@ const imageMixin = {
     };
   },
   methods: {
-    onErrorImage(event) {
+    onErrorImage(event, src) {
       // this는 이 믹스인을 사용한 뷰 컴포넌트 객체!
-      event.target.src = defaultImage;
+      event.target.src = src || this.defaultImage;
     },
   },
 };

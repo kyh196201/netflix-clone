@@ -1,7 +1,7 @@
 <template>
   <MyModal class="movieDetail">
     <template v-if="isLoading">
-      <MovieDetailSkeleton slot="body"></MovieDetailSkeleton>loading...
+      <MovieDetailSkeleton slot="body"></MovieDetailSkeleton>
     </template>
     <template v-else-if="!isLoading && isMovieData">
       <section slot="body" class="movieDetail__content">
@@ -118,7 +118,6 @@ export default {
     },
   },
   created() {
-    console.log(this.$route);
     this.setMovieId();
     this.fetchMovie();
   },
@@ -129,7 +128,6 @@ export default {
     // fetch movie detail data
     async fetchMovie() {
       try {
-        console.log("[fetchMovie in moviedetailModal]");
         this.isLoading = true;
         await this.FETCH_SELECTED_MOVIE(this.movieId);
       } catch (error) {
@@ -158,7 +156,11 @@ export default {
       this.SET_IS_DETAIL_MODAL();
 
       if (prevRoute) {
-        this.$router.push(prevRoute.path);
+        this.$router.push({
+          path: prevRoute.path,
+          params: prevRoute.params,
+          query: prevRoute.query,
+        });
       } else {
         this.$router.push("/browse");
       }

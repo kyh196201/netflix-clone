@@ -7,15 +7,26 @@
     :data-movie-id="this.movieId"
   >
     <figure>
-      <img :src="poster" :alt="title" ref="poster" />
+      <img
+        :src="poster"
+        :alt="title"
+        ref="poster"
+        @error="onErrorImage($event)"
+      />
     </figure>
   </div>
 </template>
 
 <script>
+// Vuex
 import { mapActions, mapMutations, mapState } from "vuex";
+
+// Functions
 import getImageUrl from "@/utils/helpers/getImageUrl";
 import getOffset from "@/utils/helpers/getOffset";
+import { setPrevRoute } from "@/utils/helpers/prevRoute.js";
+
+// Mixins
 import imageMixin from "@/mixin/image/index";
 
 export default {
@@ -24,6 +35,12 @@ export default {
     movie: {
       type: Object,
       required: true,
+    },
+
+    // 한 행에 있는 슬라이드 개수 => 호버카드 만들기 위해서 필요
+    breakPoint: {
+      type: [Number, String],
+      default: 0,
     },
   },
   data() {
@@ -112,9 +129,15 @@ export default {
         }
 
         this.SET_IS_DETAIL_MODAL(true);
+
+        // 라우트 경로 이동 전에 이전 라우트 경로 저장 필요
+        setPrevRoute(this.$route);
+
         return this.$router.replace({
           path: this.$route.path,
+          params: this.$route.params,
           query: {
+            ...this.$route.query,
             movieId: encodeURIComponent(this.movieId),
           },
         });
@@ -189,12 +212,14 @@ export default {
       let _left = 0;
       let _top = 0;
 
+      const lastIndex = this.breakPoint ? this.breakPoint : 7;
+
       // 제일 왼쪽에 있을 경우 (0, 7 ...번 인덱스)
-      if (slideIndex % 7 === 0) {
+      if (slideIndex % lastIndex === 0) {
         _left = this.offset.left;
       }
       // 제일 오른쪽에 있을 경우 (6, 13, ...번 인덱스)
-      else if (slideIndex % 7 === 6) {
+      else if (slideIndex % lastIndex === lastIndex - 1) {
         _left = this.offset.left + this.offset.width - _width;
       } else {
         _left = centerOffsetLeft - _width / 2;

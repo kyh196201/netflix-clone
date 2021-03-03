@@ -26,30 +26,14 @@ const routes = [
         component: () => import("@/views/BrowseHome.vue"),
       },
       {
-        path: "latest",
-        name: "Latest",
-        component: () => import("@/views/Latest.vue"),
-      },
-      {
         path: "my-list",
         name: "MyList",
         component: () => import("@/views/MyList.vue"),
       },
       {
-        path: "movie2",
-        name: "Movie",
-        component: () => import("@/views/Movie.vue"),
-      },
-      {
         path: "movie",
         name: "MoviePage",
         component: () => import("@/views/MoviePage.vue"),
-      },
-      {
-        path: "person/:pid",
-        name: "Person",
-        component: () => import("@/views/Person.vue"),
-        props: true,
       },
     ],
   },

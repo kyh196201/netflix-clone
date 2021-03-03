@@ -10,12 +10,12 @@
         <div class="movie-page__header__left">
           <!-- 페이지 타이틀 -->
           <div class="movie-page__title">
-            <template v-if="genreList.selectedGenre">
+            <template v-if="selectedGenre">
               <span class="movie-page__subtitle" @click="clearQuery">{{
                 pageName
               }}</span>
               <span class="movie-page__maintitle">{{
-                genreList.selectedGenre.name
+                selectedGenre.name
               }}</span>
             </template>
 
@@ -39,11 +39,11 @@
               <!-- 장르 리스트 컨테이너 -->
               <div class="genres__list-container" v-if="genreList.open">
                 <!-- 장르 리스트 -->
-                <template v-if="genres && genres.length">
+                <template v-if="genres && slicedGenres.length">
                   <template>
                     <ul
                       class="genres__list"
-                      v-for="(genrelist, index) in genres"
+                      v-for="(genrelist, index) in slicedGenres"
                       :key="`genre-list-${index}`"
                     >
                       <template v-if="genrelist && genrelist.length">
@@ -57,7 +57,7 @@
                           <a
                             href="#"
                             class="genres__link"
-                            @click.prevent="selectGenre(genre)"
+                            @click.prevent="selectGenre(genre.id)"
                             >{{ genre.name }}</a
                           >
                         </li>
@@ -76,27 +76,31 @@
           <div class="movie-page__filters">
             <div class="filters">
               <!-- 필터 제목 -->
-              <button class="filters__button">
-                <span class="filters__title">추천 콘텐츠</span>
+              <button
+                class="filters__button"
+                @click="filters.open = !filters.open"
+              >
+                <span class="filters__title">{{
+                  selectedFilter ? selectedFilter.name : ""
+                }}</span>
                 <span class="filters__icon">
                   <font-awesome-icon icon="caret-down" />
                 </span>
               </button>
 
               <!-- 필터 리스트 -->
-              <div class="filters__list-container" v-if="false">
-                <ul class="filters__list">
-                  <li class="filters__item">
-                    추천 콘텐츠
-                  </li>
-                  <li class="filters__item">
-                    출시일순
-                  </li>
-                  <li class="filters__item">
-                    오름차순(ㄱ-Z)
-                  </li>
-                  <li class="filters__item">
-                    내림차순(Z-ㄱ)
+              <div class="filters__list-container" v-if="filters.open">
+                <ul
+                  class="filters__list"
+                  v-if="filterList && filterList.length"
+                >
+                  <li
+                    class="filters__item"
+                    v-for="(filter, index) in filterList"
+                    :key="index"
+                    @click="selectFilter(filter.value)"
+                  >
+                    {{ filter.name }}
                   </li>
                 </ul>
               </div>
@@ -117,87 +121,13 @@
           <div class="movie-list">
             <!-- 영화 아이템 -->
             <template v-if="tempMovies && tempMovies.length > 0">
-              <div
-                class="movie-list__item"
-                v-for="movie in tempMovies"
+              <MovieItem
+                v-for="(movie, index) in tempMovies"
+                :movie="movie"
+                :breakPoint="tempMovies.length"
+                :data-slide-index="index"
                 :key="movie.id"
-              >
-                <a href="#" class="movie-list__link">
-                  <figure class="movie-list__poster">
-                    <img :src="poster(movie.poster_path)" :alt="movie.title" />
-                  </figure>
-                </a>
-              </div>
-              <!-- <div class="movie-list__item">
-              <a href="#" class="movie-list__link">
-                <figure class="movie-list__poster">
-                  <img
-                    src="https://t1.daumcdn.net/thumb/R720x0.fjpg/?fname=http://t1.daumcdn.net/brunch/service/user/1ZgO/image/7fQUFh8JeRGH4JGLAPayJp7_XGo.jpeg"
-                    alt="영화 포스터"
-                  />
-                </figure>
-              </a>
-            </div>
-            <div class="movie-list__item">
-              <a href="#" class="movie-list__link">
-                <figure class="movie-list__poster">
-                  <img
-                    src="https://t1.daumcdn.net/thumb/R720x0.fjpg/?fname=http://t1.daumcdn.net/brunch/service/user/1ZgO/image/7fQUFh8JeRGH4JGLAPayJp7_XGo.jpeg"
-                    alt="영화 포스터"
-                  />
-                </figure>
-              </a>
-            </div>
-            <div class="movie-list__item">
-              <a href="#" class="movie-list__link">
-                <figure class="movie-list__poster">
-                  <img
-                    src="https://t1.daumcdn.net/thumb/R720x0.fjpg/?fname=http://t1.daumcdn.net/brunch/service/user/1ZgO/image/7fQUFh8JeRGH4JGLAPayJp7_XGo.jpeg"
-                    alt="영화 포스터"
-                  />
-                </figure>
-              </a>
-            </div>
-            <div class="movie-list__item">
-              <a href="#" class="movie-list__link">
-                <figure class="movie-list__poster">
-                  <img
-                    src="https://t1.daumcdn.net/thumb/R720x0.fjpg/?fname=http://t1.daumcdn.net/brunch/service/user/1ZgO/image/7fQUFh8JeRGH4JGLAPayJp7_XGo.jpeg"
-                    alt="영화 포스터"
-                  />
-                </figure>
-              </a>
-            </div>
-            <div class="movie-list__item">
-              <a href="#" class="movie-list__link">
-                <figure class="movie-list__poster">
-                  <img
-                    src="https://t1.daumcdn.net/thumb/R720x0.fjpg/?fname=http://t1.daumcdn.net/brunch/service/user/1ZgO/image/7fQUFh8JeRGH4JGLAPayJp7_XGo.jpeg"
-                    alt="영화 포스터"
-                  />
-                </figure>
-              </a>
-            </div>
-            <div class="movie-list__item">
-              <a href="#" class="movie-list__link">
-                <figure class="movie-list__poster">
-                  <img
-                    src="https://t1.daumcdn.net/thumb/R720x0.fjpg/?fname=http://t1.daumcdn.net/brunch/service/user/1ZgO/image/7fQUFh8JeRGH4JGLAPayJp7_XGo.jpeg"
-                    alt="영화 포스터"
-                  />
-                </figure>
-              </a>
-            </div>
-            <div class="movie-list__item">
-              <a href="#" class="movie-list__link">
-                <figure class="movie-list__poster">
-                  <img
-                    src="https://t1.daumcdn.net/thumb/R720x0.fjpg/?fname=http://t1.daumcdn.net/brunch/service/user/1ZgO/image/7fQUFh8JeRGH4JGLAPayJp7_XGo.jpeg"
-                    alt="영화 포스터"
-                  />
-                </figure>
-              </a>
-            </div> -->
+              ></MovieItem>
             </template>
           </div>
         </div>
@@ -209,17 +139,21 @@
 <script>
 // Components
 import Spinner from "@/components/common/Spinner.vue";
+import MovieItem from "@/components/movie/MovieItem.vue";
 
 // helpers
 import { division } from "@/utils/helpers/index";
-import getImageUrl from "@/utils/helpers/getImageUrl";
 
 // APIs
 import { fetchSortedMovie } from "@/api/movie";
 
+// Vuex
+import { mapGetters } from "vuex";
+
 export default {
   components: {
     Spinner,
+    MovieItem,
   },
   data() {
     return {
@@ -240,42 +174,27 @@ export default {
       // 장르 셀렉트 박스
       genreList: {
         open: false,
-        selectedGenre: null,
+        selectedId: null,
       },
 
       // 필터
       filters: {
         open: false,
-        selectedFilter: null,
+        selectedValue: "populairty.desc",
       },
     };
   },
 
   computed: {
-    // 장르
-    genres() {
-      const genres = this.$store.getters["movie/genres"];
-
-      return genres ? division(genres.slice(), 7) : [];
-    },
-
-    // 영화 필터
-    movieFilters() {
-      return this.$store.state.movie.movieFilters;
-    },
+    ...mapGetters("movie", ["genres"]),
 
     // 쿼리 스트링
     queryString() {
       return {
-        with_genres: this.genreList.selectedGenre?.id,
-        sort_by: this.filters.selectedFilter?.value,
+        with_genres: this.genreList.selectedId,
+        sort_by: this.filters.selectedValue,
         page: this.pagination.page,
       };
-    },
-
-    // 선택된 장르, 필터, 페이지를 통해 변경된 쿼리 스트링
-    queryStringParams() {
-      return this.qs(this.queryString);
     },
 
     // 임시 영화 7개로 자른 것
@@ -283,47 +202,100 @@ export default {
       return this.movies.length ? this.movies.slice(0, 8) : [];
     },
 
-    // 영화 포스터
-    poster() {
-      return (imagePath) => {
-        return getImageUrl(imagePath, 2, "poster");
-      };
-    },
-  },
+    // 리스트를 그리기 위해서 7개씩 자른 장르 데이터
+    slicedGenres() {
+      const genres = this.genres;
 
-  watch: {
-    queryString: {
-      handler(newQs, oldQs) {
-        if (newQs !== oldQs) {
-          this.fetchData();
-        }
-      },
+      return genres ? division(genres.slice(), 7) : [];
+    },
+
+    // 선택된 장르
+    selectedGenre() {
+      const genreId = this.genreList.selectedId;
+
+      if (genreId === null || genreId === undefined) return null;
+
+      return this.genres.find((genre) => genre.id === +genreId);
+    },
+
+    // 영화 필터
+    filterList() {
+      return this.$store.state.movie.movieFilters;
+    },
+
+    // 선택된 필터
+    selectedFilter() {
+      const selectedValue = this.filters.selectedValue;
+
+      if (selectedValue === null || selectedValue === undefined) return null;
+
+      return this.filterList.find((filter) => filter.value === selectedValue);
     },
   },
 
   created() {
     // 쿼리스트링 설정
-    this.setQueryString();
-
+    // this.getQueryString();
     // 데이터 fetch
-    this.fetchData();
+    // this.fetchData();
+  },
+
+  watch: {
+    "$route.query": {
+      handler(newQuery, oldQuery) {
+        const has = Object.hasOwnProperty;
+
+        // 영화 상세 모달이 열리거나 닫힐 경우에만 예외처리
+        if (
+          has.call(newQuery, "movieId") ||
+          (oldQuery && has.call(oldQuery, "movieId"))
+        ) {
+          return;
+        }
+
+        this.fetchData();
+      },
+      immediate: true,
+    },
   },
 
   methods: {
     // 장르 선택 이벤트 핸들러
-    selectGenre(genre) {
-      if (!genre || (!genre.id && genre.id !== 0)) return;
+    selectGenre(id) {
+      if (!id && id !== 0) return;
 
-      // this.$router.replace({
-      //   path: this.$route.path,
-      //   query: {
-      //     ...this.$route.query,
-      //     with_genres: genre.id,
-      //   },
-      // });
+      this.genreList.selectedId = id;
+      this.closeGenreList();
 
-      this.genreList.selectedGenre = genre;
+      this.setQueryString();
+    },
+
+    // 장르 리스트 열기
+    openGenreList() {
+      this.genreList.open = true;
+    },
+
+    // 장르 리스트 닫기
+    closeGenreList() {
       this.genreList.open = false;
+    },
+
+    // 필터 선택 이벤트 핸들러
+    selectFilter(value) {
+      this.filters.selectedValue = value;
+
+      this.closeFilterList();
+      this.setQueryString();
+    },
+
+    // 필터 리스트 열기
+    openFilterList() {
+      this.filters.open = true;
+    },
+
+    // 필터 리스트 닫기
+    closeFilterList() {
+      this.filters.open = false;
     },
 
     // 쿼리 스트링 만드는 함수
@@ -342,7 +314,7 @@ export default {
     },
 
     // 페이지 초기 진입 시 url 쿼리로 쿼리스트링 설정
-    setQueryString() {
+    getQueryString() {
       const { query } = this.$route;
 
       if (!Object.keys(query).length) return;
@@ -364,18 +336,45 @@ export default {
 
       // 필터 설정
       if (query.filter !== undefined) {
-        const filter = this.movieFilters.find(
+        const filter = this.filterList.find(
           (filter) => filter.value === query.filter
         );
 
-        if (filter) this.filters.selectedFilter = filter;
+        if (filter) this.filters.selectedValue = filter;
       }
+    },
+
+    // 장르, 페이지, 필터 선택할 때마다 현재 페이지 쿼리스트링 변경
+    setQueryString() {
+      const _query = {};
+
+      for (const key in this.queryString) {
+        const _value = this.queryString[key];
+
+        // if (_value !== null && _value !== undefined) _query[key] = _value;
+        _query[key] = _value;
+      }
+
+      this.$router
+        .replace({
+          path: this.$route.path,
+          params: this.$route.params,
+          query: {
+            ...this.$route.query,
+            ..._query,
+          },
+        })
+        .catch((failure) => {
+          console.error(failure);
+        });
     },
 
     // 장르, 필터링 초기화
     clearQuery() {
-      this.genreList.selectedGenre = null;
-      this.filters.selectedFilter = null;
+      this.genreList.selectedId = null;
+      this.filters.selectedValue = null;
+
+      this.setQueryString();
 
       // this.$router.replace({
       //   path: this.$route.path,
@@ -387,7 +386,7 @@ export default {
     async fetchData() {
       try {
         this.loading = true;
-        const _queryString = this.queryStringParams;
+        const _queryString = this.qs(this.queryString);
         const data = await fetchSortedMovie(_queryString);
 
         const { page, results, total_pages, total_results } = data;
@@ -498,6 +497,7 @@ export default {
   border: 1px solid var(--grey-color);
   background-color: rgba(0, 0, 0, 0.9);
   white-space: nowrap;
+  z-index: 10;
 }
 
 .movie-page__genres .genres__list {
@@ -560,6 +560,7 @@ export default {
   background-color: rgba(0, 0, 0, 0.9);
   border: 1px solid var(--white-color);
   color: var(--white-color);
+  z-index: 10;
 }
 
 .movie-page .filters__list {
@@ -585,13 +586,9 @@ export default {
   margin: 0 -10px 0 0;
 }
 
-.movie-page .movie-list__item {
+.movie-page .movieItem {
   display: inline-block;
   width: calc(12.5% - 10px);
   margin: 0 10px 0 0;
-}
-
-.movie-page .movie-list__item img {
-  width: 100%;
 }
 </style>

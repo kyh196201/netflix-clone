@@ -9,7 +9,9 @@
               <router-link to="/browse/movie">영화</router-link>
             </span>
             <span class="breadcrumbs__depth current">
-              <router-link :to="`/browse/movie?id=${selectedGrenre.id}`">{{ selectedGrenre.name }}</router-link>
+              <router-link :to="`/browse/movie?id=${selectedGrenre.id}`">{{
+                selectedGrenre.name
+              }}</router-link>
             </span>
           </div>
           <div class="moviePage__sort option-container">
@@ -20,8 +22,14 @@
               </span>
             </button>
             <ul class="optionList column" v-if="isOpenFilter">
-              <li class="optionList__item" v-for="(filter, index) in filters" :key="index">
-                <a href="#" @click.prevent="selectSort(filter.name)">{{filter.title}}</a>
+              <li
+                class="optionList__item"
+                v-for="(filter, index) in filters"
+                :key="index"
+              >
+                <a href="#" @click.prevent="selectSort(filter.name)">{{
+                  filter.title
+                }}</a>
               </li>
             </ul>
           </div>
@@ -30,13 +38,20 @@
         <div class="moviePage__header__content" v-else>
           <span class="moviePage__title">영화</span>
           <div class="moviePage__genres option-container">
-            <button class="option-title" @click="isOpenGenreList = !isOpenGenreList">
+            <button
+              class="option-title"
+              @click="isOpenGenreList = !isOpenGenreList"
+            >
               <span class="option-selected">장르</span>
               <span class="option-icon">
                 <font-awesome-icon icon="caret-down" />
               </span>
             </button>
-            <genre-list :genres="genres" v-if="isOpenGenreList" @click="selectGrenre"></genre-list>
+            <genre-list
+              :genres="genres"
+              v-if="isOpenGenreList"
+              @click="selectGrenre"
+            ></genre-list>
           </div>
         </div>
       </div>
@@ -45,7 +60,11 @@
       <h2 class="hidden-title">영화 리스트</h2>
       <div class="moviePage__list--wrapper movieList--wrapper">
         <ul class="moviePage__list movieList">
-          <li class="moviePage__listItem movieList__item" v-for="movie in movies" :key="movie.id">
+          <li
+            class="moviePage__listItem movieList__item"
+            v-for="movie in movies"
+            :key="movie.id"
+          >
             <movie-card :data="movie"></movie-card>
           </li>
         </ul>
@@ -59,31 +78,30 @@ import { mapActions, mapState } from "vuex";
 import GenreList from "../components/GenreList.vue";
 import MovieCard from "../components/MovieCard.vue";
 import throttle from "../utils/throttle.js";
-import debounce from "../utils/debounce.js";
 
 const filters = [
   {
     name: "po",
     title: "인기 순",
-    query: "popularity.desc"
+    query: "popularity.desc",
   },
   {
     name: "yr",
     title: "출시일 순",
-    query: "release_date.desc"
+    query: "release_date.desc",
   },
   {
     name: "av",
     title: "평점 높은 순",
-    query: "vote_averatge.desc"
-  }
+    query: "vote_averatge.desc",
+  },
 ];
 
 export default {
   name: "Movie",
   components: {
     "genre-list": GenreList,
-    "movie-card": MovieCard
+    "movie-card": MovieCard,
   },
   data() {
     return {
@@ -96,27 +114,27 @@ export default {
       isFetchingDataByScrolling: false,
       prevScrollPos: window.scrollY,
       loading: false,
-      throttledOnScroll: throttle(this.onScroll, 250)
+      throttledOnScroll: throttle(this.onScroll, 250),
     };
   },
   computed: {
     ...mapState({
-      movies: state => state.movies,
-      genres: state => state.genres
+      movies: (state) => state.movies,
+      genres: (state) => state.genres,
     }),
     selectedGrenre() {
       return this.genre
-        ? this.genres.find(genre => genre.id == this.genre)
+        ? this.genres.find((genre) => genre.id == this.genre)
         : null;
     },
     getFilterTitle() {
       return this.sort
-        ? this.filters.find(f => f.name === this.sort).title
+        ? this.filters.find((f) => f.name === this.sort).title
         : "필터를 선택하세요";
     },
     getFilter() {
       return this.sort
-        ? this.filters.find(f => f.name === this.sort).query
+        ? this.filters.find((f) => f.name === this.sort).query
         : "";
     },
     queryString() {
@@ -134,7 +152,7 @@ export default {
     },
     query() {
       return this.$route.query;
-    }
+    },
   },
   watch: {
     // $route: {
@@ -170,8 +188,8 @@ export default {
           return;
         }
       },
-      immediate: true
-    }
+      immediate: true,
+    },
   },
   created() {
     this.fetchGenres();
@@ -195,7 +213,7 @@ export default {
     selectGrenre(genre) {
       const { path } = this.$route;
       const query = {
-        id: genre
+        id: genre,
       };
 
       this.isOpenGenreList = false;
@@ -206,7 +224,7 @@ export default {
     changeRoute(path, query) {
       this.$router.push({
         path,
-        query
+        query,
       });
     },
     selectSort(sort) {
@@ -218,7 +236,7 @@ export default {
       const { path } = this.$route;
       const query = {
         id: this.genre,
-        sort: sort
+        sort: sort,
       };
 
       this.page = 1;
@@ -291,8 +309,8 @@ export default {
       }
 
       return isSame;
-    }
-  }
+    },
+  },
 };
 </script>
 
