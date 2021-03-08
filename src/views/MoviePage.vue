@@ -11,9 +11,7 @@
           <!-- 페이지 타이틀 -->
           <div class="movie-page__title">
             <template v-if="selectedGenre">
-              <span class="movie-page__subtitle" @click="clearQuery">{{
-                pageName
-              }}</span>
+              <span class="movie-page__subtitle">{{ pageName }}</span>
               <span class="movie-page__maintitle">{{
                 selectedGenre.name
               }}</span>
@@ -157,6 +155,8 @@ export default {
   },
   data() {
     return {
+      isPageLoaded: false,
+
       loading: false,
 
       pageName: "영화",
@@ -182,6 +182,9 @@ export default {
         open: false,
         selectedValue: "populairty.desc",
       },
+
+      // 기본 필터 값
+      defaultFilterValue: "populairty.desc",
     };
   },
 
@@ -234,28 +237,30 @@ export default {
   },
 
   created() {
-    // 쿼리스트링 설정
+    // url에서 this.queryString() 설정
     // this.getQueryString();
+
     // 데이터 fetch
-    // this.fetchData();
+    this.fetchData();
+
+    if (!this.isPageLoaded) this.isPageLoaded = true;
   },
 
   watch: {
-    "$route.query": {
-      handler(newQuery, oldQuery) {
-        const has = Object.hasOwnProperty;
-
-        // 영화 상세 모달이 열리거나 닫힐 경우에만 예외처리
-        if (
-          has.call(newQuery, "movieId") ||
-          (oldQuery && has.call(oldQuery, "movieId"))
-        ) {
+    "genreList.selectedId": {
+      handler(newGenre, oldGenre) {
+        if (!newGenre && newGenre !== 0) {
           return;
         }
 
         this.fetchData();
       },
-      immediate: true,
+      immediate: false,
+    },
+
+    "filters.selectedValue": {
+      handler() {},
+      immediate: false,
     },
   },
 
@@ -265,9 +270,8 @@ export default {
       if (!id && id !== 0) return;
 
       this.genreList.selectedId = id;
-      this.closeGenreList();
 
-      this.setQueryString();
+      this.closeGenreList();
     },
 
     // 장르 리스트 열기
@@ -285,7 +289,6 @@ export default {
       this.filters.selectedValue = value;
 
       this.closeFilterList();
-      this.setQueryString();
     },
 
     // 필터 리스트 열기
@@ -344,50 +347,12 @@ export default {
       }
     },
 
-    // 장르, 페이지, 필터 선택할 때마다 현재 페이지 쿼리스트링 변경
-    setQueryString() {
-      const _query = {};
-
-      for (const key in this.queryString) {
-        const _value = this.queryString[key];
-
-        // if (_value !== null && _value !== undefined) _query[key] = _value;
-        _query[key] = _value;
-      }
-
-      this.$router
-        .replace({
-          path: this.$route.path,
-          params: this.$route.params,
-          query: {
-            ...this.$route.query,
-            ..._query,
-          },
-        })
-        .catch((failure) => {
-          console.error(failure);
-        });
-    },
-
-    // 장르, 필터링 초기화
-    clearQuery() {
-      this.genreList.selectedId = null;
-      this.filters.selectedValue = null;
-
-      this.setQueryString();
-
-      // this.$router.replace({
-      //   path: this.$route.path,
-      //   query: {},
-      // });
-    },
-
     // 영화 불러오는 함수
     async fetchData() {
       try {
         this.loading = true;
-        const _queryString = this.qs(this.queryString);
-        const data = await fetchSortedMovie(_queryString);
+        // const _queryString = this.qs(this.queryString);
+        const data = await fetchSortedMovie(this.queryString);
 
         const { page, results, total_pages, total_results } = data;
 
@@ -395,6 +360,7 @@ export default {
         this.pagination.totalPages = total_pages;
         this.pagination.totalResult = total_results;
 
+        // FIXME: 무한 로딩일 경우에 this.movies = [...this.movies, ...results];로 변경
         this.movies = results;
       } catch (error) {
         console.error(error);

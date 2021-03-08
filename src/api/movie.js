@@ -45,7 +45,28 @@ export const fetchMovieDetail = async (id) => {
 };
 
 export const fetchSortedMovie = async (query) => {
-  const url = `/discover/movie?${query}`;
-  const response = await movieAxios(url);
+  console.log(query);
+
+  const options = {
+    data: {},
+    params: {},
+  };
+
+  let url = "/discover/movie";
+
+  if (typeof query === "string") {
+    // 문자열 인지 체크
+    url = url + `?${query}`;
+  } else if (Object.prototype.toString.call(query) === "[object Object]") {
+    // 객체인지 체크
+    options.params = query;
+
+    console.log(options);
+  }
+
+  const response = await movieAxios(url, {
+    data: options.data,
+    params: options.params,
+  });
   return response.data;
 };
